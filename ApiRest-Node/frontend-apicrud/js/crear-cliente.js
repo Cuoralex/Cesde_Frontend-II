@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnSubmit = formulario.querySelector('button[type="submit"]');
     const tituloPagina = document.querySelector("h1");
 
-    // Detectar si estamos editando (si existe ?id=X en la URL)
+    Detectar si estamos editando (si existe ?id=X en la URL)
     const urlParams = new URLSearchParams(window.location.search);
     const clienteId = urlParams.get('id');
 
@@ -13,11 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
         cargarDatosCliente(clienteId);
     }
 
-    // Evento para Guardar (Crear o Editar)
+    Evento para Guardar (Crear o Editar)
     formulario.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        // Recolectar datos usando tus IDs de HTML
+        Recolectar datos usando tus IDs de HTML
         const clienteData = {
             nombre: document.querySelector("#nombre-cli").value,
             apellido: document.querySelector("#apellido-cli").value,
@@ -29,11 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             let url = "http://localhost:3000/api/clientes";
-            let metodo = "POST"; // Por defecto crear
+            let metodo = "POST"; Por defecto crear
 
             if (clienteId) {
                 url = `http://localhost:3000/api/clientes/${clienteId}`;
-                metodo = "PUT"; // Si hay ID, actualizar
+                metodo = "PUT"; Si hay ID, actualizar
             }
 
             const respuesta = await fetch(url, {
@@ -54,14 +54,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Función para llenar el formulario si es edición
+    Función para llenar el formulario si es edición
     async function cargarDatosCliente(id) {
         try {
             const respuesta = await fetch(`http://localhost:3000/api/clientes/${id}`);
             if (respuesta.ok) {
                 const cli = await respuesta.json();
                 
-                // Mapear datos a los inputs (asumiendo que vienen del backend con esos nombres)
+                Mapear datos a los inputs (asumiendo que vienen del backend con esos nombres)
                 document.querySelector("#nombre-cli").value = cli.nombre;
                 document.querySelector("#apellido-cli").value = cli.apellido;
                 document.querySelector("#email-cli").value = cli.email;

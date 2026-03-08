@@ -1,7 +1,7 @@
 const { getPool } = require("../database/connection")
 const { handleError } = require("../utils/errorHandler")
 
-// Login de usuario
+Login de usuario
 const login = async (req, res) => {
   try {
     const { usuario, contrasena } = req.body

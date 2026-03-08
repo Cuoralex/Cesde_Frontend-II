@@ -5,15 +5,15 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarClientes();
     cargarProductos();
     
-    // Listeners para actualización de totales
+    Listeners para actualización de totales
     document.querySelector("#descuento").addEventListener("input", calcularTotalFinal);
     document.querySelector("#aumento").addEventListener("input", calcularTotalFinal);
     
-    // Enviar Formulario
+    Enviar Formulario
     document.querySelector("#formulario-pedido").addEventListener("submit", guardarPedido);
 });
 
-// 1. Cargar Clientes para el Select
+1. Cargar Clientes para el Select
 async function cargarClientes() {
     const res = await fetch("http://localhost:3000/api/clientes");
     const clientes = await res.json();
@@ -23,12 +23,12 @@ async function cargarClientes() {
     });
 }
 
-// 2. Cargar Productos para poder agregarlos
+2. Cargar Productos para poder agregarlos
 async function cargarProductos() {
     const res = await fetch("http://localhost:3000/api/productos");
     listaProductos = await res.json();
     
-    // Agregamos un buscador simple o select para elegir productos
+    Agregamos un buscador simple o select para elegir productos
     const divProductos = document.createElement("div");
     divProductos.className = "mb-3";
     divProductos.innerHTML = `
@@ -42,7 +42,7 @@ async function cargarProductos() {
     document.querySelector("#formulario-pedido").prepend(divProductos);
 }
 
-// 3. Lógica del Carrito Interno
+3. Lógica del Carrito Interno
 function agregarAlCarritoLocal() {
     const idProd = document.querySelector("#select-producto-add").value;
     if (!idProd) return;
@@ -86,7 +86,7 @@ function eliminarDelCarrito(index) {
     renderizarCarrito();
 }
 
-// 4. Calcular Total Automático
+4. Calcular Total Automático
 function calcularTotalFinal() {
     const subtotalProds = carritoPedido.reduce((acc, item) => acc + item.subtotal, 0);
     const descuento = parseFloat(document.querySelector("#descuento").value) || 0;
@@ -96,7 +96,7 @@ function calcularTotalFinal() {
     document.querySelector("#total-pedido").innerText = `$${total.toFixed(2)}`;
 }
 
-// 5. Guardar Pedido (POST)
+5. Guardar Pedido (POST)
 async function guardarPedido(e) {
     e.preventDefault();
     

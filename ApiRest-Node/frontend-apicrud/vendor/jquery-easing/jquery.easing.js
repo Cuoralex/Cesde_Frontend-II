@@ -18,7 +18,7 @@
 	}
 })(function($){
 
-// Preserve the original jQuery "swing" easing as "jswing"
+Preserve the original jQuery "swing" easing as "jswing"
 $.easing.jswing = $.easing.swing;
 
 var pow = Math.pow,
@@ -32,7 +32,7 @@ var pow = Math.pow,
 	c4 = ( 2 * PI ) / 3,
 	c5 = ( 2 * PI ) / 4.5;
 
-// x is the fraction of animation progress, in the range 0..1
+x is the fraction of animation progress, in the range 0..1
 function bounceOut(x) {
 	var n1 = 7.5625,
 		d1 = 2.75;

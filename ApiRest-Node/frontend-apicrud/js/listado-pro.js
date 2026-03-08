@@ -1,5 +1,5 @@
 let listaProductos = [];
-// El selector debe ser exacto al de tu HTML
+El selector debe ser exacto al de tu HTML
 let tableroPro = document.querySelector("table tbody");
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -28,7 +28,7 @@ async function getProducts(){
             datos.forEach((pro) => {
                 let fila = document.createElement("tr");
 
-                // Restricción por rol de vendedor
+                Restricción por rol de vendedor
                 let botonEliminar = "";
                 if(!usuario || usuario.rol !== "vendedor"){
                     botonEliminar = `
@@ -37,7 +37,7 @@ async function getProducts(){
                     </button>`;
                 }
 
-                // Usamos pro.id porque así lo muestra tu base de datos
+                Usamos pro.id porque así lo muestra tu base de datos
                 fila.innerHTML = `
                 <td>${pro.id}</td>
                 <td>${pro.nombre}</td>

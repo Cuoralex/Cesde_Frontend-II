@@ -1,6 +1,6 @@
-// stylelint-disable declaration-no-important
+stylelint-disable declaration-no-important
 
-// Contextual backgrounds
+Contextual backgrounds
 
 @mixin bg-variant($parent, $color, $ignore-warning: false) {
   #{$parent} {

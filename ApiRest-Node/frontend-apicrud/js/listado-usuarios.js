@@ -1,7 +1,7 @@
 let listaUsuarios = [];
 const tableroUser = document.querySelector("#tabla-usuarios");
 
-// Lógica de Autenticación Integrada
+Lógica de Autenticación Integrada
 let usuarioLogueado = JSON.parse(localStorage.getItem("usuario"));
 
 if (!usuarioLogueado) {
@@ -9,7 +9,7 @@ if (!usuarioLogueado) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Mostrar nombre en el Topbar si el elemento existe
+    Mostrar nombre en el Topbar si el elemento existe
     const nameLabel = document.getElementById("nombreUsuario");
     if (nameLabel) {
         nameLabel.innerText = usuarioLogueado.usuario || usuarioLogueado.nombre;
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// OBTENER USUARIOS (READ)
+OBTENER USUARIOS (READ)
 async function getUsers() {
     try {
         const url = "http://localhost:3000/api/usuarios";
@@ -34,7 +34,7 @@ async function getUsers() {
             datos.forEach((user) => {
                 const fila = document.createElement("tr");
 
-                // Solo administradores pueden eliminar
+                Solo administradores pueden eliminar
                 let btnEliminar = "";
                 if (usuarioLogueado.rol === "administrador") {
                     btnEliminar = `
@@ -63,7 +63,7 @@ async function getUsers() {
     }
 }
 
-// ELIMINAR USUARIO (DELETE)
+ELIMINAR USUARIO (DELETE)
 async function eliminarUsuario(id) {
     if (!confirm("¿Desea eliminar este usuario?")) return;
 
@@ -80,7 +80,7 @@ async function eliminarUsuario(id) {
     }
 }
 
-// BUSCADOR
+BUSCADOR
 function buscarUsuario() {
     const texto = document.querySelector('input[type="search"]').value.toLowerCase();
     const filtrados = listaUsuarios.filter(u => 

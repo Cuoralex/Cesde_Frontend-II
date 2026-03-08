@@ -1,6 +1,6 @@
-// Variable para búsqueda
+Variable para búsqueda
 let listaClientes = [];
-// Aseguramos que busque el ID exacto de tu HTML
+Aseguramos que busque el ID exacto de tu HTML
 const tableroCli = document.querySelector("#tabla-clientes");
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 //====================================
-// OBTENER CLIENTES (READ)
+OBTENER CLIENTES (READ)
 //====================================
 async function getClientes() {
     try {
@@ -34,17 +34,17 @@ async function getClientes() {
     }
 }
 
-// Función auxiliar para pintar la tabla
+Función auxiliar para pintar la tabla
 function renderizarTabla(datos) {
     tableroCli.innerHTML = "";
     
-    // Obtener usuario para permisos
+    Obtener usuario para permisos
     const usuario = JSON.parse(localStorage.getItem("usuario"));
 
     datos.forEach((cli) => {
         const fila = document.createElement("tr");
 
-        // Bloquear botón eliminar si es vendedor
+        Bloquear botón eliminar si es vendedor
         let btnEliminar = "";
         if (!usuario || usuario.rol !== "vendedor") {
             btnEliminar = `
@@ -72,7 +72,7 @@ function renderizarTabla(datos) {
 }
 
 //====================================
-// ELIMINAR CLIENTE
+ELIMINAR CLIENTE
 //====================================
 async function eliminarCliente(id) {
     if (!confirm("¿Seguro que desea eliminar este cliente?")) return;
@@ -91,7 +91,7 @@ async function eliminarCliente(id) {
 }
 
 //====================================
-// BUSCADOR (FILTRADO)
+BUSCADOR (FILTRADO)
 //====================================
 function buscarCliente(texto) {
     const filtrados = listaClientes.filter(cli => 

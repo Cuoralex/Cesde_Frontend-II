@@ -3,11 +3,11 @@ const cors = require("cors")
 const bodyParser = require("body-parser")
 require("dotenv").config()
 
-// Importar funciones de conexión y BD
+Importar funciones de conexión y BD
 const { initializePool, closePool } = require("./src/database/connection")
 const { initializeDatabase } = require("./src/database/init")
 
-// Importar rutas
+Importar rutas
 const authRoutes = require("./src/routes/authRoutes")
 const productosRoutes = require("./src/routes/productosRoutes")
 const clientesRoutes = require("./src/routes/clientesRoutes")
@@ -18,12 +18,12 @@ const detallePedidoRoutes = require("./src/routes/detallePedidoRoutes")
 const app = express()
 const PORT = process.env.PORT || 3000
 
-// Middlewares
+Middlewares
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// Ruta raíz de bienvenida
+Ruta raíz de bienvenida
 app.get("/", (req, res) => {
   res.status(200).json({
     message: "¡Bienvenido a la API de Tienda!",
@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
   })
 })
 
-// Rutas de la API
+Rutas de la API
 app.use("/api", authRoutes)
 app.use("/api/productos", productosRoutes)
 app.use("/api/clientes", clientesRoutes)
@@ -55,7 +55,7 @@ app.use("/api/pedidos", pedidosRoutes)
 app.use("/api/usuarios", usuariosRoutes)
 app.use("/api/detalle-pedido", detallePedidoRoutes)
 
-// Ruta no encontrada - Captura rutas que no coinciden
+Ruta no encontrada - Captura rutas que no coinciden
 app.use((req, res) => {
   res.status(404).json({
     error: "Ruta no encontrada",
@@ -65,7 +65,7 @@ app.use((req, res) => {
   })
 })
 
-// Iniciar servidor y pool de conexiones
+Iniciar servidor y pool de conexiones
 const startServer = async () => {
   try {
     await initializePool()
@@ -82,7 +82,7 @@ const startServer = async () => {
   }
 }
 
-// Cerrar pool de conexiones al terminar
+Cerrar pool de conexiones al terminar
 process.on("SIGINT", async () => {
   console.log("\n🔒 Cerrando pool de conexiones MySQL...")
   await closePool()
@@ -90,7 +90,7 @@ process.on("SIGINT", async () => {
   process.exit(0)
 })
 
-// Manejo de errores no capturados
+Manejo de errores no capturados
 process.on("unhandledRejection", (err) => {
   console.error("Unhandled Promise Rejection:", err)
   process.exit(1)
@@ -101,5 +101,5 @@ process.on("uncaughtException", (err) => {
   process.exit(1)
 })
 
-// Iniciar aplicación
+Iniciar aplicación
 startServer()

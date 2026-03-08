@@ -3,17 +3,17 @@ const { getProductos, createProducto, updateProducto, deleteProducto } = require
 
 const router = express.Router()
 
-// GET /api/productos
-// GET /api/productos/:id
+GET /api/productos
+GET /api/productos/:id
 router.get("/:id?", getProductos)
 
-// POST /api/productos
+POST /api/productos
 router.post("/", createProducto)
 
-// PUT /api/productos/:id
+PUT /api/productos/:id
 router.put("/:id", updateProducto)
 
-// DELETE /api/productos/:id
+DELETE /api/productos/:id
 router.delete("/:id", deleteProducto)
 
 module.exports = router

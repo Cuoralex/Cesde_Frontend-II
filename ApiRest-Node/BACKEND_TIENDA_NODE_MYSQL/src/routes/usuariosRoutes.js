@@ -3,17 +3,17 @@ const { getUsuarios, createUsuario, updateUsuario, deleteUsuario } = require("..
 
 const router = express.Router()
 
-// GET /api/usuarios
-// GET /api/usuarios/:id
+GET /api/usuarios
+GET /api/usuarios/:id
 router.get("/:id?", getUsuarios)
 
-// POST /api/usuarios
+POST /api/usuarios
 router.post("/", createUsuario)
 
-// PUT /api/usuarios/:id
+PUT /api/usuarios/:id
 router.put("/:id", updateUsuario)
 
-// DELETE /api/usuarios/:id
+DELETE /api/usuarios/:id
 router.delete("/:id", deleteUsuario)
 
 module.exports = router

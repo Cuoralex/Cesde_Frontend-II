@@ -1,9 +1,9 @@
-// detectar si viene id en la URL
+detectar si viene id en la URL
 const params = new URLSearchParams(window.location.search);
 const idProducto = params.get("id");
 
 //====================================
-// CARGAR PRODUCTO PARA EDITAR
+CARGAR PRODUCTO PARA EDITAR
 //====================================
 if (idProducto) {
     cargarProducto(idProducto);
@@ -28,7 +28,7 @@ async function cargarProducto(id) {
         document.querySelector("#form6Example6").value = producto.stock;
         document.querySelector("#form6Example7").value = producto.descripcion;
 
-        // Si es input
+        Si es input
         const imagenInput = document.querySelector("#imagen-pro");
         if (imagenInput.tagName === "INPUT") {
             imagenInput.value = producto.imagen;
@@ -45,7 +45,7 @@ async function cargarProducto(id) {
 }
 
 //====================================
-// CREAR O ACTUALIZAR PRODUCTO
+CREAR O ACTUALIZAR PRODUCTO
 //====================================
 async function createProduct() {
 
@@ -61,7 +61,7 @@ async function createProduct() {
             ? imagenInput.value
             : imagenInput.src;
 
-        // Validación mínima
+        Validación mínima
         if (!nombre || !precio || !stock) {
             alert("Debe completar los campos obligatorios");
             return;
@@ -78,7 +78,7 @@ async function createProduct() {
         let url = "http://localhost:3000/api/productos";
         let metodo = "POST";
 
-        // si existe id → actualizar
+        si existe id → actualizar
         if (idProducto) {
             url = `http://localhost:3000/api/productos/${idProducto}`;
             metodo = "PUT";

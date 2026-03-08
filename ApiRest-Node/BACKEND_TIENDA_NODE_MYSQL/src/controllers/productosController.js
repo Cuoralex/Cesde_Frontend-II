@@ -1,7 +1,7 @@
 const { getPool } = require("../database/connection")
 const { handleError } = require("../utils/errorHandler")
 
-// Obtener todos los productos o uno por ID
+Obtener todos los productos o uno por ID
 const getProductos = async (req, res) => {
   try {
     const { id } = req.params
@@ -27,7 +27,7 @@ const getProductos = async (req, res) => {
   }
 }
 
-// Crear producto
+Crear producto
 const createProducto = async (req, res) => {
   try {
     const { nombre, descripcion, precio, stock, imagen } = req.body
@@ -53,7 +53,7 @@ const createProducto = async (req, res) => {
   }
 }
 
-// Actualizar producto
+Actualizar producto
 const updateProducto = async (req, res) => {
   try {
     const { id } = req.params
@@ -77,7 +77,7 @@ const updateProducto = async (req, res) => {
   }
 }
 
-// Eliminar producto
+Eliminar producto
 const deleteProducto = async (req, res) => {
   try {
     const { id } = req.params

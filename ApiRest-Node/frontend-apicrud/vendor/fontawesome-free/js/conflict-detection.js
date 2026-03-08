@@ -588,7 +588,7 @@
     } else if (node.href) {
       return md5(node.href);
     } else if (node.innerText && '' !== node.innerText) {
-      // eslint-disable-line yoda
+      eslint-disable-line yoda
       return md5(node.innerText);
     } else {
       return undefined;
@@ -620,7 +620,7 @@
         showProgress = _ref$showProgress === void 0 ? false : _ref$showProgress,
         progressIndicator = _ref.progressIndicator;
     return new Promise(function (resolve, reject) {
-      // eslint-disable-line compat/compat
+      eslint-disable-line compat/compat
       function poll(duration, cumulativeDuration) {
         setTimeout(function () {
           var result = fn();
@@ -630,7 +630,7 @@
           }
 
           if (!!result) {
-            // eslint-disable-line no-extra-boolean-cast
+            eslint-disable-line no-extra-boolean-cast
             resolve(result);
           } else {
             var nextDuration = 250;
@@ -639,7 +639,7 @@
             if (nextCumulativeDuration <= maxDuration) {
               poll(nextDuration, nextCumulativeDuration);
             } else {
-              reject('timeout'); // eslint-disable-line prefer-promise-reject-errors
+              reject('timeout'); eslint-disable-line prefer-promise-reject-errors
             }
           }
         }, duration);
@@ -656,9 +656,9 @@
     var styleTags = Array.from(DOCUMENT.getElementsByTagName('style')).filter(function (t) {
       if (t.hasAttribute(detectionIgnoreAttr)) {
         return false;
-      } // If the browser has loaded the FA5 CSS, let's not test that <style> element.
-      // Its enough that we'll be testing for traces of the corresponding JS being loaded, and testing
-      // this <style> would only produce a false negative anyway.
+      } If the browser has loaded the FA5 CSS, let's not test that <style> element.
+      Its enough that we'll be testing for traces of the corresponding JS being loaded, and testing
+      this <style> would only produce a false negative anyway.
 
 
       if (WINDOW.FontAwesomeConfig && t.innerText.match(new RegExp("svg:not\\(:root\\)\\.".concat(WINDOW.FontAwesomeConfig.replacementClass)))) {
@@ -669,8 +669,8 @@
     });
 
     function runDiag(scriptOrLinkTag, md5) {
-      var diagFrame = DOCUMENT.createElement('iframe'); // Using "visibility: hidden; position: absolute" instead of "display: none;" because
-      // Firefox will not return the expected results for getComputedStyle if our iframe has display: none.
+      var diagFrame = DOCUMENT.createElement('iframe'); Using "visibility: hidden; position: absolute" instead of "display: none;" because
+      Firefox will not return the expected results for getComputedStyle if our iframe has display: none.
 
       diagFrame.setAttribute('style', 'visibility: hidden; position: absolute; height: 0; width: 0;');
       var testIconId = 'fa-test-icon-' + md5;
@@ -678,13 +678,13 @@
       iTag.setAttribute('class', 'fa fa-coffee');
       iTag.setAttribute('id', testIconId);
       var diagScript = DOCUMENT.createElement('script');
-      diagScript.setAttribute('id', diagScriptId); // WARNING: this function will be toString()'d and assigned to innerText of the diag script
-      // element that we'll be putting into a diagnostic iframe.
-      // That means that this code won't compile until after the outer script has run and injected
-      // this code into the iframe. There are some compile time errors that might occur there.
-      // For example, using single line (double-slash) comments like this one inside that function
-      // will probably cause it to choke. Chrome will show an error like this:
-      // Uncaught SyntaxError: Unexpected end of input
+      diagScript.setAttribute('id', diagScriptId); WARNING: this function will be toString()'d and assigned to innerText of the diag script
+      element that we'll be putting into a diagnostic iframe.
+      That means that this code won't compile until after the outer script has run and injected
+      this code into the iframe. There are some compile time errors that might occur there.
+      For example, using single line (double-slash) comments like this one inside that function
+      will probably cause it to choke. Chrome will show an error like this:
+      Uncaught SyntaxError: Unexpected end of input
 
       var diagScriptFun = function diagScriptFun(nodeUnderTestId, testIconId, md5, parentOrigin) {
         parent.FontAwesomeDetection.__pollUntil({
@@ -881,12 +881,12 @@
 
     var nodesFound = _objectSpread({}, scriptsToTest, cssToTest);
 
-    var testCount = Object.keys(scriptsToTest).length + Object.keys(cssToTest).length; // The resultsCollectionMaxWait allows for the time between when the tests running under
-    // child iframes call postMessage with their results, and when the parent window
-    // receives and handles those events with window.onmessage.
-    // Making it configurable allows us to test the scenario where this timeout is exceeded.
-    // Naming it something very different from "timeout" is to help avoid the potential ambiguity between
-    // these two timeout-related settings.
+    var testCount = Object.keys(scriptsToTest).length + Object.keys(cssToTest).length; The resultsCollectionMaxWait allows for the time between when the tests running under
+    child iframes call postMessage with their results, and when the parent window
+    receives and handles those events with window.onmessage.
+    Making it configurable allows us to test the scenario where this timeout is exceeded.
+    Naming it something very different from "timeout" is to help avoid the potential ambiguity between
+    these two timeout-related settings.
 
     var masterTimeout = WINDOW.FontAwesomeDetection.timeout + WINDOW.FontAwesomeDetection.resultsCollectionMaxWait;
     console.group('Font Awesome Detector');
@@ -901,7 +901,7 @@
       console.info("\t%c".concat(timeoutAttr, "%c: milliseconds to wait for each test before deciding whether it's a conflict."), 'font-weight: bold;', 'font-size: normal;');
       console.info("\t%c".concat(resultsCollectionMaxWaitAttr, "%c: milliseconds to wait for the browser to accumulate test results before giving up."), 'font-weight: bold;', 'font-size: normal;');
       pollUntil({
-        // Give this overall timer a little extra cushion
+        Give this overall timer a little extra cushion
         maxDuration: masterTimeout,
         showProgress: true,
         progressIndicator: 'waiting...',
@@ -946,9 +946,9 @@
         console.groupEnd();
       });
     }
-  } // Allow clients to access, and in some cases, override some properties
+  } Allow clients to access, and in some cases, override some properties
 
-  var initialConfig = WINDOW.FontAwesomeDetection || {}; // These can be overridden
+  var initialConfig = WINDOW.FontAwesomeDetection || {}; These can be overridden
 
   var _default = {
     report: report,
@@ -957,7 +957,7 @@
   };
 
   var _config = _objectSpread({}, _default, initialConfig, {
-    // These cannot be overridden
+    These cannot be overridden
     __pollUntil: pollUntil,
     md5ForNode: md5ForNode,
     detectionDone: false,

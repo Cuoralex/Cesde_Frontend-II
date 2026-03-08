@@ -16,7 +16,7 @@ async function getPedidos() {
         datos.forEach((ped) => {
             let fila = document.createElement("tr");
             
-            // Badge de color según estado
+            Badge de color según estado
             let color = ped.estado === 'pendiente' ? 'warning' : 'success';
 
             fila.innerHTML = `
@@ -41,7 +41,7 @@ async function getPedidos() {
     }
 }
 
-// Implementación de cambio de estado (PATCH)
+Implementación de cambio de estado (PATCH)
 async function cambiarEstado(id, nuevoEstado) {
     if (!nuevoEstado) return;
     await fetch(`http://localhost:3000/api/pedidos/${id}/estado`, {

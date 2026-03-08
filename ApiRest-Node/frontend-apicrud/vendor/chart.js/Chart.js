@@ -175,9 +175,9 @@ var conversions = createCommonjsModule(function (module) {
 /* MIT license */
 
 
-// NOTE: conversions should only return primitive values (i.e. arrays, or
-//       values that give correct `typeof` results).
-//       do not use box values types (i.e. Number(), String(), etc.)
+NOTE: conversions should only return primitive values (i.e. arrays, or
+      values that give correct `typeof` results).
+      do not use box values types (i.e. Number(), String(), etc.)
 
 var reverseKeywords = {};
 for (var key in colorName) {
@@ -204,7 +204,7 @@ var convert = module.exports = {
 	gray: {channels: 1, labels: ['gray']}
 };
 
-// hide .channels and .labels properties
+hide .channels and .labels properties
 for (var model in convert) {
 	if (convert.hasOwnProperty(model)) {
 		if (!('channels' in convert[model])) {
@@ -366,10 +366,10 @@ convert.rgb.keyword = function (rgb) {
 		if (colorName.hasOwnProperty(keyword)) {
 			var value = colorName[keyword];
 
-			// Compute comparative distance
+			Compute comparative distance
 			var distance = comparativeDistance(rgb, value);
 
-			// Check if its less, if so set as closest
+			Check if its less, if so set as closest
 			if (distance < currentClosestDistance) {
 				currentClosestDistance = distance;
 				currentClosestKeyword = keyword;
@@ -389,7 +389,7 @@ convert.rgb.xyz = function (rgb) {
 	var g = rgb[1] / 255;
 	var b = rgb[2] / 255;
 
-	// assume sRGB
+	assume sRGB
 	r = r > 0.04045 ? Math.pow(((r + 0.055) / 1.055), 2.4) : (r / 12.92);
 	g = g > 0.04045 ? Math.pow(((g + 0.055) / 1.055), 2.4) : (g / 12.92);
 	b = b > 0.04045 ? Math.pow(((b + 0.055) / 1.055), 2.4) : (b / 12.92);
@@ -539,7 +539,7 @@ convert.hsv.hsl = function (hsv) {
 	return [h, sl * 100, l * 100];
 };
 
-// http://dev.w3.org/csswg/css-color/#hwb-to-rgb
+http://dev.w3.org/csswg/css-color/#hwb-to-rgb
 convert.hwb.rgb = function (hwb) {
 	var h = hwb[0] / 360;
 	var wh = hwb[1] / 100;
@@ -550,7 +550,7 @@ convert.hwb.rgb = function (hwb) {
 	var f;
 	var n;
 
-	// wh + bl cant be > 1
+	wh + bl cant be > 1
 	if (ratio > 1) {
 		wh /= ratio;
 		bl /= ratio;
@@ -564,7 +564,7 @@ convert.hwb.rgb = function (hwb) {
 		f = 1 - f;
 	}
 
-	n = wh + f * (v - wh); // linear interpolation
+	n = wh + f * (v - wh); linear interpolation
 
 	var r;
 	var g;
@@ -611,7 +611,7 @@ convert.xyz.rgb = function (xyz) {
 	g = (x * -0.9689) + (y * 1.8758) + (z * 0.0415);
 	b = (x * 0.0557) + (y * -0.2040) + (z * 1.0570);
 
-	// assume sRGB
+	assume sRGB
 	r = r > 0.0031308
 		? ((1.055 * Math.pow(r, 1.0 / 2.4)) - 0.055)
 		: r * 12.92;
@@ -719,7 +719,7 @@ convert.rgb.ansi16 = function (args) {
 	var r = args[0];
 	var g = args[1];
 	var b = args[2];
-	var value = 1 in arguments ? arguments[1] : convert.rgb.hsv(args)[2]; // hsv -> ansi16 optimization
+	var value = 1 in arguments ? arguments[1] : convert.rgb.hsv(args)[2]; hsv -> ansi16 optimization
 
 	value = Math.round(value / 50);
 
@@ -740,8 +740,8 @@ convert.rgb.ansi16 = function (args) {
 };
 
 convert.hsv.ansi16 = function (args) {
-	// optimization here; we already know the value and don't need to get
-	// it converted for us.
+	optimization here; we already know the value and don't need to get
+	it converted for us.
 	return convert.rgb.ansi16(convert.hsv.rgb(args), args[2]);
 };
 
@@ -750,8 +750,8 @@ convert.rgb.ansi256 = function (args) {
 	var g = args[1];
 	var b = args[2];
 
-	// we use the extended greyscale palette here, with the exception of
-	// black and white. normal palette only has 4 greyscale shades.
+	we use the extended greyscale palette here, with the exception of
+	black and white. normal palette only has 4 greyscale shades.
 	if (r === g && g === b) {
 		if (r < 8) {
 			return 16;
@@ -775,7 +775,7 @@ convert.rgb.ansi256 = function (args) {
 convert.ansi16.rgb = function (args) {
 	var color = args % 10;
 
-	// handle greyscale
+	handle greyscale
 	if (color === 0 || color === 7) {
 		if (args > 50) {
 			color += 3.5;
@@ -795,7 +795,7 @@ convert.ansi16.rgb = function (args) {
 };
 
 convert.ansi256.rgb = function (args) {
-	// handle greyscale
+	handle greyscale
 	if (args >= 232) {
 		var c = (args - 232) * 10 + 8;
 		return [c, c, c];
@@ -1070,13 +1070,13 @@ var conversions_15 = conversions.gray;
 
 function buildGraph() {
 	var graph = {};
-	// https://jsperf.com/object-keys-vs-for-in-with-closure/3
+	https://jsperf.com/object-keys-vs-for-in-with-closure/3
 	var models = Object.keys(conversions);
 
 	for (var len = models.length, i = 0; i < len; i++) {
 		graph[models[i]] = {
-			// http://jsperf.com/1-vs-infinity
-			// micro-opt, but this is simple.
+			http://jsperf.com/1-vs-infinity
+			micro-opt, but this is simple.
 			distance: -1,
 			parent: null
 		};
@@ -1085,10 +1085,10 @@ function buildGraph() {
 	return graph;
 }
 
-// https://en.wikipedia.org/wiki/Breadth-first_search
+https://en.wikipedia.org/wiki/Breadth-first_search
 function deriveBFS(fromModel) {
 	var graph = buildGraph();
-	var queue = [fromModel]; // unshift -> queue -> pop
+	var queue = [fromModel]; unshift -> queue -> pop
 
 	graph[fromModel].distance = 0;
 
@@ -1142,7 +1142,7 @@ var route = function (fromModel) {
 		var node = graph[toModel];
 
 		if (node.parent === null) {
-			// no possible conversion, or this node is the source model.
+			no possible conversion, or this node is the source model.
 			continue;
 		}
 
@@ -1169,7 +1169,7 @@ function wrapRaw(fn) {
 		return fn(args);
 	};
 
-	// preserve .conversion property if there is one
+	preserve .conversion property if there is one
 	if ('conversion' in fn) {
 		wrappedFn.conversion = fn.conversion;
 	}
@@ -1189,9 +1189,9 @@ function wrapRounded(fn) {
 
 		var result = fn(args);
 
-		// we're assuming the result is an array here.
-		// see notice in conversions.js; don't use box types
-		// in conversion functions.
+		we're assuming the result is an array here.
+		see notice in conversions.js; don't use box types
+		in conversion functions.
 		if (typeof result === 'object') {
 			for (var len = result.length, i = 0; i < len; i++) {
 				result[i] = Math.round(result[i]);
@@ -1201,7 +1201,7 @@ function wrapRounded(fn) {
 		return result;
 	};
 
-	// preserve .conversion property if there is one
+	preserve .conversion property if there is one
 	if ('conversion' in fn) {
 		wrappedFn.conversion = fn.conversion;
 	}
@@ -1525,7 +1525,7 @@ function getAlpha(string) {
    }
 }
 
-// generators
+generators
 function hexString(rgba, a) {
    var a = (a !== undefined && rgba.length === 3) ? a : rgba[3];
    return "#" + hexDouble(rgba[0]) 
@@ -1586,8 +1586,8 @@ function hslaString(hsla, alpha) {
            + alpha + ")";
 }
 
-// hwb is a bit different than rgb(a) & hsl(a) since there is no alpha specific syntax
-// (hwb have alpha optional & 1 is default value)
+hwb is a bit different than rgb(a) & hsl(a) since there is no alpha specific syntax
+(hwb have alpha optional & 1 is default value)
 function hwbString(hwb, alpha) {
    if (alpha === undefined) {
       alpha = (hwb[3] !== undefined ? hwb[3] : 1);
@@ -1600,7 +1600,7 @@ function keyword(rgb) {
   return reverseNames[rgb.slice(0, 3)];
 }
 
-// helpers
+helpers
 function scale(num, min, max) {
    return Math.min(Math.max(min, num), max);
 }
@@ -1639,7 +1639,7 @@ var Color = function (obj) {
 		alpha: 1
 	};
 
-	// parse Color() argument
+	parse Color() argument
 	var vals;
 	if (typeof obj === 'string') {
 		vals = colorString.getRgba(obj);
@@ -1799,7 +1799,7 @@ Color.prototype = {
 	},
 
 	luminosity: function () {
-		// http://www.w3.org/TR/WCAG20/#relativeluminancedef
+		http://www.w3.org/TR/WCAG20/#relativeluminancedef
 		var rgb = this.values.rgb;
 		var lum = [];
 		for (var i = 0; i < rgb.length; i++) {
@@ -1810,7 +1810,7 @@ Color.prototype = {
 	},
 
 	contrast: function (color2) {
-		// http://www.w3.org/TR/WCAG20/#contrast-ratiodef
+		http://www.w3.org/TR/WCAG20/#contrast-ratiodef
 		var lum1 = this.luminosity();
 		var lum2 = color2.luminosity();
 		if (lum1 > lum2) {
@@ -1829,7 +1829,7 @@ Color.prototype = {
 	},
 
 	dark: function () {
-		// YIQ equation from http://24ways.org/2010/calculating-color-contrast
+		YIQ equation from http://24ways.org/2010/calculating-color-contrast
 		var rgb = this.values.rgb;
 		var yiq = (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000;
 		return yiq < 128;
@@ -1892,7 +1892,7 @@ Color.prototype = {
 
 	greyscale: function () {
 		var rgb = this.values.rgb;
-		// http://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale
+		http://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale
 		var val = rgb[0] * 0.3 + rgb[1] * 0.59 + rgb[2] * 0.11;
 		this.setValues('rgb', [val, val, val]);
 		return this;
@@ -1947,10 +1947,10 @@ Color.prototype = {
 	},
 
 	clone: function () {
-		// NOTE(SB): using node-clone creates a dependency to Buffer when using browserify,
-		// making the final build way to big to embed in Chart.js. So let's do it manually,
-		// assuming that values to clone are 1 dimension arrays containing only numbers,
-		// except 'alpha' which is a number.
+		NOTE(SB): using node-clone creates a dependency to Buffer when using browserify,
+		making the final build way to big to embed in Chart.js. So let's do it manually,
+		assuming that values to clone are 1 dimension arrays containing only numbers,
+		except 'alpha' which is a number.
 		var result = new Color();
 		var source = this.values;
 		var target = result.values;
@@ -2002,7 +2002,7 @@ Color.prototype.getValues = function (space) {
 		vals.a = values.alpha;
 	}
 
-	// {r: 255, g: 255, b: 255, a: 0.4}
+	{r: 255, g: 255, b: 255, a: 0.4}
 	return vals;
 };
 
@@ -2018,18 +2018,18 @@ Color.prototype.setValues = function (space, vals) {
 	if (space === 'alpha') {
 		alpha = vals;
 	} else if (vals.length) {
-		// [10, 10, 10]
+		[10, 10, 10]
 		values[space] = vals.slice(0, space.length);
 		alpha = vals[space.length];
 	} else if (vals[space.charAt(0)] !== undefined) {
-		// {r: 10, g: 10, b: 10}
+		{r: 10, g: 10, b: 10}
 		for (i = 0; i < space.length; i++) {
 			values[space][i] = vals[space.charAt(i)];
 		}
 
 		alpha = vals.a;
 	} else if (vals[spaces[space][0]] !== undefined) {
-		// {red: 10, green: 10, blue: 10}
+		{red: 10, green: 10, blue: 10}
 		var chans = spaces[space];
 
 		for (i = 0; i < space.length; i++) {
@@ -2047,13 +2047,13 @@ Color.prototype.setValues = function (space, vals) {
 
 	var capped;
 
-	// cap values of the space prior converting all values
+	cap values of the space prior converting all values
 	for (i = 0; i < space.length; i++) {
 		capped = Math.max(0, Math.min(maxes[space][i], values[space][i]));
 		values[space][i] = Math.round(capped);
 	}
 
-	// convert to all the other color spaces
+	convert to all the other color spaces
 	for (var sname in spaces) {
 		if (sname !== space) {
 			values[sname] = colorConvert[space][sname](values[space]);
@@ -2067,11 +2067,11 @@ Color.prototype.setSpace = function (space, args) {
 	var vals = args[0];
 
 	if (vals === undefined) {
-		// color.rgb()
+		color.rgb()
 		return this.getValues(space);
 	}
 
-	// color.rgb(10, 10, 10)
+	color.rgb(10, 10, 10)
 	if (typeof vals === 'number') {
 		vals = Array.prototype.slice.call(args);
 	}
@@ -2083,14 +2083,14 @@ Color.prototype.setSpace = function (space, args) {
 Color.prototype.setChannel = function (space, index, val) {
 	var svalues = this.values[space];
 	if (val === undefined) {
-		// color.red()
+		color.red()
 		return svalues[index];
 	} else if (val === svalues[index]) {
-		// color.red(color.red())
+		color.red(color.red())
 		return this;
 	}
 
-	// color.red(100)
+	color.red(100)
 	svalues[index] = val;
 	this.setValues(space, svalues);
 
@@ -2263,7 +2263,7 @@ var helpers = {
 					return false;
 				}
 			} else if (v0 !== v1) {
-				// NOTE: two different object instances will never be equal: {x:20} != {x:20}
+				NOTE: two different object instances will never be equal: {x:20} != {x:20}
 				return false;
 			}
 		}
@@ -2304,8 +2304,8 @@ var helpers = {
 	 */
 	_merger: function(key, target, source, options) {
 		if (!isValidKey(key)) {
-			// We want to ensure we do not copy prototypes over
-			// as this can pollute global namespaces
+			We want to ensure we do not copy prototypes over
+			as this can pollute global namespaces
 			return;
 		}
 
@@ -2325,8 +2325,8 @@ var helpers = {
 	 */
 	_mergerIf: function(key, target, source) {
 		if (!isValidKey(key)) {
-			// We want to ensure we do not copy prototypes over
-			// as this can pollute global namespaces
+			We want to ensure we do not copy prototypes over
+			as this can pollute global namespaces
 			return;
 		}
 
@@ -2437,7 +2437,7 @@ var helpers = {
 
 var helpers_core = helpers;
 
-// DEPRECATIONS
+DEPRECATIONS
 
 /**
  * Provided for backward compatibility, use Chart.helpers.callback instead.
@@ -2714,7 +2714,7 @@ var helpers_easing = {
 	effects: effects
 };
 
-// DEPRECATIONS
+DEPRECATIONS
 
 /**
  * Provided for backward compatibility, use Chart.helpers.easing.effects instead.
@@ -2809,7 +2809,7 @@ var exports$1 = {
 		ctx.beginPath();
 
 		switch (style) {
-		// Default includes circle
+		Default includes circle
 		default:
 			ctx.arc(x, y, radius, 0, DOUBLE_PI);
 			ctx.closePath();
@@ -2823,13 +2823,13 @@ var exports$1 = {
 			ctx.closePath();
 			break;
 		case 'rectRounded':
-			// NOTE: the rounded rect implementation changed to use `arc` instead of
-			// `quadraticCurveTo` since it generates better results when rect is
-			// almost a circle. 0.516 (instead of 0.5) produces results with visually
-			// closer proportion to the previous impl and it is inscribed in the
-			// circle with `radius`. For more details, see the following PRs:
-			// https://github.com/chartjs/Chart.js/issues/5597
-			// https://github.com/chartjs/Chart.js/issues/5858
+			NOTE: the rounded rect implementation changed to use `arc` instead of
+			`quadraticCurveTo` since it generates better results when rect is
+			almost a circle. 0.516 (instead of 0.5) produces results with visually
+			closer proportion to the previous impl and it is inscribed in the
+			circle with `radius`. For more details, see the following PRs:
+			https://github.com/chartjs/Chart.js/issues/5597
+			https://github.com/chartjs/Chart.js/issues/5858
 			cornerRadius = radius * 0.516;
 			size = radius - cornerRadius;
 			xOffset = Math.cos(rad + QUARTER_PI) * size;
@@ -2907,7 +2907,7 @@ var exports$1 = {
 	 * @private
 	 */
 	_isPointInArea: function(point, area) {
-		var epsilon = 1e-6; // 1e-6 is margin in pixels for accumulated error.
+		var epsilon = 1e-6; 1e-6 is margin in pixels for accumulated error.
 
 		return point.x > area.left - epsilon && point.x < area.right + epsilon &&
 			point.y > area.top - epsilon && point.y < area.bottom + epsilon;
@@ -2957,7 +2957,7 @@ var exports$1 = {
 
 var helpers_canvas = exports$1;
 
-// DEPRECATIONS
+DEPRECATIONS
 
 /**
  * Provided for backward compatibility, use Chart.helpers.canvas.clear instead.
@@ -2989,8 +2989,8 @@ var defaults = {
 	}
 };
 
-// TODO(v3): remove 'global' from namespace.  all default are global and
-// there's inconsistency around which options are under 'global'
+TODO(v3): remove 'global' from namespace.  all default are global and
+there's inconsistency around which options are under 'global'
 defaults._set('global', {
 	defaultColor: 'rgba(0,0,0,0.1)',
 	defaultFontColor: '#666',
@@ -3164,7 +3164,7 @@ var exports$2 = {
 				result.push(value / i);
 			}
 		}
-		if (sqrt === (sqrt | 0)) { // if value is a square number
+		if (sqrt === (sqrt | 0)) { if value is a square number
 			result.push(sqrt);
 		}
 
@@ -3175,9 +3175,9 @@ var exports$2 = {
 	},
 
 	log10: Math.log10 || function(x) {
-		var exponent = Math.log(x) * Math.LOG10E; // Math.LOG10E = 1 / Math.LN10.
-		// Check for whole powers of 10,
-		// which due to floating point rounding error should be corrected.
+		var exponent = Math.log(x) * Math.LOG10E; Math.LOG10E = 1 / Math.LN10.
+		Check for whole powers of 10,
+		which due to floating point rounding error should be corrected.
 		var powerOf10 = Math.round(exponent);
 		var isPowerOf10 = x === Math.pow(10, powerOf10);
 
@@ -3187,7 +3187,7 @@ var exports$2 = {
 
 var helpers_math = exports$2;
 
-// DEPRECATIONS
+DEPRECATIONS
 
 /**
  * Provided for backward compatibility, use Chart.helpers.math.log10 instead.
@@ -3226,7 +3226,7 @@ var getLtrAdapter = function() {
 		x: function(x) {
 			return x;
 		},
-		setWidth: function(w) { // eslint-disable-line no-unused-vars
+		setWidth: function(w) { eslint-disable-line no-unused-vars
 		},
 		textAlign: function(align) {
 			return align;
@@ -3234,7 +3234,7 @@ var getLtrAdapter = function() {
 		xPlus: function(x, value) {
 			return x + value;
 		},
-		leftForLtr: function(x, _itemWidth) { // eslint-disable-line no-unused-vars
+		leftForLtr: function(x, _itemWidth) { eslint-disable-line no-unused-vars
 			return x;
 		},
 	};
@@ -3293,8 +3293,8 @@ function interpolate(start, view, model, ease) {
 
 		target = model[key];
 
-		// if a value is added to the model after pivot() has been called, the view
-		// doesn't contain it, so let's initialize the view to the target value.
+		if a value is added to the model after pivot() has been called, the view
+		doesn't contain it, so let's initialize the view to the target value.
 		if (!view.hasOwnProperty(key)) {
 			view[key] = target;
 		}
@@ -3360,7 +3360,7 @@ helpers$1.extend(Element.prototype, {
 		var start = me._start;
 		var view = me._view;
 
-		// No animation -> No Transition
+		No animation -> No Transition
 		if (!model || ease === 1) {
 			me._view = helpers$1.extend({}, model);
 			me._start = null;
@@ -3397,19 +3397,19 @@ Element.extend = helpers$1.inherits;
 var core_element = Element;
 
 var exports$3 = core_element.extend({
-	chart: null, // the animation associated chart instance
-	currentStep: 0, // the current animation step
-	numSteps: 60, // default number of steps
-	easing: '', // the easing to use for this animation
-	render: null, // render function used by the animation service
+	chart: null, the animation associated chart instance
+	currentStep: 0, the current animation step
+	numSteps: 60, default number of steps
+	easing: '', the easing to use for this animation
+	render: null, render function used by the animation service
 
-	onAnimationProgress: null, // user specified callback to fire on each step of the animation
-	onAnimationComplete: null, // user specified callback to fire when the animation finishes
+	onAnimationProgress: null, user specified callback to fire on each step of the animation
+	onAnimationComplete: null, user specified callback to fire when the animation finishes
 });
 
 var core_animation = exports$3;
 
-// DEPRECATIONS
+DEPRECATIONS
 
 /**
  * Provided for backward compatibility, use Chart.Animation instead
@@ -3478,7 +3478,7 @@ var core_animations = {
 
 		animations.push(animation);
 
-		// If there are no animations queued, manually kickstart a digest, for lack of a better word
+		If there are no animations queued, manually kickstart a digest, for lack of a better word
 		if (animations.length === 1) {
 			this.requestAnimationFrame();
 		}
@@ -3498,9 +3498,9 @@ var core_animations = {
 	requestAnimationFrame: function() {
 		var me = this;
 		if (me.request === null) {
-			// Skip animation frame requests until the active one is executed.
-			// This can happen when processing mouse events, e.g. 'mousemove'
-			// and 'mouseout' events will trigger multiple renders.
+			Skip animation frame requests until the active one is executed.
+			This can happen when processing mouse events, e.g. 'mousemove'
+			and 'mouseout' events will trigger multiple renders.
 			me.request = helpers$1.requestAnimFrame.call(window, function() {
 				me.request = null;
 				me.startDigest();
@@ -3516,7 +3516,7 @@ var core_animations = {
 
 		me.advance();
 
-		// Do we have more stuff to animate?
+		Do we have more stuff to animate?
 		if (me.animations.length > 0) {
 			me.requestAnimationFrame();
 		}
@@ -3530,14 +3530,14 @@ var core_animations = {
 		var animation, chart, numSteps, nextStep;
 		var i = 0;
 
-		// 1 animation per chart, so we are looping charts here
+		1 animation per chart, so we are looping charts here
 		while (i < animations.length) {
 			animation = animations[i];
 			chart = animation.chart;
 			numSteps = animation.numSteps;
 
-			// Make sure that currentStep starts at 1
-			// https://github.com/chartjs/Chart.js/issues/6104
+			Make sure that currentStep starts at 1
+			https://github.com/chartjs/Chart.js/issues/6104
 			nextStep = Math.floor((Date.now() - animation.startTime) / animation.duration * numSteps) + 1;
 			animation.currentStep = Math.min(nextStep, numSteps);
 
@@ -3628,7 +3628,7 @@ function unlistenArrayEvents(array, listener) {
 	delete array._chartjs;
 }
 
-// Base class for all dataset controllers (line, bar, etc)
+Base class for all dataset controllers (line, bar, etc)
 var DatasetController = function(chart, datasetIndex) {
 	this.initialize(chart, datasetIndex);
 };
@@ -3802,12 +3802,12 @@ helpers$1.extend(DatasetController.prototype, {
 		var dataset = me.getDataset();
 		var data = dataset.data || (dataset.data = []);
 
-		// In order to correctly handle data addition/deletion animation (an thus simulate
-		// real-time charts), we need to monitor these data modifications and synchronize
-		// the internal meta data accordingly.
+		In order to correctly handle data addition/deletion animation (an thus simulate
+		real-time charts), we need to monitor these data modifications and synchronize
+		the internal meta data accordingly.
 		if (me._data !== data) {
 			if (me._data) {
-				// This case happens when the user replaced the data array instance.
+				This case happens when the user replaced the data array instance.
 				unlistenArrayEvents(me._data, me);
 			}
 
@@ -3817,8 +3817,8 @@ helpers$1.extend(DatasetController.prototype, {
 			me._data = data;
 		}
 
-		// Re-sync meta data in case the user replaced the data array or if we missed
-		// any updates and so make sure that we handle number of datapoints changing.
+		Re-sync meta data in case the user replaced the data array or if we missed
+		any updates and so make sure that we handle number of datapoints changing.
 		me.resyncElements();
 	},
 
@@ -3919,7 +3919,7 @@ helpers$1.extend(DatasetController.prototype, {
 		var values = {};
 		var i, ilen, key, readKey;
 
-		// Scriptable options
+		Scriptable options
 		var context = {
 			chart: chart,
 			dataset: me.getDataset(),
@@ -3956,7 +3956,7 @@ helpers$1.extend(DatasetController.prototype, {
 		var elementOptions = me._dataElementOptions;
 		var values = {};
 
-		// Scriptable options
+		Scriptable options
 		var context = {
 			chart: chart,
 			dataIndex: index,
@@ -3964,7 +3964,7 @@ helpers$1.extend(DatasetController.prototype, {
 			datasetIndex: me.index
 		};
 
-		// `resolve` sets cacheable to `false` if any option is indexed or scripted
+		`resolve` sets cacheable to `false` if any option is indexed or scripted
 		var info = {cacheable: !custom};
 
 		var keys, i, ilen, key;
@@ -4148,8 +4148,8 @@ function clipArc(ctx, arc) {
 	var x = arc.x;
 	var y = arc.y;
 
-	// Draw an inner border by cliping the arc and drawing a double-width border
-	// Enlarge the clipping arc by 0.33 pixels to eliminate glitches between borders
+	Draw an inner border by cliping the arc and drawing a double-width border
+	Enlarge the clipping arc by 0.33 pixels to eliminate glitches between borders
 	ctx.beginPath();
 	ctx.arc(x, y, arc.outerRadius, startAngle - angleMargin, endAngle + angleMargin);
 	if (arc.innerRadius > pixelMargin) {
@@ -4235,7 +4235,7 @@ var element_arc = core_element.extend({
 			var angle = pointRelativePosition.angle;
 			var distance = pointRelativePosition.distance;
 
-			// Sanitise angle range
+			Sanitise angle range
 			var startAngle = vm.startAngle;
 			var endAngle = vm.endAngle;
 			while (endAngle < startAngle) {
@@ -4248,7 +4248,7 @@ var element_arc = core_element.extend({
 				angle += TAU;
 			}
 
-			// Check if within the range of the open/close angle
+			Check if within the range of the open/close angle
 			var betweenAngles = (angle >= startAngle && angle <= endAngle);
 			var withinRadius = (distance >= vm.innerRadius && distance <= vm.outerRadius);
 
@@ -4346,7 +4346,7 @@ core_defaults._set('global', {
 			borderDashOffset: 0.0,
 			borderJoinStyle: 'miter',
 			capBezierPoints: true,
-			fill: true, // do we fill in the area between the line and its base axis
+			fill: true, do we fill in the area between the line and its base axis
 		}
 	}
 });
@@ -4359,7 +4359,7 @@ var element_line = core_element.extend({
 		var vm = me._view;
 		var ctx = me._chart.ctx;
 		var spanGaps = vm.spanGaps;
-		var points = me._children.slice(); // clone array
+		var points = me._children.slice(); clone array
 		var globalDefaults = core_defaults.global;
 		var globalOptionLineElements = globalDefaults.elements.line;
 		var lastDrawnIndex = -1;
@@ -4373,14 +4373,14 @@ var element_line = core_element.extend({
 		if (me._loop) {
 			for (index = 0; index < points.length; ++index) {
 				previous = helpers$1.previousItem(points, index);
-				// If the line has an open path, shift the point array
+				If the line has an open path, shift the point array
 				if (!points[index]._view.skip && previous._view.skip) {
 					points = points.slice(index).concat(points.slice(0, index));
 					closePath = spanGaps;
 					break;
 				}
 			}
-			// If the line has a close path, add the first point again
+			If the line has a close path, add the first point again
 			if (closePath) {
 				points.push(points[0]);
 			}
@@ -4388,10 +4388,10 @@ var element_line = core_element.extend({
 
 		ctx.save();
 
-		// Stroke Line Options
+		Stroke Line Options
 		ctx.lineCap = vm.borderCapStyle || globalOptionLineElements.borderCapStyle;
 
-		// IE 9 and 10 do not support line dash
+		IE 9 and 10 do not support line dash
 		if (ctx.setLineDash) {
 			ctx.setLineDash(vm.borderDash || globalOptionLineElements.borderDash);
 		}
@@ -4401,10 +4401,10 @@ var element_line = core_element.extend({
 		ctx.lineWidth = valueOrDefault$1(vm.borderWidth, globalOptionLineElements.borderWidth);
 		ctx.strokeStyle = vm.borderColor || globalDefaults.defaultColor;
 
-		// Stroke Line
+		Stroke Line
 		ctx.beginPath();
 
-		// First point moves to it's starting position no matter what
+		First point moves to it's starting position no matter what
 		currentVM = points[0]._view;
 		if (!currentVM.skip) {
 			ctx.moveTo(currentVM.x, currentVM.y);
@@ -4417,10 +4417,10 @@ var element_line = core_element.extend({
 
 			if (!currentVM.skip) {
 				if ((lastDrawnIndex !== (index - 1) && !spanGaps) || lastDrawnIndex === -1) {
-					// There was a gap and this is the first point after the gap
+					There was a gap and this is the first point after the gap
 					ctx.moveTo(currentVM.x, currentVM.y);
 				} else {
-					// Line to next point
+					Line to next point
 					helpers$1.canvas.lineTo(ctx, previous._view, currentVM);
 				}
 				lastDrawnIndex = index;
@@ -4448,7 +4448,7 @@ core_defaults._set('global', {
 			backgroundColor: defaultColor$1,
 			borderColor: defaultColor$1,
 			borderWidth: 1,
-			// Hover
+			Hover
 			hitRadius: 1,
 			hoverRadius: 4,
 			hoverBorderWidth: 1
@@ -4508,13 +4508,13 @@ var element_point = core_element.extend({
 		var x = vm.x;
 		var y = vm.y;
 		var globalDefaults = core_defaults.global;
-		var defaultColor = globalDefaults.defaultColor; // eslint-disable-line no-shadow
+		var defaultColor = globalDefaults.defaultColor; eslint-disable-line no-shadow
 
 		if (vm.skip) {
 			return;
 		}
 
-		// Clipping for Points.
+		Clipping for Points.
 		if (chartArea === undefined || helpers$1.canvas._isPointInArea(vm, chartArea)) {
 			ctx.strokeStyle = vm.borderColor || defaultColor;
 			ctx.lineWidth = valueOrDefault$2(vm.borderWidth, globalDefaults.elements.point.borderWidth);
@@ -4814,9 +4814,9 @@ function computeFitCategoryTraits(index, ruler, options) {
 		size = min * options.categoryPercentage;
 		ratio = options.barPercentage;
 	} else {
-		// When bar thickness is enforced, category and bar percentages are ignored.
-		// Note(SB): we could add support for relative bar thickness (e.g. barThickness: '50%')
-		// and deprecate barPercentage since this value is ignored when thickness is absolute.
+		When bar thickness is enforced, category and bar percentages are ignored.
+		Note(SB): we could add support for relative bar thickness (e.g. barThickness: '50%')
+		and deprecate barPercentage since this value is ignored when thickness is absolute.
 		size = thickness * count;
 		ratio = 1;
 	}
@@ -4843,13 +4843,13 @@ function computeFlexCategoryTraits(index, ruler, options) {
 	var start, size;
 
 	if (prev === null) {
-		// first data: its size is double based on the next point or,
-		// if it's also the last data, we use the scale size.
+		first data: its size is double based on the next point or,
+		if it's also the last data, we use the scale size.
 		prev = curr - (next === null ? ruler.end - ruler.start : next - curr);
 	}
 
 	if (next === null) {
-		// last data: its size is also double based on the previous point.
+		last data: its size is also double based on the previous point.
 		next = curr + curr - prev;
 	}
 
@@ -4978,11 +4978,11 @@ var controller_bar = core_datasetController.extend({
 
 		for (i = 0; i < ilen; ++i) {
 			meta = metasets[i];
-			// stacked   | meta.stack
-			//           | found | not found | undefined
-			// false     |   x   |     x     |     x
-			// true      |       |     x     |
-			// undefined |       |     x     |     x
+			stacked   | meta.stack
+			          | found | not found | undefined
+			false     |   x   |     x     |     x
+			true      |       |     x     |
+			undefined |       |     x     |     x
 			if (stacked === false || stacks.indexOf(meta.stack) === -1 ||
 				(stacked === undefined && meta.stack === undefined)) {
 				stacks.push(meta.stack);
@@ -5014,7 +5014,7 @@ var controller_bar = core_datasetController.extend({
 		var stacks = this._getStacks(datasetIndex);
 		var index = (name !== undefined)
 			? stacks.indexOf(name)
-			: -1; // indexOf returns -1 if element is not present
+			: -1; indexOf returns -1 if element is not present
 
 		return (index === -1)
 			? stacks.length - 1
@@ -5177,9 +5177,9 @@ core_defaults._set('bubble', {
 
 	scales: {
 		xAxes: [{
-			type: 'linear', // bubble should probably use a linear scale by default
+			type: 'linear', bubble should probably use a linear scale by default
 			position: 'bottom',
-			id: 'x-axis-0' // need an ID so datasets can reference the scale
+			id: 'x-axis-0' need an ID so datasets can reference the scale
 		}],
 		yAxes: [{
 			type: 'linear',
@@ -5191,7 +5191,7 @@ core_defaults._set('bubble', {
 	tooltips: {
 		callbacks: {
 			title: function() {
-				// Title doesn't make sense for scatter since we format the data as a point
+				Title doesn't make sense for scatter since we format the data as a point
 				return '';
 			},
 			label: function(item, data) {
@@ -5233,7 +5233,7 @@ var controller_bubble = core_datasetController.extend({
 		var meta = me.getMeta();
 		var points = meta.data;
 
-		// Update Points
+		Update Points
 		helpers$1.each(points, function(point, index) {
 			me.updateElement(point, index, reset);
 		});
@@ -5308,7 +5308,7 @@ var controller_bubble = core_datasetController.extend({
 		var data = dataset.data[index] || {};
 		var values = core_datasetController.prototype._resolveDataElementOptions.apply(me, arguments);
 
-		// Scriptable options
+		Scriptable options
 		var context = {
 			chart: chart,
 			dataIndex: index,
@@ -5316,12 +5316,12 @@ var controller_bubble = core_datasetController.extend({
 			datasetIndex: me.index
 		};
 
-		// In case values were cached (and thus frozen), we need to clone the values
+		In case values were cached (and thus frozen), we need to clone the values
 		if (me._cachedDataOpts === values) {
 			values = helpers$1.extend({}, values);
 		}
 
-		// Custom radius resolution
+		Custom radius resolution
 		values.radius = resolve$1([
 			custom.radius,
 			data.r,
@@ -5341,9 +5341,9 @@ var HALF_PI$1 = PI$1 / 2;
 
 core_defaults._set('doughnut', {
 	animation: {
-		// Boolean - Whether we animate the rotation of the Doughnut
+		Boolean - Whether we animate the rotation of the Doughnut
 		animateRotate: true,
-		// Boolean - Whether we animate scaling the Doughnut from the centre
+		Boolean - Whether we animate scaling the Doughnut from the centre
 		animateScale: false
 	},
 	hover: {
@@ -5386,7 +5386,7 @@ core_defaults._set('doughnut', {
 							lineWidth: style.borderWidth,
 							hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
 
-							// Extra data used for toggling the correct item
+							Extra data used for toggling the correct item
 							index: i
 						};
 					});
@@ -5402,7 +5402,7 @@ core_defaults._set('doughnut', {
 
 			for (i = 0, ilen = (chart.data.datasets || []).length; i < ilen; ++i) {
 				meta = chart.getDatasetMeta(i);
-				// toggle visibility of index if exists
+				toggle visibility of index if exists
 				if (meta.data[index]) {
 					meta.data[index].hidden = !meta.data[index].hidden;
 				}
@@ -5412,16 +5412,16 @@ core_defaults._set('doughnut', {
 		}
 	},
 
-	// The percentage of the chart that we cut out of the middle.
+	The percentage of the chart that we cut out of the middle.
 	cutoutPercentage: 50,
 
-	// The rotation of the chart, where the first data arc begins.
+	The rotation of the chart, where the first data arc begins.
 	rotation: -HALF_PI$1,
 
-	// The total circumference of the chart.
+	The total circumference of the chart.
 	circumference: DOUBLE_PI$1,
 
-	// Need to override these to give a nice default
+	Need to override these to give a nice default
 	tooltips: {
 		callbacks: {
 			title: function() {
@@ -5432,8 +5432,8 @@ core_defaults._set('doughnut', {
 				var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
 
 				if (helpers$1.isArray(dataLabel)) {
-					// show value on first line of multiline label
-					// need to clone because we are changing the value
+					show value on first line of multiline label
+					need to clone because we are changing the value
 					dataLabel = dataLabel.slice();
 					dataLabel[0] += value;
 				} else {
@@ -5465,7 +5465,7 @@ var controller_doughnut = core_datasetController.extend({
 		'hoverBorderWidth',
 	],
 
-	// Get index of the dataset in relation to the visible datasets. This allows determining the inner and outer radius correctly
+	Get index of the dataset in relation to the visible datasets. This allows determining the inner and outer radius correctly
 	getRingIndex: function(datasetIndex) {
 		var ringIndex = 0;
 
@@ -5494,7 +5494,7 @@ var controller_doughnut = core_datasetController.extend({
 		var chartWeight = me._getRingWeight(me.index);
 		var maxWidth, maxHeight, i, ilen;
 
-		// If the chart's circumference isn't a full circle, calculate size as a ratio of the width/height of the arc
+		If the chart's circumference isn't a full circle, calculate size as a ratio of the width/height of the arc
 		if (circumference < DOUBLE_PI$1) {
 			var startAngle = opts.rotation % DOUBLE_PI$1;
 			startAngle += startAngle >= PI$1 ? -DOUBLE_PI$1 : startAngle < -PI$1 ? DOUBLE_PI$1 : 0;
@@ -5548,8 +5548,8 @@ var controller_doughnut = core_datasetController.extend({
 		var animationOpts = opts.animation;
 		var centerX = (chartArea.left + chartArea.right) / 2;
 		var centerY = (chartArea.top + chartArea.bottom) / 2;
-		var startAngle = opts.rotation; // non reset case handled later
-		var endAngle = opts.rotation; // non reset case handled later
+		var startAngle = opts.rotation; non reset case handled later
+		var endAngle = opts.rotation; non reset case handled later
 		var dataset = me.getDataset();
 		var circumference = reset && animationOpts.animateRotate ? 0 : arc.hidden ? 0 : me.calculateCircumference(dataset.data[index]) * (opts.circumference / DOUBLE_PI$1);
 		var innerRadius = reset && animationOpts.animateScale ? 0 : me.innerRadius;
@@ -5557,11 +5557,11 @@ var controller_doughnut = core_datasetController.extend({
 		var options = arc._options || {};
 
 		helpers$1.extend(arc, {
-			// Utility
+			Utility
 			_datasetIndex: me.index,
 			_index: index,
 
-			// Desired view properties
+			Desired view properties
 			_model: {
 				backgroundColor: options.backgroundColor,
 				borderColor: options.borderColor,
@@ -5580,7 +5580,7 @@ var controller_doughnut = core_datasetController.extend({
 
 		var model = arc._model;
 
-		// Set correct angles if not resetting
+		Set correct angles if not resetting
 		if (!reset || !animationOpts.animateRotate) {
 			if (index === 0) {
 				model.startAngle = opts.rotation;
@@ -5622,7 +5622,7 @@ var controller_doughnut = core_datasetController.extend({
 		return 0;
 	},
 
-	// gets the max border or hover width to properly scale pie charts
+	gets the max border or hover width to properly scale pie charts
 	getMaxBorderWidth: function(arcs) {
 		var me = this;
 		var max = 0;
@@ -5630,7 +5630,7 @@ var controller_doughnut = core_datasetController.extend({
 		var i, ilen, meta, arc, controller, options, borderWidth, hoverWidth;
 
 		if (!arcs) {
-			// Find the outmost visible dataset
+			Find the outmost visible dataset
 			for (i = 0, ilen = chart.data.datasets.length; i < ilen; ++i) {
 				if (chart.isDatasetVisible(i)) {
 					meta = chart.getDatasetMeta(i);
@@ -5896,25 +5896,25 @@ var controller_line = core_datasetController.extend({
 		me._xScale = me.getScaleForId(meta.xAxisID);
 		me._yScale = me.getScaleForId(meta.yAxisID);
 
-		// Update Line
+		Update Line
 		if (showLine) {
-			// Compatibility: If the properties are defined with only the old name, use those values
+			Compatibility: If the properties are defined with only the old name, use those values
 			if (config.tension !== undefined && config.lineTension === undefined) {
 				config.lineTension = config.tension;
 			}
 
-			// Utility
+			Utility
 			line._scale = me._yScale;
 			line._datasetIndex = me.index;
-			// Data
+			Data
 			line._children = points;
-			// Model
+			Model
 			line._model = me._resolveDatasetElementOptions(line);
 
 			line.pivot();
 		}
 
-		// Update Points
+		Update Points
 		for (i = 0, ilen = points.length; i < ilen; ++i) {
 			me.updateElement(points[i], i, reset);
 		}
@@ -5923,7 +5923,7 @@ var controller_line = core_datasetController.extend({
 			me.updateBezierControlPoints();
 		}
 
-		// Now pivot the point for animation
+		Now pivot the point for animation
 		for (i = 0, ilen = points.length; i < ilen; ++i) {
 			points[i].pivot();
 		}
@@ -5946,19 +5946,19 @@ var controller_line = core_datasetController.extend({
 		x = xScale.getPixelForValue(typeof value === 'object' ? value : NaN, index, datasetIndex);
 		y = reset ? yScale.getBasePixel() : me.calculatePointY(value, index, datasetIndex);
 
-		// Utility
+		Utility
 		point._xScale = xScale;
 		point._yScale = yScale;
 		point._options = options;
 		point._datasetIndex = datasetIndex;
 		point._index = index;
 
-		// Desired view properties
+		Desired view properties
 		point._model = {
 			x: x,
 			y: y,
 			skip: custom.skip || isNaN(x) || isNaN(y),
-			// Appearance
+			Appearance
 			radius: options.radius,
 			pointStyle: options.pointStyle,
 			rotation: options.rotation,
@@ -5967,7 +5967,7 @@ var controller_line = core_datasetController.extend({
 			borderWidth: options.borderWidth,
 			tension: valueOrDefault$6(custom.tension, lineModel ? lineModel.tension : 0),
 			steppedLine: lineModel ? lineModel.steppedLine : false,
-			// Tooltip
+			Tooltip
 			hitRadius: options.hitRadius
 		};
 	},
@@ -5983,9 +5983,9 @@ var controller_line = core_datasetController.extend({
 		var lineOptions = options.elements.line;
 		var values = core_datasetController.prototype._resolveDatasetElementOptions.apply(me, arguments);
 
-		// The default behavior of lines is to break at null values, according
-		// to https://github.com/chartjs/Chart.js/issues/2435#issuecomment-216718158
-		// This option gives lines the ability to span gaps
+		The default behavior of lines is to break at null values, according
+		to https://github.com/chartjs/Chart.js/issues/2435#issuecomment-216718158
+		This option gives lines the ability to span gaps
 		values.spanGaps = valueOrDefault$6(config.spanGaps, options.spanGaps);
 		values.tension = valueOrDefault$6(config.lineTension, lineOptions.tension);
 		values.steppedLine = resolve$2([custom.steppedLine, config.steppedLine, lineOptions.stepped]);
@@ -6041,7 +6041,7 @@ var controller_line = core_datasetController.extend({
 		var points = meta.data || [];
 		var i, ilen, model, controlPoints;
 
-		// Only consider points that are drawn in case the spanGaps option is used
+		Only consider points that are drawn in case the spanGaps option is used
 		if (lineModel.spanGaps) {
 			points = points.filter(function(pt) {
 				return !pt._model.skip;
@@ -6113,7 +6113,7 @@ var controller_line = core_datasetController.extend({
 			helpers$1.canvas.unclipArea(chart.ctx);
 		}
 
-		// Draw the points
+		Draw the points
 		for (; i < ilen; ++i) {
 			points[i].draw(area);
 		}
@@ -6160,7 +6160,7 @@ core_defaults._set('polarArea', {
 		}
 	},
 
-	// Boolean - Whether to animate the rotation of the chart
+	Boolean - Whether to animate the rotation of the chart
 	animation: {
 		animateRotate: true,
 		animateScale: true
@@ -6204,7 +6204,7 @@ core_defaults._set('polarArea', {
 							lineWidth: style.borderWidth,
 							hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
 
-							// Extra data used for toggling the correct item
+							Extra data used for toggling the correct item
 							index: i
 						};
 					});
@@ -6227,7 +6227,7 @@ core_defaults._set('polarArea', {
 		}
 	},
 
-	// Need to override these to give a nice default
+	Need to override these to give a nice default
 	tooltips: {
 		callbacks: {
 			title: function() {
@@ -6330,7 +6330,7 @@ var controller_polarArea = core_datasetController.extend({
 		var centerX = scale.xCenter;
 		var centerY = scale.yCenter;
 
-		// var negHalfPI = -0.5 * Math.PI;
+		var negHalfPI = -0.5 * Math.PI;
 		var datasetStartAngle = opts.startAngle;
 		var distance = arc.hidden ? 0 : scale.getDistanceFromCenterForValue(dataset.data[index]);
 		var startAngle = me._starts[index];
@@ -6340,12 +6340,12 @@ var controller_polarArea = core_datasetController.extend({
 		var options = arc._options || {};
 
 		helpers$1.extend(arc, {
-			// Utility
+			Utility
 			_datasetIndex: me.index,
 			_index: index,
 			_scale: scale,
 
-			// Desired view properties
+			Desired view properties
 			_model: {
 				backgroundColor: options.backgroundColor,
 				borderColor: options.borderColor,
@@ -6411,7 +6411,7 @@ var controller_polarArea = core_datasetController.extend({
 			return 0;
 		}
 
-		// Scriptable options
+		Scriptable options
 		var context = {
 			chart: me.chart,
 			dataIndex: index,
@@ -6431,7 +6431,7 @@ core_defaults._set('pie', {
 	cutoutPercentage: 0
 });
 
-// Pie charts are Doughnut chart with different defaults
+Pie charts are Doughnut chart with different defaults
 var controller_pie = controller_doughnut;
 
 var valueOrDefault$7 = helpers$1.valueOrDefault;
@@ -6444,7 +6444,7 @@ core_defaults._set('radar', {
 	elements: {
 		line: {
 			fill: 'start',
-			tension: 0 // no bezier in radar
+			tension: 0 no bezier in radar
 		}
 	}
 });
@@ -6510,31 +6510,31 @@ var controller_radar = core_datasetController.extend({
 		var config = me._config;
 		var i, ilen;
 
-		// Compatibility: If the properties are defined with only the old name, use those values
+		Compatibility: If the properties are defined with only the old name, use those values
 		if (config.tension !== undefined && config.lineTension === undefined) {
 			config.lineTension = config.tension;
 		}
 
-		// Utility
+		Utility
 		line._scale = scale;
 		line._datasetIndex = me.index;
-		// Data
+		Data
 		line._children = points;
 		line._loop = true;
-		// Model
+		Model
 		line._model = me._resolveDatasetElementOptions(line);
 
 		line.pivot();
 
-		// Update Points
+		Update Points
 		for (i = 0, ilen = points.length; i < ilen; ++i) {
 			me.updateElement(points[i], i, reset);
 		}
 
-		// Update bezier control points
+		Update bezier control points
 		me.updateBezierControlPoints();
 
-		// Now pivot the point for animation
+		Now pivot the point for animation
 		for (i = 0, ilen = points.length; i < ilen; ++i) {
 			points[i].pivot();
 		}
@@ -6551,18 +6551,18 @@ var controller_radar = core_datasetController.extend({
 		var x = reset ? scale.xCenter : pointPosition.x;
 		var y = reset ? scale.yCenter : pointPosition.y;
 
-		// Utility
+		Utility
 		point._scale = scale;
 		point._options = options;
 		point._datasetIndex = me.index;
 		point._index = index;
 
-		// Desired view properties
+		Desired view properties
 		point._model = {
-			x: x, // value not used in dataset scale, but we want a consistent API between scales
+			x: x, value not used in dataset scale, but we want a consistent API between scales
 			y: y,
 			skip: custom.skip || isNaN(x) || isNaN(y),
-			// Appearance
+			Appearance
 			radius: options.radius,
 			pointStyle: options.pointStyle,
 			rotation: options.rotation,
@@ -6571,7 +6571,7 @@ var controller_radar = core_datasetController.extend({
 			borderWidth: options.borderWidth,
 			tension: valueOrDefault$7(custom.tension, lineModel ? lineModel.tension : 0),
 
-			// Tooltip
+			Tooltip
 			hitRadius: options.hitRadius
 		};
 	},
@@ -6598,7 +6598,7 @@ var controller_radar = core_datasetController.extend({
 		var points = meta.data || [];
 		var i, ilen, model, controlPoints;
 
-		// Only consider points that are drawn in case the spanGaps option is used
+		Only consider points that are drawn in case the spanGaps option is used
 		if (meta.dataset._model.spanGaps) {
 			points = points.filter(function(pt) {
 				return !pt._model.skip;
@@ -6618,7 +6618,7 @@ var controller_radar = core_datasetController.extend({
 				model.tension
 			);
 
-			// Prevent the bezier going outside of the bounds of the graph
+			Prevent the bezier going outside of the bounds of the graph
 			model.controlPointPreviousX = capControlPoint(controlPoints.previous.x, area.left, area.right);
 			model.controlPointPreviousY = capControlPoint(controlPoints.previous.y, area.top, area.bottom);
 			model.controlPointNextX = capControlPoint(controlPoints.next.x, area.left, area.right);
@@ -6652,8 +6652,8 @@ core_defaults._set('scatter', {
 
 	scales: {
 		xAxes: [{
-			id: 'x-axis-1',    // need an ID so datasets can reference the scale
-			type: 'linear',    // scatter should not use a category axis
+			id: 'x-axis-1',    need an ID so datasets can reference the scale
+			type: 'linear',    scatter should not use a category axis
 			position: 'bottom'
 		}],
 		yAxes: [{
@@ -6666,7 +6666,7 @@ core_defaults._set('scatter', {
 	tooltips: {
 		callbacks: {
 			title: function() {
-				return '';     // doesn't make sense for scatter since data are formatted as a point
+				return '';     doesn't make sense for scatter since data are formatted as a point
 			},
 			label: function(item) {
 				return '(' + item.xLabel + ', ' + item.yLabel + ')';
@@ -6683,12 +6683,12 @@ core_defaults._set('global', {
 	}
 });
 
-// Scatter charts use line controllers
+Scatter charts use line controllers
 var controller_scatter = controller_line;
 
-// NOTE export a map in which the key represents the controller type, not
-// the class, and so must be CamelCase in order to be correctly retrieved
-// by the controller in core.controller.js (`controllers[meta.type]`).
+NOTE export a map in which the key represents the controller type, not
+the class, and so must be CamelCase in order to be correctly retrieved
+by the controller in core.controller.js (`controllers[meta.type]`).
 
 var controllers = {
 	bar: controller_bar,
@@ -6780,7 +6780,7 @@ function getNearestItems(chart, position, intersect, distanceMetric) {
 			nearestItems = [element];
 			minDistance = distance;
 		} else if (distance === minDistance) {
-			// Can have multiple items at the same distance in which case we sort by size
+			Can have multiple items at the same distance in which case we sort by size
 			nearestItems.push(element);
 		}
 	});
@@ -6806,7 +6806,7 @@ function getDistanceMetricForAxis(axis) {
 
 function indexMode(chart, e, options) {
 	var position = getRelativePosition(e, chart);
-	// Default axis for index mode is 'x' to match old behaviour
+	Default axis for index mode is 'x' to match old behaviour
 	options.axis = options.axis || 'x';
 	var distanceMetric = getDistanceMetricForAxis(options.axis);
 	var items = options.intersect ? getIntersectItems(chart, position) : getNearestItems(chart, position, false, distanceMetric);
@@ -6819,7 +6819,7 @@ function indexMode(chart, e, options) {
 	chart._getSortedVisibleDatasetMetas().forEach(function(meta) {
 		var element = meta.data[items[0]._index];
 
-		// don't count items that are skipped (null data)
+		don't count items that are skipped (null data)
 		if (element && !element._view.skip) {
 			elements.push(element);
 		}
@@ -6842,7 +6842,7 @@ function indexMode(chart, e, options) {
  * @namespace Chart.Interaction
  */
 var core_interaction = {
-	// Helper function for different modes
+	Helper function for different modes
 	modes: {
 		single: function(chart, e) {
 			var position = getRelativePosition(e, chart);
@@ -6961,8 +6961,8 @@ var core_interaction = {
 				}
 			});
 
-			// If we want to trigger on an intersect and we don't have any items
-			// that intersect the position, return nothing
+			If we want to trigger on an intersect and we don't have any items
+			that intersect the position, return nothing
 			if (options.intersect && !intersectsItem) {
 				items = [];
 			}
@@ -6992,8 +6992,8 @@ var core_interaction = {
 				}
 			});
 
-			// If we want to trigger on an intersect and we don't have any items
-			// that intersect the position, return nothing
+			If we want to trigger on an intersect and we don't have any items
+			that intersect the position, return nothing
 			if (options.intersect && !intersectsItem) {
 				items = [];
 			}
@@ -7041,11 +7041,11 @@ function setLayoutDims(layouts, params) {
 	var i, ilen, layout;
 	for (i = 0, ilen = layouts.length; i < ilen; ++i) {
 		layout = layouts[i];
-		// store width used instead of chartArea.w in fitBoxes
+		store width used instead of chartArea.w in fitBoxes
 		layout.width = layout.horizontal
 			? layout.box.fullWidth && params.availableWidth
 			: params.vBoxMaxWidth;
-		// store height used instead of chartArea.h in fitBoxes
+		store height used instead of chartArea.h in fitBoxes
 		layout.height = layout.horizontal && params.hBoxMaxHeight;
 	}
 }
@@ -7076,7 +7076,7 @@ function updateDims(chartArea, params, layout) {
 	var newWidth, newHeight;
 
 	if (layout.size) {
-		// this layout was already counted for, lets first reduce old size
+		this layout was already counted for, lets first reduce old size
 		chartArea[layout.pos] -= layout.size;
 	}
 	layout.size = layout.horizontal ? box.height : box.width;
@@ -7097,7 +7097,7 @@ function updateDims(chartArea, params, layout) {
 		chartArea.w = newWidth;
 		chartArea.h = newHeight;
 
-		// return true if chart area changed in layout's direction
+		return true if chart area changed in layout's direction
 		var sizes = layout.horizontal ? [newWidth, chartArea.w] : [newHeight, chartArea.h];
 		return sizes[0] !== sizes[1] && (!isNaN(sizes[0]) || !isNaN(sizes[1]));
 	}
@@ -7149,12 +7149,12 @@ function fitBoxes(boxes, chartArea, params) {
 		if (updateDims(chartArea, params, layout)) {
 			changed = true;
 			if (refitBoxes.length) {
-				// Dimensions changed and there were non full width boxes before this
-				// -> we have to refit those
+				Dimensions changed and there were non full width boxes before this
+				-> we have to refit those
 				refit = true;
 			}
 		}
-		if (!box.fullWidth) { // fullWidth boxes don't need to be re-fitted in any case
+		if (!box.fullWidth) { fullWidth boxes don't need to be re-fitted in any case
 			refitBoxes.push(layout);
 		}
 	}
@@ -7220,9 +7220,9 @@ core_defaults._set('global', {
  * @prop {number} bottom - Bottom edge of the item. Set by layout system and cannot be used in update
  */
 
-// The layout service is very self explanatory.  It's responsible for the layout within a chart.
-// Scales, Legends and Plugins all rely on the layout service and can easily register to be placed anywhere they need
-// It is this service's responsibility of carrying out that layout.
+The layout service is very self explanatory.  It's responsible for the layout within a chart.
+Scales, Legends and Plugins all rely on the layout service and can easily register to be placed anywhere they need
+It is this service's responsibility of carrying out that layout.
 var core_layouts = {
 	defaults: {},
 
@@ -7237,7 +7237,7 @@ var core_layouts = {
 			chart.boxes = [];
 		}
 
-		// initialize item with default values
+		initialize item with default values
 		item.fullWidth = item.fullWidth || false;
 		item.position = item.position || 'top';
 		item.weight = item.weight || 0;
@@ -7306,31 +7306,31 @@ var core_layouts = {
 		var verticalBoxes = boxes.vertical;
 		var horizontalBoxes = boxes.horizontal;
 
-		// Essentially we now have any number of boxes on each of the 4 sides.
-		// Our canvas looks like the following.
-		// The areas L1 and L2 are the left axes. R1 is the right axis, T1 is the top axis and
-		// B1 is the bottom axis
-		// There are also 4 quadrant-like locations (left to right instead of clockwise) reserved for chart overlays
-		// These locations are single-box locations only, when trying to register a chartArea location that is already taken,
-		// an error will be thrown.
+		Essentially we now have any number of boxes on each of the 4 sides.
+		Our canvas looks like the following.
+		The areas L1 and L2 are the left axes. R1 is the right axis, T1 is the top axis and
+		B1 is the bottom axis
+		There are also 4 quadrant-like locations (left to right instead of clockwise) reserved for chart overlays
+		These locations are single-box locations only, when trying to register a chartArea location that is already taken,
+		an error will be thrown.
 		//
-		// |----------------------------------------------------|
-		// |                  T1 (Full Width)                   |
-		// |----------------------------------------------------|
-		// |    |    |                 T2                  |    |
-		// |    |----|-------------------------------------|----|
-		// |    |    | C1 |                           | C2 |    |
-		// |    |    |----|                           |----|    |
-		// |    |    |                                     |    |
-		// | L1 | L2 |           ChartArea (C0)            | R1 |
-		// |    |    |                                     |    |
-		// |    |    |----|                           |----|    |
-		// |    |    | C3 |                           | C4 |    |
-		// |    |----|-------------------------------------|----|
-		// |    |    |                 B1                  |    |
-		// |----------------------------------------------------|
-		// |                  B2 (Full Width)                   |
-		// |----------------------------------------------------|
+		|----------------------------------------------------|
+		|                  T1 (Full Width)                   |
+		|----------------------------------------------------|
+		|    |    |                 T2                  |    |
+		|    |----|-------------------------------------|----|
+		|    |    | C1 |                           | C2 |    |
+		|    |    |----|                           |----|    |
+		|    |    |                                     |    |
+		| L1 | L2 |           ChartArea (C0)            | R1 |
+		|    |    |                                     |    |
+		|    |    |----|                           |----|    |
+		|    |    | C3 |                           | C4 |    |
+		|    |----|-------------------------------------|----|
+		|    |    |                 B1                  |    |
+		|----------------------------------------------------|
+		|                  B2 (Full Width)                   |
+		|----------------------------------------------------|
 		//
 
 		var params = Object.freeze({
@@ -7351,21 +7351,21 @@ var core_layouts = {
 
 		setLayoutDims(verticalBoxes.concat(horizontalBoxes), params);
 
-		// First fit vertical boxes
+		First fit vertical boxes
 		fitBoxes(verticalBoxes, chartArea, params);
 
-		// Then fit horizontal boxes
+		Then fit horizontal boxes
 		if (fitBoxes(horizontalBoxes, chartArea, params)) {
-			// if the area changed, re-fit vertical boxes
+			if the area changed, re-fit vertical boxes
 			fitBoxes(verticalBoxes, chartArea, params);
 		}
 
 		handleMaxPadding(chartArea);
 
-		// Finally place the boxes to correct coordinates
+		Finally place the boxes to correct coordinates
 		placeBoxes(boxes.leftAndTop, chartArea, params);
 
-		// Move to opposite side of chart
+		Move to opposite side of chart
 		chartArea.x += chartArea.w;
 		chartArea.y += chartArea.h;
 
@@ -7378,7 +7378,7 @@ var core_layouts = {
 			bottom: chartArea.top + chartArea.h
 		};
 
-		// Finally update boxes in chartArea (radial scale for example)
+		Finally update boxes in chartArea (radial scale for example)
 		helpers$1.each(boxes.chartArea, function(layout) {
 			var box = layout.box;
 			extend(box, chart.chartArea);
@@ -7395,7 +7395,7 @@ var core_layouts = {
 var platform_basic = {
 	acquireContext: function(item) {
 		if (item && item.canvas) {
-			// Support for any object associated to a canvas (including a context2d)
+			Support for any object associated to a canvas (including a context2d)
 			item = item.canvas;
 		}
 
@@ -7459,12 +7459,12 @@ function readUsedSize(element, property) {
 function initCanvas(canvas, config) {
 	var style = canvas.style;
 
-	// NOTE(SB) canvas.getAttribute('width') !== canvas.width: in the first case it
-	// returns null or '' if no explicit value has been set to the canvas attribute.
+	NOTE(SB) canvas.getAttribute('width') !== canvas.width: in the first case it
+	returns null or '' if no explicit value has been set to the canvas attribute.
 	var renderHeight = canvas.getAttribute('height');
 	var renderWidth = canvas.getAttribute('width');
 
-	// Chart.js modifies some canvas values that we want to restore on destroy
+	Chart.js modifies some canvas values that we want to restore on destroy
 	canvas[EXPANDO_KEY] = {
 		initial: {
 			height: renderHeight,
@@ -7477,9 +7477,9 @@ function initCanvas(canvas, config) {
 		}
 	};
 
-	// Force canvas to display as block to avoid extra space caused by inline
-	// elements, which would interfere with the responsive resize process.
-	// https://github.com/chartjs/Chart.js/issues/2538
+	Force canvas to display as block to avoid extra space caused by inline
+	elements, which would interfere with the responsive resize process.
+	https://github.com/chartjs/Chart.js/issues/2538
 	style.display = style.display || 'block';
 
 	if (renderWidth === null || renderWidth === '') {
@@ -7491,9 +7491,9 @@ function initCanvas(canvas, config) {
 
 	if (renderHeight === null || renderHeight === '') {
 		if (canvas.style.height === '') {
-			// If no explicit render height and style height, let's apply the aspect ratio,
-			// which one can be specified by the user but also by charts as default option
-			// (i.e. options.aspectRatio). If not specified, use canvas aspect ratio of 2.
+			If no explicit render height and style height, let's apply the aspect ratio,
+			which one can be specified by the user but also by charts as default option
+			(i.e. options.aspectRatio). If not specified, use canvas aspect ratio of 2.
 			canvas.height = canvas.width / (config.options.aspectRatio || 2);
 		} else {
 			var displayHeight = readUsedSize(canvas, 'height');
@@ -7515,20 +7515,20 @@ var supportsEventListenerOptions = (function() {
 	var supports = false;
 	try {
 		var options = Object.defineProperty({}, 'passive', {
-			// eslint-disable-next-line getter-return
+			eslint-disable-next-line getter-return
 			get: function() {
 				supports = true;
 			}
 		});
 		window.addEventListener('e', null, options);
 	} catch (e) {
-		// continue regardless of error
+		continue regardless of error
 	}
 	return supports;
 }());
 
-// Default passive to true as expected by Chrome for 'touchstart' and 'touchend' events.
-// https://github.com/chartjs/Chart.js/issues/4287
+Default passive to true as expected by Chrome for 'touchstart' and 'touchend' events.
+https://github.com/chartjs/Chart.js/issues/4287
 var eventListenerOptions = supportsEventListenerOptions ? {passive: true} : false;
 
 function addListener(node, type, listener) {
@@ -7579,12 +7579,12 @@ function createDiv(cls) {
 	return el;
 }
 
-// Implementation based on https://github.com/marcj/css-element-queries
+Implementation based on https://github.com/marcj/css-element-queries
 function createResizer(handler) {
 	var maxSize = 1000000;
 
-	// NOTE(SB) Don't use innerHTML because it could be considered unsafe.
-	// https://github.com/chartjs/Chart.js/issues/5902
+	NOTE(SB) Don't use innerHTML because it could be considered unsafe.
+	https://github.com/chartjs/Chart.js/issues/5902
 	var resizer = createDiv(CSS_SIZE_MONITOR);
 	var expand = createDiv(CSS_SIZE_MONITOR + '-expand');
 	var shrink = createDiv(CSS_SIZE_MONITOR + '-shrink');
@@ -7612,7 +7612,7 @@ function createResizer(handler) {
 	return resizer;
 }
 
-// https://davidwalsh.name/detect-node-insertion
+https://davidwalsh.name/detect-node-insertion
 function watchForRender(node, handler) {
 	var expando = node[EXPANDO_KEY] || (node[EXPANDO_KEY] = {});
 	var proxy = expando.renderProxy = function(e) {
@@ -7625,11 +7625,11 @@ function watchForRender(node, handler) {
 		addListener(node, type, proxy);
 	});
 
-	// #4737: Chrome might skip the CSS animation when the CSS_RENDER_MONITOR class
-	// is removed then added back immediately (same animation frame?). Accessing the
-	// `offsetParent` property will force a reflow and re-evaluate the CSS animation.
-	// https://gist.github.com/paulirish/5d52fb081b3570c81e3a#box-metrics
-	// https://github.com/chartjs/Chart.js/issues/4737
+	#4737: Chrome might skip the CSS animation when the CSS_RENDER_MONITOR class
+	is removed then added back immediately (same animation frame?). Accessing the
+	`offsetParent` property will force a reflow and re-evaluate the CSS animation.
+	https://gist.github.com/paulirish/5d52fb081b3570c81e3a#box-metrics
+	https://github.com/chartjs/Chart.js/issues/4737
 	expando.reflow = !!node.offsetParent;
 
 	node.classList.add(CSS_RENDER_MONITOR);
@@ -7653,27 +7653,27 @@ function unwatchForRender(node) {
 function addResizeListener(node, listener, chart) {
 	var expando = node[EXPANDO_KEY] || (node[EXPANDO_KEY] = {});
 
-	// Let's keep track of this added resizer and thus avoid DOM query when removing it.
+	Let's keep track of this added resizer and thus avoid DOM query when removing it.
 	var resizer = expando.resizer = createResizer(throttled(function() {
 		if (expando.resizer) {
 			var container = chart.options.maintainAspectRatio && node.parentNode;
 			var w = container ? container.clientWidth : 0;
 			listener(createEvent('resize', chart));
 			if (container && container.clientWidth < w && chart.canvas) {
-				// If the container size shrank during chart resize, let's assume
-				// scrollbar appeared. So we resize again with the scrollbar visible -
-				// effectively making chart smaller and the scrollbar hidden again.
-				// Because we are inside `throttled`, and currently `ticking`, scroll
-				// events are ignored during this whole 2 resize process.
-				// If we assumed wrong and something else happened, we are resizing
-				// twice in a frame (potential performance issue)
+				If the container size shrank during chart resize, let's assume
+				scrollbar appeared. So we resize again with the scrollbar visible -
+				effectively making chart smaller and the scrollbar hidden again.
+				Because we are inside `throttled`, and currently `ticking`, scroll
+				events are ignored during this whole 2 resize process.
+				If we assumed wrong and something else happened, we are resizing
+				twice in a frame (potential performance issue)
 				listener(createEvent('resize', chart));
 			}
 		}
 	}));
 
-	// The resizer needs to be attached to the node parent, so we first need to be
-	// sure that `node` is attached to the DOM before injecting the resizer element.
+	The resizer needs to be attached to the node parent, so we first need to be
+	sure that `node` is attached to the DOM before injecting the resizer element.
 	watchForRender(node, function() {
 		if (expando.resizer) {
 			var container = node.parentNode;
@@ -7681,7 +7681,7 @@ function addResizeListener(node, listener, chart) {
 				container.insertBefore(resizer, container.firstChild);
 			}
 
-			// The container size might have changed, let's reset the resizer state.
+			The container size might have changed, let's reset the resizer state.
 			resizer._reset();
 		}
 	});
@@ -7705,7 +7705,7 @@ function removeResizeListener(node) {
  * @param {string} css - the CSS to be injected.
  */
 function injectCSS(rootNode, css) {
-	// https://stackoverflow.com/q/3922139
+	https://stackoverflow.com/q/3922139
 	var expando = rootNode[EXPANDO_KEY] || (rootNode[EXPANDO_KEY] = {});
 	if (!expando.containsStyles) {
 		expando.containsStyles = true;
@@ -7741,9 +7741,9 @@ var platform_dom$2 = {
 	 */
 	_ensureLoaded: function(canvas) {
 		if (!this.disableCSSInjection) {
-			// If the canvas is in a shadow DOM, then the styles must also be inserted
-			// into the same shadow DOM.
-			// https://github.com/chartjs/Chart.js/issues/5763
+			If the canvas is in a shadow DOM, then the styles must also be inserted
+			into the same shadow DOM.
+			https://github.com/chartjs/Chart.js/issues/5763
 			var root = canvas.getRootNode ? canvas.getRootNode() : document;
 			var targetNode = root.host ? root : document.head;
 			injectCSS(targetNode, stylesheet);
@@ -7754,30 +7754,30 @@ var platform_dom$2 = {
 		if (typeof item === 'string') {
 			item = document.getElementById(item);
 		} else if (item.length) {
-			// Support for array based queries (such as jQuery)
+			Support for array based queries (such as jQuery)
 			item = item[0];
 		}
 
 		if (item && item.canvas) {
-			// Support for any object associated to a canvas (including a context2d)
+			Support for any object associated to a canvas (including a context2d)
 			item = item.canvas;
 		}
 
-		// To prevent canvas fingerprinting, some add-ons undefine the getContext
-		// method, for example: https://github.com/kkapsner/CanvasBlocker
-		// https://github.com/chartjs/Chart.js/issues/2807
+		To prevent canvas fingerprinting, some add-ons undefine the getContext
+		method, for example: https://github.com/kkapsner/CanvasBlocker
+		https://github.com/chartjs/Chart.js/issues/2807
 		var context = item && item.getContext && item.getContext('2d');
 
-		// `instanceof HTMLCanvasElement/CanvasRenderingContext2D` fails when the item is
-		// inside an iframe or when running in a protected environment. We could guess the
-		// types from their toString() value but let's keep things flexible and assume it's
-		// a sufficient condition if the item has a context2D which has item as `canvas`.
-		// https://github.com/chartjs/Chart.js/issues/3887
-		// https://github.com/chartjs/Chart.js/issues/4102
-		// https://github.com/chartjs/Chart.js/issues/4152
+		`instanceof HTMLCanvasElement/CanvasRenderingContext2D` fails when the item is
+		inside an iframe or when running in a protected environment. We could guess the
+		types from their toString() value but let's keep things flexible and assume it's
+		a sufficient condition if the item has a context2D which has item as `canvas`.
+		https://github.com/chartjs/Chart.js/issues/3887
+		https://github.com/chartjs/Chart.js/issues/4102
+		https://github.com/chartjs/Chart.js/issues/4152
 		if (context && context.canvas === item) {
-			// Load platform resources on first chart creation, to make it possible to
-			// import the library before setting platform options.
+			Load platform resources on first chart creation, to make it possible to
+			import the library before setting platform options.
 			this._ensureLoaded(item);
 			initCanvas(item, config);
 			return context;
@@ -7806,11 +7806,11 @@ var platform_dom$2 = {
 			canvas.style[key] = value;
 		});
 
-		// The canvas render size might have been changed (and thus the state stack discarded),
-		// we can't use save() and restore() to restore the initial state. So make sure that at
-		// least the canvas context is reset to the default state by setting the canvas width.
-		// https://www.w3.org/TR/2011/WD-html5-20110525/the-canvas-element.html
-		// eslint-disable-next-line no-self-assign
+		The canvas render size might have been changed (and thus the state stack discarded),
+		we can't use save() and restore() to restore the initial state. So make sure that at
+		least the canvas context is reset to the default state by setting the canvas width.
+		https://www.w3.org/TR/2011/WD-html5-20110525/the-canvas-element.html
+		eslint-disable-next-line no-self-assign
 		canvas.width = canvas.width;
 
 		delete canvas[EXPANDO_KEY];
@@ -7819,7 +7819,7 @@ var platform_dom$2 = {
 	addEventListener: function(chart, type, listener) {
 		var canvas = chart.canvas;
 		if (type === 'resize') {
-			// Note: the resize event is not supported on all browsers.
+			Note: the resize event is not supported on all browsers.
 			addResizeListener(canvas, listener, chart);
 			return;
 		}
@@ -7836,7 +7836,7 @@ var platform_dom$2 = {
 	removeEventListener: function(chart, type, listener) {
 		var canvas = chart.canvas;
 		if (type === 'resize') {
-			// Note: the resize event is not supported on all browsers.
+			Note: the resize event is not supported on all browsers.
 			removeResizeListener(canvas);
 			return;
 		}
@@ -7852,7 +7852,7 @@ var platform_dom$2 = {
 	}
 };
 
-// DEPRECATIONS
+DEPRECATIONS
 
 /**
  * Provided for backward compatibility, use EventTarget.addEventListener instead.
@@ -7876,7 +7876,7 @@ helpers$1.addEvent = addListener;
  */
 helpers$1.removeEvent = removeListener;
 
-// @TODO Make possible to select another platform at build time.
+@TODO Make possible to select another platform at build time.
 var implementation = platform_dom$2._enabled ? platform_dom$2 : platform_basic;
 
 /**
@@ -8094,13 +8094,13 @@ var core_plugins = {
 };
 
 var core_scaleService = {
-	// Scale registration object. Extensions can register new scale types (such as log or DB scales) and then
-	// use the new chart options to grab the correct scale
+	Scale registration object. Extensions can register new scale types (such as log or DB scales) and then
+	use the new chart options to grab the correct scale
 	constructors: {},
-	// Use a registration function so that we can move to an ES6 map when we no longer need to support
-	// old browsers
+	Use a registration function so that we can move to an ES6 map when we no longer need to support
+	old browsers
 
-	// Scale config defaults
+	Scale config defaults
 	defaults: {},
 	registerScaleType: function(type, scaleConstructor, scaleDefaults) {
 		this.constructors[type] = scaleConstructor;
@@ -8110,7 +8110,7 @@ var core_scaleService = {
 		return this.constructors.hasOwnProperty(type) ? this.constructors[type] : undefined;
 	},
 	getScaleDefaults: function(type) {
-		// Return the scale defaults merged with the global settings so that we always use the latest ones
+		Return the scale defaults merged with the global settings so that we always use the latest ones
 		return this.defaults.hasOwnProperty(type) ? helpers$1.merge(Object.create(null), [core_defaults.scale, this.defaults[type]]) : {};
 	},
 	updateScaleDefaults: function(type, additions) {
@@ -8120,9 +8120,9 @@ var core_scaleService = {
 		}
 	},
 	addScalesToLayout: function(chart) {
-		// Adds each scale to the chart.boxes array to be sized accordingly
+		Adds each scale to the chart.boxes array to be sized accordingly
 		helpers$1.each(chart.scales, function(scale) {
-			// Set ILayoutItem parameters for backwards compatibility
+			Set ILayoutItem parameters for backwards compatibility
 			scale.fullWidth = scale.options.fullWidth;
 			scale.position = scale.options.position;
 			scale.weight = scale.options.weight;
@@ -8165,7 +8165,7 @@ core_defaults._set('global', {
 		borderColor: 'rgba(0,0,0,0)',
 		borderWidth: 0,
 		callbacks: {
-			// Args are: (tooltipItems, data)
+			Args are: (tooltipItems, data)
 			beforeTitle: helpers$1.noop,
 			title: function(tooltipItems, data) {
 				var title = '';
@@ -8187,10 +8187,10 @@ core_defaults._set('global', {
 			},
 			afterTitle: helpers$1.noop,
 
-			// Args are: (tooltipItems, data)
+			Args are: (tooltipItems, data)
 			beforeBody: helpers$1.noop,
 
-			// Args are: (tooltipItem, data)
+			Args are: (tooltipItem, data)
 			beforeLabel: helpers$1.noop,
 			label: function(tooltipItem, data) {
 				var label = data.datasets[tooltipItem.datasetIndex].label || '';
@@ -8219,10 +8219,10 @@ core_defaults._set('global', {
 			},
 			afterLabel: helpers$1.noop,
 
-			// Args are: (tooltipItems, data)
+			Args are: (tooltipItems, data)
 			afterBody: helpers$1.noop,
 
-			// Args are: (tooltipItems, data)
+			Args are: (tooltipItems, data)
 			beforeFooter: helpers$1.noop,
 			footer: helpers$1.noop,
 			afterFooter: helpers$1.noop
@@ -8302,11 +8302,11 @@ var positioners = {
 	}
 };
 
-// Helper to push or concat based on if the 2nd parameter is an array or not
+Helper to push or concat based on if the 2nd parameter is an array or not
 function pushOrConcat(base, toPush) {
 	if (toPush) {
 		if (helpers$1.isArray(toPush)) {
-			// base = base.concat(toPush);
+			base = base.concat(toPush);
 			Array.prototype.push.apply(base, toPush);
 		} else {
 			base.push(toPush);
@@ -8337,7 +8337,7 @@ function splitNewlines(str) {
  */
 function createTooltipItem(element) {
 	var xScale = element._xScale;
-	var yScale = element._yScale || element._scale; // handle radar || polarArea charts
+	var yScale = element._yScale || element._scale; handle radar || polarArea charts
 	var index = element._index;
 	var datasetIndex = element._datasetIndex;
 	var controller = element._chart.getDatasetMeta(datasetIndex).controller;
@@ -8364,17 +8364,17 @@ function getBaseModel(tooltipOpts) {
 	var globalDefaults = core_defaults.global;
 
 	return {
-		// Positioning
+		Positioning
 		xPadding: tooltipOpts.xPadding,
 		yPadding: tooltipOpts.yPadding,
 		xAlign: tooltipOpts.xAlign,
 		yAlign: tooltipOpts.yAlign,
 
-		// Drawing direction and text direction
+		Drawing direction and text direction
 		rtl: tooltipOpts.rtl,
 		textDirection: tooltipOpts.textDirection,
 
-		// Body
+		Body
 		bodyFontColor: tooltipOpts.bodyFontColor,
 		_bodyFontFamily: valueOrDefault$8(tooltipOpts.bodyFontFamily, globalDefaults.defaultFontFamily),
 		_bodyFontStyle: valueOrDefault$8(tooltipOpts.bodyFontStyle, globalDefaults.defaultFontStyle),
@@ -8382,7 +8382,7 @@ function getBaseModel(tooltipOpts) {
 		bodyFontSize: valueOrDefault$8(tooltipOpts.bodyFontSize, globalDefaults.defaultFontSize),
 		bodySpacing: tooltipOpts.bodySpacing,
 
-		// Title
+		Title
 		titleFontColor: tooltipOpts.titleFontColor,
 		_titleFontFamily: valueOrDefault$8(tooltipOpts.titleFontFamily, globalDefaults.defaultFontFamily),
 		_titleFontStyle: valueOrDefault$8(tooltipOpts.titleFontStyle, globalDefaults.defaultFontStyle),
@@ -8391,7 +8391,7 @@ function getBaseModel(tooltipOpts) {
 		titleSpacing: tooltipOpts.titleSpacing,
 		titleMarginBottom: tooltipOpts.titleMarginBottom,
 
-		// Footer
+		Footer
 		footerFontColor: tooltipOpts.footerFontColor,
 		_footerFontFamily: valueOrDefault$8(tooltipOpts.footerFontFamily, globalDefaults.defaultFontFamily),
 		_footerFontStyle: valueOrDefault$8(tooltipOpts.footerFontStyle, globalDefaults.defaultFontStyle),
@@ -8400,7 +8400,7 @@ function getBaseModel(tooltipOpts) {
 		footerSpacing: tooltipOpts.footerSpacing,
 		footerMarginTop: tooltipOpts.footerMarginTop,
 
-		// Appearance
+		Appearance
 		caretSize: tooltipOpts.caretSize,
 		cornerRadius: tooltipOpts.cornerRadius,
 		backgroundColor: tooltipOpts.backgroundColor,
@@ -8418,10 +8418,10 @@ function getBaseModel(tooltipOpts) {
 function getTooltipSize(tooltip, model) {
 	var ctx = tooltip._chart.ctx;
 
-	var height = model.yPadding * 2; // Tooltip Padding
+	var height = model.yPadding * 2; Tooltip Padding
 	var width = 0;
 
-	// Count of all lines in the body
+	Count of all lines in the body
 	var body = model.body;
 	var combinedBodyLength = body.reduce(function(count, bodyItem) {
 		return count + bodyItem.before.length + bodyItem.lines.length + bodyItem.after.length;
@@ -8434,16 +8434,16 @@ function getTooltipSize(tooltip, model) {
 	var bodyFontSize = model.bodyFontSize;
 	var footerFontSize = model.footerFontSize;
 
-	height += titleLineCount * titleFontSize; // Title Lines
-	height += titleLineCount ? (titleLineCount - 1) * model.titleSpacing : 0; // Title Line Spacing
-	height += titleLineCount ? model.titleMarginBottom : 0; // Title's bottom Margin
-	height += combinedBodyLength * bodyFontSize; // Body Lines
-	height += combinedBodyLength ? (combinedBodyLength - 1) * model.bodySpacing : 0; // Body Line Spacing
-	height += footerLineCount ? model.footerMarginTop : 0; // Footer Margin
-	height += footerLineCount * (footerFontSize); // Footer Lines
-	height += footerLineCount ? (footerLineCount - 1) * model.footerSpacing : 0; // Footer Line Spacing
+	height += titleLineCount * titleFontSize; Title Lines
+	height += titleLineCount ? (titleLineCount - 1) * model.titleSpacing : 0; Title Line Spacing
+	height += titleLineCount ? model.titleMarginBottom : 0; Title's bottom Margin
+	height += combinedBodyLength * bodyFontSize; Body Lines
+	height += combinedBodyLength ? (combinedBodyLength - 1) * model.bodySpacing : 0; Body Line Spacing
+	height += footerLineCount ? model.footerMarginTop : 0; Footer Margin
+	height += footerLineCount * (footerFontSize); Footer Lines
+	height += footerLineCount ? (footerLineCount - 1) * model.footerSpacing : 0; Footer Line Spacing
 
-	// Title width
+	Title width
 	var widthPadding = 0;
 	var maxLineWidth = function(line) {
 		width = Math.max(width, ctx.measureText(line).width + widthPadding);
@@ -8452,11 +8452,11 @@ function getTooltipSize(tooltip, model) {
 	ctx.font = helpers$1.fontString(titleFontSize, model._titleFontStyle, model._titleFontFamily);
 	helpers$1.each(model.title, maxLineWidth);
 
-	// Body width
+	Body width
 	ctx.font = helpers$1.fontString(bodyFontSize, model._bodyFontStyle, model._bodyFontFamily);
 	helpers$1.each(model.beforeBody.concat(model.afterBody), maxLineWidth);
 
-	// Body lines may include some extra width due to the color box
+	Body lines may include some extra width due to the color box
 	widthPadding = model.displayColors ? (bodyFontSize + 2) : 0;
 	helpers$1.each(body, function(bodyItem) {
 		helpers$1.each(bodyItem.before, maxLineWidth);
@@ -8464,14 +8464,14 @@ function getTooltipSize(tooltip, model) {
 		helpers$1.each(bodyItem.after, maxLineWidth);
 	});
 
-	// Reset back to 0
+	Reset back to 0
 	widthPadding = 0;
 
-	// Footer width
+	Footer width
 	ctx.font = helpers$1.fontString(footerFontSize, model._footerFontStyle, model._footerFontFamily);
 	helpers$1.each(model.footer, maxLineWidth);
 
-	// Add padding
+	Add padding
 	width += 2 * model.xPadding;
 
 	return {
@@ -8496,9 +8496,9 @@ function determineAlignment(tooltip, size) {
 		yAlign = 'bottom';
 	}
 
-	var lf, rf; // functions to determine left, right alignment
-	var olf, orf; // functions to determine if left/right alignment causes tooltip to go outside chart
-	var yf; // function to get the y alignment if the tooltip goes outside of the left or right edges
+	var lf, rf; functions to determine left, right alignment
+	var olf, orf; functions to determine if left/right alignment causes tooltip to go outside chart
+	var yf; function to get the y alignment if the tooltip goes outside of the left or right edges
 	var midX = (chartArea.left + chartArea.right) / 2;
 	var midY = (chartArea.top + chartArea.bottom) / 2;
 
@@ -8531,7 +8531,7 @@ function determineAlignment(tooltip, size) {
 	if (lf(model.x)) {
 		xAlign = 'left';
 
-		// Is tooltip too wide and goes over the right side of the chart.?
+		Is tooltip too wide and goes over the right side of the chart.?
 		if (olf(model.x)) {
 			xAlign = 'center';
 			yAlign = yf(model.y);
@@ -8539,7 +8539,7 @@ function determineAlignment(tooltip, size) {
 	} else if (rf(model.x)) {
 		xAlign = 'right';
 
-		// Is tooltip too wide and goes outside left edge of canvas?
+		Is tooltip too wide and goes outside left edge of canvas?
 		if (orf(model.x)) {
 			xAlign = 'center';
 			yAlign = yf(model.y);
@@ -8557,7 +8557,7 @@ function determineAlignment(tooltip, size) {
  * Helper to get the location a tooltip needs to be placed at given the initial position (via the vm) and the size and alignment
  */
 function getBackgroundPoint(vm, size, alignment, chart) {
-	// Background Position
+	Background Position
 	var x = vm.x;
 	var y = vm.y;
 
@@ -8628,8 +8628,8 @@ var exports$4 = core_element.extend({
 		this._lastActive = [];
 	},
 
-	// Get the title
-	// Args are: (tooltipItem, data)
+	Get the title
+	Args are: (tooltipItem, data)
 	getTitle: function() {
 		var me = this;
 		var opts = me._options;
@@ -8647,12 +8647,12 @@ var exports$4 = core_element.extend({
 		return lines;
 	},
 
-	// Args are: (tooltipItem, data)
+	Args are: (tooltipItem, data)
 	getBeforeBody: function() {
 		return getBeforeAfterBodyLines(this._options.callbacks.beforeBody.apply(this, arguments));
 	},
 
-	// Args are: (tooltipItem, data)
+	Args are: (tooltipItem, data)
 	getBody: function(tooltipItems, data) {
 		var me = this;
 		var callbacks = me._options.callbacks;
@@ -8674,13 +8674,13 @@ var exports$4 = core_element.extend({
 		return bodyItems;
 	},
 
-	// Args are: (tooltipItem, data)
+	Args are: (tooltipItem, data)
 	getAfterBody: function() {
 		return getBeforeAfterBodyLines(this._options.callbacks.afterBody.apply(this, arguments));
 	},
 
-	// Get the footer and beforeFooter and afterFooter lines
-	// Args are: (tooltipItem, data)
+	Get the footer and beforeFooter and afterFooter lines
+	Args are: (tooltipItem, data)
 	getFooter: function() {
 		var me = this;
 		var callbacks = me._options.callbacks;
@@ -8701,16 +8701,16 @@ var exports$4 = core_element.extend({
 		var me = this;
 		var opts = me._options;
 
-		// Need to regenerate the model because its faster than using extend and it is necessary due to the optimization in Chart.Element.transition
-		// that does _view = _model if ease === 1. This causes the 2nd tooltip update to set properties in both the view and model at the same time
-		// which breaks any animations.
+		Need to regenerate the model because its faster than using extend and it is necessary due to the optimization in Chart.Element.transition
+		that does _view = _model if ease === 1. This causes the 2nd tooltip update to set properties in both the view and model at the same time
+		which breaks any animations.
 		var existingModel = me._model;
 		var model = me._model = getBaseModel(opts);
 		var active = me._active;
 
 		var data = me._data;
 
-		// In the case where active.length === 0 we need to keep these at existing values for good animations
+		In the case where active.length === 0 we need to keep these at existing values for good animations
 		var alignment = {
 			xAlign: existingModel.xAlign,
 			yAlign: existingModel.yAlign
@@ -8742,48 +8742,48 @@ var exports$4 = core_element.extend({
 				tooltipItems.push(createTooltipItem(active[i]));
 			}
 
-			// If the user provided a filter function, use it to modify the tooltip items
+			If the user provided a filter function, use it to modify the tooltip items
 			if (opts.filter) {
 				tooltipItems = tooltipItems.filter(function(a) {
 					return opts.filter(a, data);
 				});
 			}
 
-			// If the user provided a sorting function, use it to modify the tooltip items
+			If the user provided a sorting function, use it to modify the tooltip items
 			if (opts.itemSort) {
 				tooltipItems = tooltipItems.sort(function(a, b) {
 					return opts.itemSort(a, b, data);
 				});
 			}
 
-			// Determine colors for boxes
+			Determine colors for boxes
 			helpers$1.each(tooltipItems, function(tooltipItem) {
 				labelColors.push(opts.callbacks.labelColor.call(me, tooltipItem, me._chart));
 				labelTextColors.push(opts.callbacks.labelTextColor.call(me, tooltipItem, me._chart));
 			});
 
 
-			// Build the Text Lines
+			Build the Text Lines
 			model.title = me.getTitle(tooltipItems, data);
 			model.beforeBody = me.getBeforeBody(tooltipItems, data);
 			model.body = me.getBody(tooltipItems, data);
 			model.afterBody = me.getAfterBody(tooltipItems, data);
 			model.footer = me.getFooter(tooltipItems, data);
 
-			// Initial positioning and colors
+			Initial positioning and colors
 			model.x = tooltipPosition.x;
 			model.y = tooltipPosition.y;
 			model.caretPadding = opts.caretPadding;
 			model.labelColors = labelColors;
 			model.labelTextColors = labelTextColors;
 
-			// data points
+			data points
 			model.dataPoints = tooltipItems;
 
-			// We need to determine alignment of the tooltip
+			We need to determine alignment of the tooltip
 			tooltipSize = getTooltipSize(this, model);
 			alignment = determineAlignment(this, tooltipSize);
-			// Final Size and Position
+			Final Size and Position
 			backgroundPoint = getBackgroundPoint(model, tooltipSize, alignment, me._chart);
 		} else {
 			model.opacity = 0;
@@ -8796,7 +8796,7 @@ var exports$4 = core_element.extend({
 		model.width = tooltipSize.width;
 		model.height = tooltipSize.height;
 
-		// Point where the caret on the tooltip points to
+		Point where the caret on the tooltip points to
 		model.caretX = tooltipPosition.x;
 		model.caretY = tooltipPosition.y;
 
@@ -8869,7 +8869,7 @@ var exports$4 = core_element.extend({
 				y1 = ptY + height;
 				y2 = y1 + caretSize;
 				y3 = y1;
-				// invert drawing order
+				invert drawing order
 				var tmp = x3;
 				x3 = x1;
 				x1 = tmp;
@@ -8899,10 +8899,10 @@ var exports$4 = core_element.extend({
 
 			for (i = 0; i < length; ++i) {
 				ctx.fillText(title[i], rtlHelper.x(pt.x), pt.y + titleFontSize / 2);
-				pt.y += titleFontSize + titleSpacing; // Line Height and spacing
+				pt.y += titleFontSize + titleSpacing; Line Height and spacing
 
 				if (i + 1 === length) {
-					pt.y += vm.titleMarginBottom - titleSpacing; // If Last, add margin, remove spacing
+					pt.y += vm.titleMarginBottom - titleSpacing; If Last, add margin, remove spacing
 				}
 			}
 		}
@@ -8933,7 +8933,7 @@ var exports$4 = core_element.extend({
 
 		pt.x = getAlignedX(vm, bodyAlignForCalculation);
 
-		// Before body lines
+		Before body lines
 		ctx.fillStyle = vm.bodyFontColor;
 		helpers$1.each(vm.beforeBody, fillLineOfText);
 
@@ -8941,7 +8941,7 @@ var exports$4 = core_element.extend({
 			? bodyAlign === 'center' ? (bodyFontSize / 2 + 1) : (bodyFontSize + 2)
 			: 0;
 
-		// Draw body lines now
+		Draw body lines now
 		for (i = 0, ilen = body.length; i < ilen; ++i) {
 			bodyItem = body[i];
 			textColor = vm.labelTextColors[i];
@@ -8952,20 +8952,20 @@ var exports$4 = core_element.extend({
 
 			lines = bodyItem.lines;
 			for (j = 0, jlen = lines.length; j < jlen; ++j) {
-				// Draw Legend-like boxes if needed
+				Draw Legend-like boxes if needed
 				if (drawColorBoxes) {
 					var rtlColorX = rtlHelper.x(colorX);
 
-					// Fill a white rect so that colours merge nicely if the opacity is < 1
+					Fill a white rect so that colours merge nicely if the opacity is < 1
 					ctx.fillStyle = vm.legendColorBackground;
 					ctx.fillRect(rtlHelper.leftForLtr(rtlColorX, bodyFontSize), pt.y, bodyFontSize, bodyFontSize);
 
-					// Border
+					Border
 					ctx.lineWidth = 1;
 					ctx.strokeStyle = labelColors.borderColor;
 					ctx.strokeRect(rtlHelper.leftForLtr(rtlColorX, bodyFontSize), pt.y, bodyFontSize, bodyFontSize);
 
-					// Inner square
+					Inner square
 					ctx.fillStyle = labelColors.backgroundColor;
 					ctx.fillRect(rtlHelper.leftForLtr(rtlHelper.xPlus(rtlColorX, 1), bodyFontSize - 2), pt.y + 1, bodyFontSize - 2, bodyFontSize - 2);
 					ctx.fillStyle = textColor;
@@ -8977,12 +8977,12 @@ var exports$4 = core_element.extend({
 			helpers$1.each(bodyItem.after, fillLineOfText);
 		}
 
-		// Reset back to 0 for after body
+		Reset back to 0 for after body
 		xLinePadding = 0;
 
-		// After body lines
+		After body lines
 		helpers$1.each(vm.afterBody, fillLineOfText);
-		pt.y -= bodySpacing; // Remove last body spacing
+		pt.y -= bodySpacing; Remove last body spacing
 	},
 
 	drawFooter: function(pt, vm, ctx) {
@@ -9071,31 +9071,31 @@ var exports$4 = core_element.extend({
 			y: vm.y
 		};
 
-		// IE11/Edge does not like very small opacities, so snap to 0
+		IE11/Edge does not like very small opacities, so snap to 0
 		var opacity = Math.abs(vm.opacity < 1e-3) ? 0 : vm.opacity;
 
-		// Truthy/falsey value for empty tooltip
+		Truthy/falsey value for empty tooltip
 		var hasTooltipContent = vm.title.length || vm.beforeBody.length || vm.body.length || vm.afterBody.length || vm.footer.length;
 
 		if (this._options.enabled && hasTooltipContent) {
 			ctx.save();
 			ctx.globalAlpha = opacity;
 
-			// Draw Background
+			Draw Background
 			this.drawBackground(pt, vm, ctx, tooltipSize);
 
-			// Draw Title, Body, and Footer
+			Draw Title, Body, and Footer
 			pt.y += vm.yPadding;
 
 			helpers$1.rtl.overrideTextDirection(ctx, vm.textDirection);
 
-			// Titles
+			Titles
 			this.drawTitle(pt, vm, ctx);
 
-			// Body
+			Body
 			this.drawBody(pt, vm, ctx);
 
-			// Footer
+			Footer
 			this.drawFooter(pt, vm, ctx);
 
 			helpers$1.rtl.restoreTextDirection(ctx, vm.textDirection);
@@ -9117,7 +9117,7 @@ var exports$4 = core_element.extend({
 
 		me._lastActive = me._lastActive || [];
 
-		// Find Active Elements for tooltips
+		Find Active Elements for tooltips
 		if (e.type === 'mouseout') {
 			me._active = [];
 		} else {
@@ -9127,10 +9127,10 @@ var exports$4 = core_element.extend({
 			}
 		}
 
-		// Remember Last Actives
+		Remember Last Actives
 		changed = !helpers$1.arrayEquals(me._active, me._lastActive);
 
-		// Only handle target event on tooltip change
+		Only handle target event on tooltip change
 		if (changed) {
 			me._lastActive = me._active;
 
@@ -9205,11 +9205,11 @@ function mergeScaleConfig(/* config objects ... */) {
 					}
 
 					if (!target[key][i].type || (scale.type && scale.type !== target[key][i].type)) {
-						// new/untyped scale or type changed: let's apply the new defaults
-						// then merge source scale to correctly overwrite the defaults.
+						new/untyped scale or type changed: let's apply the new defaults
+						then merge source scale to correctly overwrite the defaults.
 						helpers$1.merge(target[key][i], [core_scaleService.getScaleDefaults(type), scale]);
 					} else {
-						// scales type are the same
+						scales type are the same
 						helpers$1.merge(target[key][i], scale);
 					}
 				}
@@ -9232,10 +9232,10 @@ function mergeConfig(/* config objects ... */) {
 			var sval = source[key];
 
 			if (key === 'scales') {
-				// scale config merging is complex. Add our own function here for that
+				scale config merging is complex. Add our own function here for that
 				target[key] = mergeScaleConfig(tval, sval);
 			} else if (key === 'scale') {
-				// used in polar area & radar charts since there is only one scale
+				used in polar area & radar charts since there is only one scale
 				target[key] = helpers$1.merge(tval, [core_scaleService.getScaleDefaults(sval.type), sval]);
 			} else {
 				helpers$1._merger(key, target, source, options);
@@ -9247,8 +9247,8 @@ function mergeConfig(/* config objects ... */) {
 function initConfig(config) {
 	config = config || Object.create(null);
 
-	// Do NOT use mergeConfig for the data object because this method merges arrays
-	// and so would change references to labels and datasets, preventing data updates.
+	Do NOT use mergeConfig for the data object because this method merges arrays
+	and so would change references to labels and datasets, preventing data updates.
 	var data = config.data = config.data || {};
 	data.datasets = data.datasets || [];
 	data.labels = data.labels || [];
@@ -9277,7 +9277,7 @@ function updateConfig(chart) {
 	chart.ensureScalesHaveIDs();
 	chart.buildOrUpdateScales();
 
-	// Tooltip
+	Tooltip
 	chart.tooltip._options = newOptions.tooltips;
 	chart.tooltip.initialize();
 }
@@ -9346,12 +9346,12 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		 * @private
 		 */
 		me.chart = me;
-		me.controller = me; // chart.chart.controller #inception
+		me.controller = me; chart.chart.controller #inception
 
-		// Add the chart instance to the global namespace
+		Add the chart instance to the global namespace
 		Chart.instances[me.id] = me;
 
-		// Define alias to the config data: `chart.data === chart.config.data`
+		Define alias to the config data: `chart.data === chart.config.data`
 		Object.defineProperty(me, 'data', {
 			get: function() {
 				return me.config.data;
@@ -9362,10 +9362,10 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		});
 
 		if (!context || !canvas) {
-			// The given item is not a compatible context2d element, let's return before finalizing
-			// the chart initialization but after setting basic chart / controller properties that
-			// can help to figure out that the chart is not valid (e.g chart.canvas !== null);
-			// https://github.com/chartjs/Chart.js/issues/2807
+			The given item is not a compatible context2d element, let's return before finalizing
+			the chart initialization but after setting basic chart / controller properties that
+			can help to figure out that the chart is not valid (e.g chart.canvas !== null);
+			https://github.com/chartjs/Chart.js/issues/2807
 			console.error("Failed to create chart: can't acquire context from the given item");
 			return;
 		}
@@ -9380,7 +9380,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 	initialize: function() {
 		var me = this;
 
-		// Before init plugin notification
+		Before init plugin notification
 		core_plugins.notify(me, 'beforeInit');
 
 		helpers$1.retinaScale(me, me.options.devicePixelRatio);
@@ -9388,13 +9388,13 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		me.bindEvents();
 
 		if (me.options.responsive) {
-			// Initial resize before chart draws (must be silent to preserve initial animations).
+			Initial resize before chart draws (must be silent to preserve initial animations).
 			me.resize(true);
 		}
 
 		me.initToolTip();
 
-		// After init plugin notification
+		After init plugin notification
 		core_plugins.notify(me, 'afterInit');
 
 		return me;
@@ -9406,7 +9406,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 	},
 
 	stop: function() {
-		// Stops any current animation loop occurring
+		Stops any current animation loop occurring
 		core_animations.cancelAnimation(this);
 		return this;
 	},
@@ -9417,10 +9417,10 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		var canvas = me.canvas;
 		var aspectRatio = (options.maintainAspectRatio && me.aspectRatio) || null;
 
-		// the canvas render width and height will be casted to integers so make sure that
-		// the canvas display style uses the same integer values to avoid blurring effect.
+		the canvas render width and height will be casted to integers so make sure that
+		the canvas display style uses the same integer values to avoid blurring effect.
 
-		// Set to 0 instead of canvas.size because the size defaults to 300x150 if the element is collapsed
+		Set to 0 instead of canvas.size because the size defaults to 300x150 if the element is collapsed
 		var newWidth = Math.max(0, Math.floor(helpers$1.getMaximumWidth(canvas)));
 		var newHeight = Math.max(0, Math.floor(aspectRatio ? newWidth / aspectRatio : helpers$1.getMaximumHeight(canvas)));
 
@@ -9436,11 +9436,11 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		helpers$1.retinaScale(me, options.devicePixelRatio);
 
 		if (!silent) {
-			// Notify any plugins about the resize
+			Notify any plugins about the resize
 			var newSize = {width: newWidth, height: newHeight};
 			core_plugins.notify(me, 'resize', [newSize]);
 
-			// Notify of resize
+			Notify of resize
 			if (options.onResize) {
 				options.onResize(me, newSize);
 			}
@@ -9540,14 +9540,14 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 			scale.mergeTicksOptions();
 
-			// TODO(SB): I think we should be able to remove this custom case (options.scale)
-			// and consider it as a regular scale part of the "scales"" map only! This would
-			// make the logic easier and remove some useless? custom code.
+			TODO(SB): I think we should be able to remove this custom case (options.scale)
+			and consider it as a regular scale part of the "scales"" map only! This would
+			make the logic easier and remove some useless? custom code.
 			if (item.isDefault) {
 				me.scale = scale;
 			}
 		});
-		// clear up discarded scales
+		clear up discarded scales
 		helpers$1.each(updated, function(hasUpdated, id) {
 			if (!hasUpdated) {
 				delete scales[id];
@@ -9619,7 +9619,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		var i, ilen;
 
 		if (!config || typeof config !== 'object') {
-			// backwards compatibility
+			backwards compatibility
 			config = {
 				duration: config,
 				lazy: arguments[1]
@@ -9628,28 +9628,28 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 		updateConfig(me);
 
-		// plugins options references might have change, let's invalidate the cache
-		// https://github.com/chartjs/Chart.js/issues/5111#issuecomment-355934167
+		plugins options references might have change, let's invalidate the cache
+		https://github.com/chartjs/Chart.js/issues/5111#issuecomment-355934167
 		core_plugins._invalidate(me);
 
 		if (core_plugins.notify(me, 'beforeUpdate') === false) {
 			return;
 		}
 
-		// In case the entire data object changed
+		In case the entire data object changed
 		me.tooltip._data = me.data;
 
-		// Make sure dataset controllers are updated and new controllers are reset
+		Make sure dataset controllers are updated and new controllers are reset
 		var newControllers = me.buildOrUpdateControllers();
 
-		// Make sure all dataset controllers have correct meta data counts
+		Make sure all dataset controllers have correct meta data counts
 		for (i = 0, ilen = me.data.datasets.length; i < ilen; i++) {
 			me.getDatasetMeta(i).controller.buildOrUpdateElements();
 		}
 
 		me.updateLayout();
 
-		// Can only reset the new controllers after the scales have been updated
+		Can only reset the new controllers after the scales have been updated
 		if (me.options.animation && me.options.animation.duration) {
 			helpers$1.each(newControllers, function(controller) {
 				controller.reset();
@@ -9658,15 +9658,15 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 		me.updateDatasets();
 
-		// Need to reset tooltip in case it is displayed with elements that are removed
-		// after update.
+		Need to reset tooltip in case it is displayed with elements that are removed
+		after update.
 		me.tooltip.initialize();
 
-		// Last active contains items that were previously in the tooltip.
-		// When we reset the tooltip, we need to clear it
+		Last active contains items that were previously in the tooltip.
+		When we reset the tooltip, we need to clear it
 		me.lastActive = [];
 
-		// Do this before render so that any plugins that need final scale updates can use it
+		Do this before render so that any plugins that need final scale updates can use it
 		core_plugins.notify(me, 'afterUpdate');
 
 		me._layers.sort(compare2Level('z', '_idx'));
@@ -9698,8 +9698,8 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 		me._layers = [];
 		helpers$1.each(me.boxes, function(box) {
-			// _configure is called twice, once in core.scale.update and once here.
-			// Here the boxes are fully updated and at their final positions.
+			_configure is called twice, once in core.scale.update and once here.
+			Here the boxes are fully updated and at their final positions.
 			if (box._configure) {
 				box._configure();
 			}
@@ -9766,7 +9766,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		var me = this;
 
 		if (!config || typeof config !== 'object') {
-			// backwards compatibility
+			backwards compatibility
 			config = {
 				duration: config,
 				lazy: arguments[1]
@@ -9788,7 +9788,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 		if (animationOptions && duration) {
 			var animation = new core_animation({
-				numSteps: duration / 16.66, // 60 fps
+				numSteps: duration / 16.66, 60 fps
 				easing: config.easing || animationOptions.easing,
 
 				render: function(chart, animationObject) {
@@ -9807,7 +9807,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		} else {
 			me.draw();
 
-			// See https://github.com/chartjs/Chart.js/issues/3781
+			See https://github.com/chartjs/Chart.js/issues/3781
 			onComplete(new core_animation({numSteps: 0, chart: me}));
 		}
 
@@ -9834,9 +9834,9 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 			return;
 		}
 
-		// Because of plugin hooks (before/afterDatasetsDraw), datasets can't
-		// currently be part of layers. Instead, we draw
-		// layers <= 0 before(default, backward compat), and the rest after
+		Because of plugin hooks (before/afterDatasetsDraw), datasets can't
+		currently be part of layers. Instead, we draw
+		layers <= 0 before(default, backward compat), and the rest after
 		layers = me._layers;
 		for (i = 0; i < layers.length && layers[i].z <= 0; ++i) {
 			layers[i].draw(me.chartArea);
@@ -9844,7 +9844,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 		me.drawDatasets(easingValue);
 
-		// Rest of layers
+		Rest of layers
 		for (; i < layers.length; ++i) {
 			layers[i].draw(me.chartArea);
 		}
@@ -10004,7 +10004,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 				data: [],
 				dataset: null,
 				controller: null,
-				hidden: null,			// See isDatasetVisible() comment
+				hidden: null,			See isDatasetVisible() comment
 				xAxisID: null,
 				yAxisID: null,
 				order: dataset.order || 0,
@@ -10028,8 +10028,8 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 	isDatasetVisible: function(datasetIndex) {
 		var meta = this.getDatasetMeta(datasetIndex);
 
-		// meta.hidden is a per chart dataset hidden flag override with 3 states: if true or false,
-		// the dataset.hidden value is ignored, else if null, the dataset hidden state is returned.
+		meta.hidden is a per chart dataset hidden flag override with 3 states: if true or false,
+		the dataset.hidden value is ignored, else if null, the dataset hidden state is returned.
 		return typeof meta.hidden === 'boolean' ? !meta.hidden : !this.data.datasets[datasetIndex].hidden;
 	},
 
@@ -10058,7 +10058,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 		me.stop();
 
-		// dataset controllers need to cleanup associated data
+		dataset controllers need to cleanup associated data
 		for (i = 0, ilen = me.data.datasets.length; i < ilen; ++i) {
 			me.destroyDatasetMeta(i);
 		}
@@ -10084,7 +10084,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		var me = this;
 		me.tooltip = new core_tooltip({
 			_chart: me,
-			_chartInstance: me, // deprecated, backward compatibility
+			_chartInstance: me, deprecated, backward compatibility
 			_data: me.data,
 			_options: me.options.tooltips
 		}, me);
@@ -10105,8 +10105,8 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 			listeners[type] = listener;
 		});
 
-		// Elements used to detect size change should not be injected for non responsive charts.
-		// See https://github.com/chartjs/Chart.js/issues/2210
+		Elements used to detect size change should not be injected for non responsive charts.
+		See https://github.com/chartjs/Chart.js/issues/2210
 		if (me.options.responsive) {
 			listener = function() {
 				me.resize();
@@ -10160,15 +10160,15 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 			return;
 		}
 
-		// Buffer any update calls so that renders do not occur
+		Buffer any update calls so that renders do not occur
 		me._bufferedRender = true;
 		me._bufferedRequest = null;
 
 		var changed = me.handleEvent(e);
-		// for smooth tooltip animations issue #4989
-		// the tooltip should be the source of change
-		// Animation check workaround:
-		// tooltip._start will be null when tooltip isn't animating
+		for smooth tooltip animations issue #4989
+		the tooltip should be the source of change
+		Animation check workaround:
+		tooltip._start will be null when tooltip isn't animating
 		if (tooltip) {
 			changed = tooltip._start
 				? tooltip.handleEvent(e)
@@ -10179,14 +10179,14 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 		var bufferedRequest = me._bufferedRequest;
 		if (bufferedRequest) {
-			// If we have an update that was triggered, we need to do a normal render
+			If we have an update that was triggered, we need to do a normal render
 			me.render(bufferedRequest);
 		} else if (changed && !me.animating) {
-			// If entering, leaving, or changing elements, animate the change via pivot
+			If entering, leaving, or changing elements, animate the change via pivot
 			me.stop();
 
-			// We only need to render at this point. Updating will cause scales to be
-			// recomputed generating flicker & using more memory than necessary.
+			We only need to render at this point. Updating will cause scales to be
+			recomputed generating flicker & using more memory than necessary.
 			me.render({
 				duration: me.options.hover.animationDuration,
 				lazy: true
@@ -10213,37 +10213,37 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 		me.lastActive = me.lastActive || [];
 
-		// Find Active Elements for hover and tooltips
+		Find Active Elements for hover and tooltips
 		if (e.type === 'mouseout') {
 			me.active = [];
 		} else {
 			me.active = me.getElementsAtEventForMode(e, hoverOptions.mode, hoverOptions);
 		}
 
-		// Invoke onHover hook
-		// Need to call with native event here to not break backwards compatibility
+		Invoke onHover hook
+		Need to call with native event here to not break backwards compatibility
 		helpers$1.callback(options.onHover || options.hover.onHover, [e.native, me.active], me);
 
 		if (e.type === 'mouseup' || e.type === 'click') {
 			if (options.onClick) {
-				// Use e.native here for backwards compatibility
+				Use e.native here for backwards compatibility
 				options.onClick.call(me, e.native, me.active);
 			}
 		}
 
-		// Remove styling for last active (even if it may still be active)
+		Remove styling for last active (even if it may still be active)
 		if (me.lastActive.length) {
 			me.updateHoverStyle(me.lastActive, hoverOptions.mode, false);
 		}
 
-		// Built in hover styling
+		Built in hover styling
 		if (me.active.length && hoverOptions.mode) {
 			me.updateHoverStyle(me.active, hoverOptions.mode, true);
 		}
 
 		changed = !helpers$1.arrayEquals(me.active, me.lastActive);
 
-		// Remember Last Actives
+		Remember Last Actives
 		me.lastActive = me.active;
 
 		return changed;
@@ -10259,7 +10259,7 @@ Chart.instances = {};
 
 var core_controller = Chart;
 
-// DEPRECATIONS
+DEPRECATIONS
 
 /**
  * Provided for backward compatibility, use Chart instead.
@@ -10299,7 +10299,7 @@ helpers$1.scaleMerge = mergeScaleConfig;
 
 var core_helpers = function() {
 
-	// -- Basic js utility methods
+	-- Basic js utility methods
 
 	helpers$1.where = function(collection, filterCallback) {
 		if (helpers$1.isArray(collection) && Array.prototype.filter) {
@@ -10329,7 +10329,7 @@ var core_helpers = function() {
 			return -1;
 		};
 	helpers$1.findNextWhere = function(arrayToSearch, filterCallback, startIndex) {
-		// Default to start of the array
+		Default to start of the array
 		if (helpers$1.isNullOrUndef(startIndex)) {
 			startIndex = -1;
 		}
@@ -10341,7 +10341,7 @@ var core_helpers = function() {
 		}
 	};
 	helpers$1.findPreviousWhere = function(arrayToSearch, filterCallback, startIndex) {
-		// Default to end of the array
+		Default to end of the array
 		if (helpers$1.isNullOrUndef(startIndex)) {
 			startIndex = arrayToSearch.length;
 		}
@@ -10353,7 +10353,7 @@ var core_helpers = function() {
 		}
 	};
 
-	// -- Math methods
+	-- Math methods
 	helpers$1.isNumber = function(n) {
 		return !isNaN(parseFloat(n)) && isFinite(n);
 	};
@@ -10385,7 +10385,7 @@ var core_helpers = function() {
 			return Math.sign(x);
 		} :
 		function(x) {
-			x = +x; // convert to a number
+			x = +x; convert to a number
 			if (x === 0 || isNaN(x)) {
 				return x;
 			}
@@ -10418,7 +10418,7 @@ var core_helpers = function() {
 		return p;
 	};
 
-	// Gets the angle from vertical upright to the point about a centre.
+	Gets the angle from vertical upright to the point about a centre.
 	helpers$1.getAngleFromPoint = function(centrePoint, anglePoint) {
 		var distanceFromXCenter = anglePoint.x - centrePoint.x;
 		var distanceFromYCenter = anglePoint.y - centrePoint.y;
@@ -10427,7 +10427,7 @@ var core_helpers = function() {
 		var angle = Math.atan2(distanceFromYCenter, distanceFromXCenter);
 
 		if (angle < (-0.5 * Math.PI)) {
-			angle += 2.0 * Math.PI; // make sure the returned angle is in the range of (-PI/2, 3PI/2]
+			angle += 2.0 * Math.PI; make sure the returned angle is in the range of (-PI/2, 3PI/2]
 		}
 
 		return {
@@ -10464,10 +10464,10 @@ var core_helpers = function() {
 	};
 
 	helpers$1.splineCurve = function(firstPoint, middlePoint, afterPoint, t) {
-		// Props to Rob Spencer at scaled innovation for his post on splining between points
-		// http://scaledinnovation.com/analytics/splines/aboutSplines.html
+		Props to Rob Spencer at scaled innovation for his post on splining between points
+		http://scaledinnovation.com/analytics/splines/aboutSplines.html
 
-		// This function must also respect "skipped" points
+		This function must also respect "skipped" points
 
 		var previous = firstPoint.skip ? middlePoint : firstPoint;
 		var current = middlePoint;
@@ -10479,11 +10479,11 @@ var core_helpers = function() {
 		var s01 = d01 / (d01 + d12);
 		var s12 = d12 / (d01 + d12);
 
-		// If all points are the same, s01 & s02 will be inf
+		If all points are the same, s01 & s02 will be inf
 		s01 = isNaN(s01) ? 0 : s01;
 		s12 = isNaN(s12) ? 0 : s12;
 
-		var fa = t * s01; // scaling factor for triangle Ta
+		var fa = t * s01; scaling factor for triangle Ta
 		var fb = t * s12;
 
 		return {
@@ -10499,10 +10499,10 @@ var core_helpers = function() {
 	};
 	helpers$1.EPSILON = Number.EPSILON || 1e-14;
 	helpers$1.splineCurveMonotone = function(points) {
-		// This function calculates Bézier control points in a similar way than |splineCurve|,
-		// but preserves monotonicity of the provided data and ensures no local extremums are added
-		// between the dataset discrete points due to the interpolation.
-		// See : https://en.wikipedia.org/wiki/Monotone_cubic_interpolation
+		This function calculates Bézier control points in a similar way than |splineCurve|,
+		but preserves monotonicity of the provided data and ensures no local extremums are added
+		between the dataset discrete points due to the interpolation.
+		See : https://en.wikipedia.org/wiki/Monotone_cubic_interpolation
 
 		var pointsWithTangents = (points || []).map(function(point) {
 			return {
@@ -10512,7 +10512,7 @@ var core_helpers = function() {
 			};
 		});
 
-		// Calculate slopes (deltaK) and initialize tangents (mK)
+		Calculate slopes (deltaK) and initialize tangents (mK)
 		var pointsLen = pointsWithTangents.length;
 		var i, pointBefore, pointCurrent, pointAfter;
 		for (i = 0; i < pointsLen; ++i) {
@@ -10526,7 +10526,7 @@ var core_helpers = function() {
 			if (pointAfter && !pointAfter.model.skip) {
 				var slopeDeltaX = (pointAfter.model.x - pointCurrent.model.x);
 
-				// In the case of two points that appear at the same x pixel, slopeDeltaX is 0
+				In the case of two points that appear at the same x pixel, slopeDeltaX is 0
 				pointCurrent.deltaK = slopeDeltaX !== 0 ? (pointAfter.model.y - pointCurrent.model.y) / slopeDeltaX : 0;
 			}
 
@@ -10541,7 +10541,7 @@ var core_helpers = function() {
 			}
 		}
 
-		// Adjust tangents to ensure monotonic properties
+		Adjust tangents to ensure monotonic properties
 		var alphaK, betaK, tauK, squaredMagnitude;
 		for (i = 0; i < pointsLen - 1; ++i) {
 			pointCurrent = pointsWithTangents[i];
@@ -10567,7 +10567,7 @@ var core_helpers = function() {
 			pointAfter.mK = betaK * tauK * pointCurrent.deltaK;
 		}
 
-		// Compute control points
+		Compute control points
 		var deltaX;
 		for (i = 0; i < pointsLen; ++i) {
 			pointCurrent = pointsWithTangents[i];
@@ -10601,7 +10601,7 @@ var core_helpers = function() {
 		}
 		return index <= 0 ? collection[0] : collection[index - 1];
 	};
-	// Implementation of the nice number algorithm used in determining where axis labels will go
+	Implementation of the nice number algorithm used in determining where axis labels will go
 	helpers$1.niceNum = function(range, round) {
 		var exponent = Math.floor(helpers$1.log10(range));
 		var fraction = range / Math.pow(10, exponent);
@@ -10629,7 +10629,7 @@ var core_helpers = function() {
 
 		return niceFraction * Math.pow(10, exponent);
 	};
-	// Request animation polyfill - https://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+	Request animation polyfill - https://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
 	helpers$1.requestAnimFrame = (function() {
 		if (typeof window === 'undefined') {
 			return function(callback) {
@@ -10645,7 +10645,7 @@ var core_helpers = function() {
 				return window.setTimeout(callback, 1000 / 60);
 			};
 	}());
-	// -- DOM methods
+	-- DOM methods
 	helpers$1.getRelativePosition = function(evt, chart) {
 		var mouseX, mouseY;
 		var e = evt.originalEvent || evt;
@@ -10662,9 +10662,9 @@ var core_helpers = function() {
 			mouseY = e.clientY;
 		}
 
-		// Scale mouse coordinates into canvas coordinates
-		// by following the pattern laid out by 'jerryj' in the comments of
-		// https://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
+		Scale mouse coordinates into canvas coordinates
+		by following the pattern laid out by 'jerryj' in the comments of
+		https://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
 		var paddingLeft = parseFloat(helpers$1.getStyle(canvas, 'padding-left'));
 		var paddingTop = parseFloat(helpers$1.getStyle(canvas, 'padding-top'));
 		var paddingRight = parseFloat(helpers$1.getStyle(canvas, 'padding-right'));
@@ -10672,8 +10672,8 @@ var core_helpers = function() {
 		var width = boundingRect.right - boundingRect.left - paddingLeft - paddingRight;
 		var height = boundingRect.bottom - boundingRect.top - paddingTop - paddingBottom;
 
-		// We divide by the current device pixel ratio, because the canvas is scaled up by that amount in each direction. However
-		// the backend model is in unscaled coordinates. Since we are going to deal with our model coordinates, we go back here
+		We divide by the current device pixel ratio, because the canvas is scaled up by that amount in each direction. However
+		the backend model is in unscaled coordinates. Since we are going to deal with our model coordinates, we go back here
 		mouseX = Math.round((mouseX - boundingRect.left - paddingLeft) / (width) * canvas.width / chart.currentDevicePixelRatio);
 		mouseY = Math.round((mouseY - boundingRect.top - paddingTop) / (height) * canvas.height / chart.currentDevicePixelRatio);
 
@@ -10684,14 +10684,14 @@ var core_helpers = function() {
 
 	};
 
-	// Private helper function to convert max-width/max-height values that may be percentages into a number
+	Private helper function to convert max-width/max-height values that may be percentages into a number
 	function parseMaxStyle(styleValue, node, parentProperty) {
 		var valueInPixels;
 		if (typeof styleValue === 'string') {
 			valueInPixels = parseInt(styleValue, 10);
 
 			if (styleValue.indexOf('%') !== -1) {
-				// percentage * size in dimension
+				percentage * size in dimension
 				valueInPixels = valueInPixels / 100 * node.parentNode[parentProperty];
 			}
 		} else {
@@ -10733,11 +10733,11 @@ var core_helpers = function() {
 
 		return 'none';
 	}
-	// returns Number or undefined if no constraint
+	returns Number or undefined if no constraint
 	helpers$1.getConstraintWidth = function(domNode) {
 		return getConstraintDimension(domNode, 'max-width', 'clientWidth');
 	};
-	// returns Number or undefined if no constraint
+	returns Number or undefined if no constraint
 	helpers$1.getConstraintHeight = function(domNode) {
 		return getConstraintDimension(domNode, 'max-height', 'clientHeight');
 	};
@@ -10806,15 +10806,15 @@ var core_helpers = function() {
 		canvas.width = width * pixelRatio;
 		chart.ctx.scale(pixelRatio, pixelRatio);
 
-		// If no style has been set on the canvas, the render size is used as display size,
-		// making the chart visually bigger, so let's enforce it to the "correct" values.
-		// See https://github.com/chartjs/Chart.js/issues/3575
+		If no style has been set on the canvas, the render size is used as display size,
+		making the chart visually bigger, so let's enforce it to the "correct" values.
+		See https://github.com/chartjs/Chart.js/issues/3575
 		if (!canvas.style.height && !canvas.style.width) {
 			canvas.style.height = height + 'px';
 			canvas.style.width = width + 'px';
 		}
 	};
-	// -- Canvas methods
+	-- Canvas methods
 	helpers$1.fontString = function(pixelSize, fontStyle, fontFamily) {
 		return fontStyle + ' ' + pixelSize + 'px ' + fontFamily;
 	};
@@ -10836,15 +10836,15 @@ var core_helpers = function() {
 		for (i = 0; i < ilen; i++) {
 			thing = arrayOfThings[i];
 
-			// Undefined strings and arrays should not be measured
+			Undefined strings and arrays should not be measured
 			if (thing !== undefined && thing !== null && helpers$1.isArray(thing) !== true) {
 				longest = helpers$1.measureText(ctx, data, gc, longest, thing);
 			} else if (helpers$1.isArray(thing)) {
-				// if it is an array lets measure each element
-				// to do maybe simplify this function a bit so we can do this more recursively?
+				if it is an array lets measure each element
+				to do maybe simplify this function a bit so we can do this more recursively?
 				for (j = 0, jlen = thing.length; j < jlen; j++) {
 					nestedThing = thing[j];
-					// Undefined strings and arrays should not be measured
+					Undefined strings and arrays should not be measured
 					if (nestedThing !== undefined && nestedThing !== null && !helpers$1.isArray(nestedThing)) {
 						longest = helpers$1.measureText(ctx, data, gc, longest, nestedThing);
 					}
@@ -11002,7 +11002,7 @@ helpers$1.extend(DateAdapter.prototype, /** @lends DateAdapter */ {
 	 */
 	endOf: abstract,
 
-	// DEPRECATIONS
+	DEPRECATIONS
 
 	/**
 	 * Provided for backward compatibility for scale.getValueForPixel(),
@@ -11055,13 +11055,13 @@ var core_ticks = {
 		 * @return {string} string representation of the tickValue parameter
 		 */
 		linear: function(tickValue, index, ticks) {
-			// If we have lots of ticks, don't use the ones
+			If we have lots of ticks, don't use the ones
 			var delta = ticks.length > 3 ? ticks[2] - ticks[1] : ticks[1] - ticks[0];
 
-			// If we have a number like 2.5 as the delta, figure out how many decimal places we need
+			If we have a number like 2.5 as the delta, figure out how many decimal places we need
 			if (Math.abs(delta) > 1) {
 				if (tickValue !== Math.floor(tickValue)) {
-					// not an integer
+					not an integer
 					delta = tickValue - Math.floor(tickValue);
 				}
 			}
@@ -11071,18 +11071,18 @@ var core_ticks = {
 
 			if (tickValue !== 0) {
 				var maxTick = Math.max(Math.abs(ticks[0]), Math.abs(ticks[ticks.length - 1]));
-				if (maxTick < 1e-4) { // all ticks are small numbers; use scientific notation
+				if (maxTick < 1e-4) { all ticks are small numbers; use scientific notation
 					var logTick = helpers$1.log10(Math.abs(tickValue));
 					var numExponential = Math.floor(logTick) - Math.floor(logDelta);
 					numExponential = Math.max(Math.min(numExponential, 20), 0);
 					tickString = tickValue.toExponential(numExponential);
 				} else {
 					var numDecimal = -1 * Math.floor(logDelta);
-					numDecimal = Math.max(Math.min(numDecimal, 20), 0); // toFixed has a max of 20 decimal places
+					numDecimal = Math.max(Math.min(numDecimal, 20), 0); toFixed has a max of 20 decimal places
 					tickString = tickValue.toFixed(numDecimal);
 				}
 			} else {
-				tickString = '0'; // never show decimal places for 0
+				tickString = '0'; never show decimal places for 0
 			}
 
 			return tickString;
@@ -11111,7 +11111,7 @@ core_defaults._set('scale', {
 	position: 'left',
 	offset: false,
 
-	// grid line settings
+	grid line settings
 	gridLines: {
 		display: true,
 		color: 'rgba(0,0,0,0.1)',
@@ -11129,22 +11129,22 @@ core_defaults._set('scale', {
 		borderDashOffset: 0.0
 	},
 
-	// scale label
+	scale label
 	scaleLabel: {
-		// display property
+		display property
 		display: false,
 
-		// actual label
+		actual label
 		labelString: '',
 
-		// top/bottom padding
+		top/bottom padding
 		padding: {
 			top: 4,
 			bottom: 4
 		}
 	},
 
-	// label settings
+	label settings
 	ticks: {
 		beginAtZero: false,
 		minRotation: 0,
@@ -11156,7 +11156,7 @@ core_defaults._set('scale', {
 		autoSkip: true,
 		autoSkipPadding: 0,
 		labelOffset: 0,
-		// We pass through arrays to be rendered as multiline labels, we convert Others to strings here.
+		We pass through arrays to be rendered as multiline labels, we convert Others to strings here.
 		callback: core_ticks.formatters.values,
 		minor: {},
 		major: {}
@@ -11182,7 +11182,7 @@ function getPixelForGridLine(scale, index, offsetGridLines) {
 	var lineValue = scale.getPixelForTick(validIndex);
 	var start = scale._startPixel;
 	var end = scale._endPixel;
-	var epsilon = 1e-6; // 1e-6 is margin in pixels for accumulated error.
+	var epsilon = 1e-6; 1e-6 is margin in pixels for accumulated error.
 	var offset;
 
 	if (offsetGridLines) {
@@ -11195,7 +11195,7 @@ function getPixelForGridLine(scale, index, offsetGridLines) {
 		}
 		lineValue += validIndex < index ? offset : -offset;
 
-		// Return undefined if the pixel is out of the range
+		Return undefined if the pixel is out of the range
 		if (lineValue < start - epsilon || lineValue > end + epsilon) {
 			return;
 		}
@@ -11237,15 +11237,15 @@ function computeLabelSizes(ctx, tickFonts, ticks, caches) {
 		cache = caches[fontString] = caches[fontString] || {data: {}, gc: []};
 		lineHeight = tickFont.lineHeight;
 		width = height = 0;
-		// Undefined labels and arrays should not be measured
+		Undefined labels and arrays should not be measured
 		if (!isNullOrUndef(label) && !isArray(label)) {
 			width = helpers$1.measureText(ctx, cache.data, cache.gc, width, label);
 			height = lineHeight;
 		} else if (isArray(label)) {
-			// if it is an array let's measure each element
+			if it is an array let's measure each element
 			for (j = 0, jlen = label.length; j < jlen; ++j) {
 				nestedLabel = label[j];
-				// Undefined labels and arrays should not be measured
+				Undefined labels and arrays should not be measured
 				if (!isNullOrUndef(nestedLabel) && !isArray(nestedLabel)) {
 					width = helpers$1.measureText(ctx, cache.data, cache.gc, width, nestedLabel);
 					height += lineHeight;
@@ -11347,8 +11347,8 @@ function calculateSpacing(majorIndices, ticks, axisLength, ticksLimit) {
 	var spacing = (ticks.length - 1) / ticksLimit;
 	var factors, factor, i, ilen;
 
-	// If the major ticks are evenly spaced apart, place the minor ticks
-	// so that they divide the major ticks into even chunks
+	If the major ticks are evenly spaced apart, place the minor ticks
+	so that they divide the major ticks into even chunks
 	if (!evenMajorSpacing) {
 		return Math.max(spacing, 1);
 	}
@@ -11459,9 +11459,9 @@ var Scale = core_element.extend({
 		return this.options.labels || (this.isHorizontal() ? data.xLabels : data.yLabels) || data.labels || [];
 	},
 
-	// These methods are ordered by lifecyle. Utilities then follow.
-	// Any function defined here is inherited by all scale types.
-	// Any function can be extended by the scale type
+	These methods are ordered by lifecyle. Utilities then follow.
+	Any function defined here is inherited by all scale types.
+	Any function can be extended by the scale type
 
 	/**
 	 * Provided for backward compatibility, not available anymore
@@ -11470,7 +11470,7 @@ var Scale = core_element.extend({
 	 * @todo remove at version 3
 	 */
 	mergeTicksOptions: function() {
-		// noop
+		noop
 	},
 
 	beforeUpdate: function() {
@@ -11491,10 +11491,10 @@ var Scale = core_element.extend({
 		var sampleSize = tickOpts.sampleSize;
 		var i, ilen, labels, ticks, samplingEnabled;
 
-		// Update Lifecycle - Probably don't want to ever extend or overwrite this function ;)
+		Update Lifecycle - Probably don't want to ever extend or overwrite this function ;)
 		me.beforeUpdate();
 
-		// Absorb the master measurements
+		Absorb the master measurements
 		me.maxWidth = maxWidth;
 		me.maxHeight = maxHeight;
 		me.margins = helpers$1.extend({
@@ -11513,33 +11513,33 @@ var Scale = core_element.extend({
 		me._gridLineItems = null;
 		me._labelItems = null;
 
-		// Dimensions
+		Dimensions
 		me.beforeSetDimensions();
 		me.setDimensions();
 		me.afterSetDimensions();
 
-		// Data min/max
+		Data min/max
 		me.beforeDataLimits();
 		me.determineDataLimits();
 		me.afterDataLimits();
 
-		// Ticks - `this.ticks` is now DEPRECATED!
-		// Internal ticks are now stored as objects in the PRIVATE `this._ticks` member
-		// and must not be accessed directly from outside this class. `this.ticks` being
-		// around for long time and not marked as private, we can't change its structure
-		// without unexpected breaking changes. If you need to access the scale ticks,
-		// use scale.getTicks() instead.
+		Ticks - `this.ticks` is now DEPRECATED!
+		Internal ticks are now stored as objects in the PRIVATE `this._ticks` member
+		and must not be accessed directly from outside this class. `this.ticks` being
+		around for long time and not marked as private, we can't change its structure
+		without unexpected breaking changes. If you need to access the scale ticks,
+		use scale.getTicks() instead.
 
 		me.beforeBuildTicks();
 
-		// New implementations should return an array of objects but for BACKWARD COMPAT,
-		// we still support no return (`this.ticks` internally set by calling this method).
+		New implementations should return an array of objects but for BACKWARD COMPAT,
+		we still support no return (`this.ticks` internally set by calling this method).
 		ticks = me.buildTicks() || [];
 
-		// Allow modification of ticks in callback.
+		Allow modification of ticks in callback.
 		ticks = me.afterBuildTicks(ticks) || ticks;
 
-		// Ensure ticks contains ticks in new tick format
+		Ensure ticks contains ticks in new tick format
 		if ((!ticks || !ticks.length) && me.ticks) {
 			ticks = [];
 			for (i = 0, ilen = me.ticks.length; i < ilen; ++i) {
@@ -11552,18 +11552,18 @@ var Scale = core_element.extend({
 
 		me._ticks = ticks;
 
-		// Compute tick rotation and fit using a sampled subset of labels
-		// We generally don't need to compute the size of every single label for determining scale size
+		Compute tick rotation and fit using a sampled subset of labels
+		We generally don't need to compute the size of every single label for determining scale size
 		samplingEnabled = sampleSize < ticks.length;
 		labels = me._convertTicksToLabels(samplingEnabled ? sample(ticks, sampleSize) : ticks);
 
-		// _configure is called twice, once here, once from core.controller.updateLayout.
-		// Here we haven't been positioned yet, but dimensions are correct.
-		// Variables set in _configure are needed for calculateTickRotation, and
-		// it's ok that coordinates are not correct there, only dimensions matter.
+		_configure is called twice, once here, once from core.controller.updateLayout.
+		Here we haven't been positioned yet, but dimensions are correct.
+		Variables set in _configure are needed for calculateTickRotation, and
+		it's ok that coordinates are not correct there, only dimensions matter.
 		me._configure();
 
-		// Tick Rotation
+		Tick Rotation
 		me.beforeCalculateTickRotation();
 		me.calculateTickRotation();
 		me.afterCalculateTickRotation();
@@ -11572,22 +11572,22 @@ var Scale = core_element.extend({
 		me.fit();
 		me.afterFit();
 
-		// Auto-skip
+		Auto-skip
 		me._ticksToDraw = tickOpts.display && (tickOpts.autoSkip || tickOpts.source === 'auto') ? me._autoSkip(ticks) : ticks;
 
 		if (samplingEnabled) {
-			// Generate labels using all non-skipped ticks
+			Generate labels using all non-skipped ticks
 			labels = me._convertTicksToLabels(me._ticksToDraw);
 		}
 
-		me.ticks = labels;   // BACKWARD COMPATIBILITY
+		me.ticks = labels;   BACKWARD COMPATIBILITY
 
-		// IMPORTANT: after this point, we consider that `this.ticks` will NEVER change!
+		IMPORTANT: after this point, we consider that `this.ticks` will NEVER change!
 
 		me.afterUpdate();
 
-		// TODO(v3): remove minSize as a public property and return value from all layout boxes. It is unused
-		// make maxWidth and maxHeight private
+		TODO(v3): remove minSize as a public property and return value from all layout boxes. It is unused
+		make maxWidth and maxHeight private
 		return me.minSize;
 	},
 
@@ -11605,7 +11605,7 @@ var Scale = core_element.extend({
 		} else {
 			startPixel = me.top;
 			endPixel = me.bottom;
-			// by default vertical scales are from bottom to top, so pixels are reversed
+			by default vertical scales are from bottom to top, so pixels are reversed
 			reversePixels = !reversePixels;
 		}
 		me._startPixel = startPixel;
@@ -11625,21 +11625,21 @@ var Scale = core_element.extend({
 	},
 	setDimensions: function() {
 		var me = this;
-		// Set the unconstrained dimension before label rotation
+		Set the unconstrained dimension before label rotation
 		if (me.isHorizontal()) {
-			// Reset position before calculating rotation
+			Reset position before calculating rotation
 			me.width = me.maxWidth;
 			me.left = 0;
 			me.right = me.width;
 		} else {
 			me.height = me.maxHeight;
 
-			// Reset position before calculating rotation
+			Reset position before calculating rotation
 			me.top = 0;
 			me.bottom = me.height;
 		}
 
-		// Reset padding
+		Reset padding
 		me.paddingLeft = 0;
 		me.paddingTop = 0;
 		me.paddingRight = 0;
@@ -11649,7 +11649,7 @@ var Scale = core_element.extend({
 		helpers$1.callback(this.options.afterSetDimensions, [this]);
 	},
 
-	// Data limits
+	Data limits
 	beforeDataLimits: function() {
 		helpers$1.callback(this.options.beforeDataLimits, [this]);
 	},
@@ -11665,11 +11665,11 @@ var Scale = core_element.extend({
 	buildTicks: helpers$1.noop,
 	afterBuildTicks: function(ticks) {
 		var me = this;
-		// ticks is empty for old axis implementations here
+		ticks is empty for old axis implementations here
 		if (isArray(ticks) && ticks.length) {
 			return helpers$1.callback(me.options.afterBuildTicks, [me, ticks]);
 		}
-		// Support old implementations (that modified `this.ticks` directly in buildTicks)
+		Support old implementations (that modified `this.ticks` directly in buildTicks)
 		me.ticks = helpers$1.callback(me.options.afterBuildTicks, [me, me.ticks]) || me.ticks;
 		return ticks;
 	},
@@ -11679,7 +11679,7 @@ var Scale = core_element.extend({
 	},
 	convertTicksToLabels: function() {
 		var me = this;
-		// Convert ticks to strings
+		Convert ticks to strings
 		var tickOpts = me.options.ticks;
 		me.ticks = me.ticks.map(tickOpts.userCallback || tickOpts.callback, this);
 	},
@@ -11711,12 +11711,12 @@ var Scale = core_element.extend({
 		maxLabelWidth = labelSizes.widest.width;
 		maxLabelHeight = labelSizes.highest.height - labelSizes.highest.offset;
 
-		// Estimate the width of each grid based on the canvas width, the maximum
-		// label width and the number of tick intervals
+		Estimate the width of each grid based on the canvas width, the maximum
+		label width and the number of tick intervals
 		maxWidth = Math.min(me.maxWidth, me.chart.width - maxLabelWidth);
 		tickWidth = options.offset ? me.maxWidth / numTicks : maxWidth / (numTicks - 1);
 
-		// Allow 3 pixels x2 padding either side for label readability
+		Allow 3 pixels x2 padding either side for label readability
 		if (maxLabelWidth + 6 > tickWidth) {
 			tickWidth = maxWidth / (numTicks - (options.offset ? 0.5 : 1));
 			maxHeight = me.maxHeight - getTickMarkLength(options.gridLines)
@@ -11742,7 +11742,7 @@ var Scale = core_element.extend({
 	},
 	fit: function() {
 		var me = this;
-		// Reset
+		Reset
 		var minSize = me.minSize = {
 			width: 0,
 			height: 0
@@ -11757,21 +11757,21 @@ var Scale = core_element.extend({
 		var isBottom = opts.position === 'bottom';
 		var isHorizontal = me.isHorizontal();
 
-		// Width
+		Width
 		if (isHorizontal) {
 			minSize.width = me.maxWidth;
 		} else if (display) {
 			minSize.width = getTickMarkLength(gridLineOpts) + getScaleLabelHeight(scaleLabelOpts);
 		}
 
-		// height
+		height
 		if (!isHorizontal) {
-			minSize.height = me.maxHeight; // fill all the height
+			minSize.height = me.maxHeight; fill all the height
 		} else if (display) {
 			minSize.height = getTickMarkLength(gridLineOpts) + getScaleLabelHeight(scaleLabelOpts);
 		}
 
-		// Don't bother fitting the ticks if we are not showing the labels
+		Don't bother fitting the ticks if we are not showing the labels
 		if (tickOpts.display && display) {
 			var tickFonts = parseTickFontOptions(tickOpts);
 			var labelSizes = me._getLabelSizes();
@@ -11783,7 +11783,7 @@ var Scale = core_element.extend({
 			var tickPadding = tickOpts.padding;
 
 			if (isHorizontal) {
-				// A horizontal axis is more constrained by the height.
+				A horizontal axis is more constrained by the height.
 				var isRotated = me.labelRotation !== 0;
 				var angleRadians = helpers$1.toRadians(me.labelRotation);
 				var cosRotation = Math.cos(angleRadians);
@@ -11791,7 +11791,7 @@ var Scale = core_element.extend({
 
 				var labelHeight = sinRotation * widestLabelSize.width
 					+ cosRotation * (highestLabelSize.height - (isRotated ? highestLabelSize.offset : 0))
-					+ (isRotated ? 0 : lineSpace); // padding
+					+ (isRotated ? 0 : lineSpace); padding
 
 				minSize.height = Math.min(me.maxHeight, minSize.height + labelHeight + tickPadding);
 
@@ -11799,8 +11799,8 @@ var Scale = core_element.extend({
 				var offsetRight = me.right - me.getPixelForTick(me.getTicks().length - 1);
 				var paddingLeft, paddingRight;
 
-				// Ensure that our ticks are always inside the canvas. When rotated, ticks are right aligned
-				// which means that the right padding is dominated by the font height
+				Ensure that our ticks are always inside the canvas. When rotated, ticks are right aligned
+				which means that the right padding is dominated by the font height
 				if (isRotated) {
 					paddingLeft = isBottom ?
 						cosRotation * firstLabelSize.width + sinRotation * firstLabelSize.offset :
@@ -11813,16 +11813,16 @@ var Scale = core_element.extend({
 					paddingRight = lastLabelSize.width / 2;
 				}
 
-				// Adjust padding taking into account changes in offsets
-				// and add 3 px to move away from canvas edges
+				Adjust padding taking into account changes in offsets
+				and add 3 px to move away from canvas edges
 				me.paddingLeft = Math.max((paddingLeft - offsetLeft) * me.width / (me.width - offsetLeft), 0) + 3;
 				me.paddingRight = Math.max((paddingRight - offsetRight) * me.width / (me.width - offsetRight), 0) + 3;
 			} else {
-				// A vertical axis is more constrained by the width. Labels are the
-				// dominant factor here, so get that length first and account for padding
+				A vertical axis is more constrained by the width. Labels are the
+				dominant factor here, so get that length first and account for padding
 				var labelWidth = tickOpts.mirror ? 0 :
-					// use lineSpace for consistency with horizontal axis
-					// tickPadding is not implemented for horizontal
+					use lineSpace for consistency with horizontal axis
+					tickPadding is not implemented for horizontal
 					widestLabelSize.width + tickPadding + lineSpace;
 
 				minSize.width = Math.min(me.maxWidth, minSize.width + labelWidth);
@@ -11861,7 +11861,7 @@ var Scale = core_element.extend({
 		helpers$1.callback(this.options.afterFit, [this]);
 	},
 
-	// Shared Methods
+	Shared Methods
 	isHorizontal: function() {
 		var pos = this.options.position;
 		return pos === 'top' || pos === 'bottom';
@@ -11870,18 +11870,18 @@ var Scale = core_element.extend({
 		return this.options.fullWidth;
 	},
 
-	// Get the correct value. NaN bad inputs, If the value type is object get the x or y based on whether we are horizontal or not
+	Get the correct value. NaN bad inputs, If the value type is object get the x or y based on whether we are horizontal or not
 	getRightValue: function(rawValue) {
-		// Null and undefined values first
+		Null and undefined values first
 		if (isNullOrUndef(rawValue)) {
 			return NaN;
 		}
-		// isNaN(object) returns true, so make sure NaN is checking for a number; Discard Infinite values
+		isNaN(object) returns true, so make sure NaN is checking for a number; Discard Infinite values
 		if ((typeof rawValue === 'number' || rawValue instanceof Number) && !isFinite(rawValue)) {
 			return NaN;
 		}
 
-		// If it is in fact an object, dive in one more level
+		If it is in fact an object, dive in one more level
 		if (rawValue) {
 			if (this.isHorizontal()) {
 				if (rawValue.x !== undefined) {
@@ -11892,7 +11892,7 @@ var Scale = core_element.extend({
 			}
 		}
 
-		// Value is good, return it
+		Value is good, return it
 		return rawValue;
 	},
 
@@ -11906,14 +11906,14 @@ var Scale = core_element.extend({
 
 		me.beforeTickToLabelConversion();
 
-		// New implementations should return the formatted tick labels but for BACKWARD
-		// COMPAT, we still support no return (`this.ticks` internally changed by calling
-		// this method and supposed to contain only string values).
+		New implementations should return the formatted tick labels but for BACKWARD
+		COMPAT, we still support no return (`this.ticks` internally changed by calling
+		this method and supposed to contain only string values).
 		labels = me.convertTicksToLabels(ticks) || me.ticks;
 
 		me.afterTickToLabelConversion();
 
-		// BACKWARD COMPAT: synchronize `_ticks` with labels (so potentially `this.ticks`)
+		BACKWARD COMPAT: synchronize `_ticks` with labels (so potentially `this.ticks`)
 		for (i = 0, ilen = ticks.length; i < ilen; ++i) {
 			ticks[i].label = labels[i];
 		}
@@ -12066,7 +12066,7 @@ var Scale = core_element.extend({
 		var last = majorIndices[numMajorIndices - 1];
 		var i, ilen, spacing, avgMajorSpacing;
 
-		// If there are too many major ticks to display them all
+		If there are too many major ticks to display them all
 		if (numMajorIndices > ticksLimit) {
 			skipMajors(ticks, majorIndices, numMajorIndices / ticksLimit);
 			return nonSkipped(ticks);
@@ -12094,7 +12094,7 @@ var Scale = core_element.extend({
 		var me = this;
 		var optionTicks = me.options.ticks;
 
-		// Calculate space needed by label in axis direction.
+		Calculate space needed by label in axis direction.
 		var rot = helpers$1.toRadians(me.labelRotation);
 		var cos = Math.abs(Math.cos(rot));
 		var sin = Math.abs(Math.sin(rot));
@@ -12104,7 +12104,7 @@ var Scale = core_element.extend({
 		var w = labelSizes ? labelSizes.widest.width + padding : 0;
 		var h = labelSizes ? labelSizes.highest.height + padding : 0;
 
-		// Calculate space needed for 1 tick in axis direction.
+		Calculate space needed for 1 tick in axis direction.
 		return me.isHorizontal()
 			? h * cos > w * sin ? w / cos : h / sin
 			: h * sin < w * cos ? h / cos : w / sin;
@@ -12123,7 +12123,7 @@ var Scale = core_element.extend({
 			return !!display;
 		}
 
-		// When 'auto', the scale is visible if at least one associated dataset is visible.
+		When 'auto', the scale is visible if at least one associated dataset is visible.
 		for (i = 0, ilen = chart.data.datasets.length; i < ilen; ++i) {
 			if (chart.isDatasetVisible(i)) {
 				meta = chart.getDatasetMeta(i);
@@ -12190,13 +12190,13 @@ var Scale = core_element.extend({
 		for (i = 0; i < ticksLength; ++i) {
 			tick = ticks[i] || {};
 
-			// autoskipper skipped this tick (#4635)
+			autoskipper skipped this tick (#4635)
 			if (isNullOrUndef(tick.label) && i < ticks.length) {
 				continue;
 			}
 
 			if (i === me.zeroLineIndex && options.offset === offsetGridLines) {
-				// Draw the first index specially
+				Draw the first index specially
 				lineWidth = gridLines.zeroLineWidth;
 				lineColor = gridLines.zeroLineColor;
 				borderDash = gridLines.zeroLineBorderDash || [];
@@ -12210,7 +12210,7 @@ var Scale = core_element.extend({
 
 			lineValue = getPixelForGridLine(me, tick._index || i, offsetGridLines);
 
-			// Skip if the pixel is out of the range
+			Skip if the pixel is out of the range
 			if (lineValue === undefined) {
 				continue;
 			}
@@ -12281,7 +12281,7 @@ var Scale = core_element.extend({
 			tick = ticks[i];
 			label = tick.label;
 
-			// autoskipper skipped this tick (#4635)
+			autoskipper skipped this tick (#4635)
 			if (isNullOrUndef(label)) {
 				continue;
 			}
@@ -12365,7 +12365,7 @@ var Scale = core_element.extend({
 		}
 
 		if (axisWidth) {
-			// Draw the line at the edge of the axis
+			Draw the line at the edge of the axis
 			var firstLineWidth = axisWidth;
 			var lastLineWidth = valueAtIndexOrDefault(gridLines.lineWidth, items.ticksLength - 1, 1);
 			var borderValue = items.borderValue;
@@ -12409,7 +12409,7 @@ var Scale = core_element.extend({
 			item = items[i];
 			tickFont = item.font;
 
-			// Make sure we draw text in the correct color and font
+			Make sure we draw text in the correct color and font
 			ctx.save();
 			ctx.translate(item.x, item.y);
 			ctx.rotate(item.rotation);
@@ -12422,7 +12422,7 @@ var Scale = core_element.extend({
 			y = item.textOffset;
 			if (isArray(label)) {
 				for (j = 0, jlen = label.length; j < jlen; ++j) {
-					// We just make sure the multiline element is a string here..
+					We just make sure the multiline element is a string here..
 					ctx.fillText('' + label[j], 0, y);
 					y += tickFont.lineHeight;
 				}
@@ -12455,7 +12455,7 @@ var Scale = core_element.extend({
 		var scaleLabelX, scaleLabelY;
 
 		if (me.isHorizontal()) {
-			scaleLabelX = me.left + me.width / 2; // midpoint of the width
+			scaleLabelX = me.left + me.width / 2; midpoint of the width
 			scaleLabelY = position === 'bottom'
 				? me.bottom - halfLineHeight - scaleLabelPadding.bottom
 				: me.top + halfLineHeight + scaleLabelPadding.top;
@@ -12473,7 +12473,7 @@ var Scale = core_element.extend({
 		ctx.rotate(rotation);
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
-		ctx.fillStyle = scaleLabelFontColor; // render in correct colour
+		ctx.fillStyle = scaleLabelFontColor; render in correct colour
 		ctx.font = scaleLabelFont.string;
 		ctx.fillText(scaleLabel.labelString, 0, 0);
 		ctx.restore();
@@ -12501,7 +12501,7 @@ var Scale = core_element.extend({
 		var gz = opts.gridLines && opts.gridLines.z || 0;
 
 		if (!me._isVisible() || tz === gz || me.draw !== me._draw) {
-			// backward compatibility: draw has been overridden by custom scale
+			backward compatibility: draw has been overridden by custom scale
 			return [{
 				z: tz,
 				draw: function() {
@@ -12560,7 +12560,7 @@ var scale_category = core_scale.extend({
 		var findIndex;
 
 		if (min !== undefined) {
-			// user specified min value
+			user specified min value
 			findIndex = labels.indexOf(min);
 			if (findIndex >= 0) {
 				minIndex = findIndex;
@@ -12568,7 +12568,7 @@ var scale_category = core_scale.extend({
 		}
 
 		if (max !== undefined) {
-			// user specified max value
+			user specified max value
 			findIndex = labels.indexOf(max);
 			if (findIndex >= 0) {
 				maxIndex = findIndex;
@@ -12587,7 +12587,7 @@ var scale_category = core_scale.extend({
 		var minIndex = me.minIndex;
 		var maxIndex = me.maxIndex;
 
-		// If we are viewing some subset of labels, slice the original array
+		If we are viewing some subset of labels, slice the original array
 		me.ticks = (minIndex === 0 && maxIndex === labels.length - 1) ? labels : labels.slice(minIndex, maxIndex + 1);
 	},
 
@@ -12610,7 +12610,7 @@ var scale_category = core_scale.extend({
 		core_scale.prototype._configure.call(me);
 
 		if (!me.isHorizontal()) {
-			// For backward compatibility, vertical category scale reverse is inverted.
+			For backward compatibility, vertical category scale reverse is inverted.
 			me._reversePixels = !me._reversePixels;
 		}
 
@@ -12622,7 +12622,7 @@ var scale_category = core_scale.extend({
 		me._valueRange = Math.max(ticks.length - (offset ? 0 : 1), 1);
 	},
 
-	// Used to get data value locations.  Value can either be an index or a numerical value
+	Used to get data value locations.  Value can either be an index or a numerical value
 	getPixelForValue: function(value, index, datasetIndex) {
 		var me = this;
 		var valueCategory, labels, idx;
@@ -12631,8 +12631,8 @@ var scale_category = core_scale.extend({
 			value = me.chart.data.datasets[datasetIndex].data[index];
 		}
 
-		// If value is a data object, then index is the index in the data array,
-		// not the index of the scale. We need to change that.
+		If value is a data object, then index is the index in the data array,
+		not the index of the scale. We need to change that.
 		if (!isNullOrUndef$1(value)) {
 			valueCategory = me.isHorizontal() ? value.x : value.y;
 		}
@@ -12666,7 +12666,7 @@ var scale_category = core_scale.extend({
 	}
 });
 
-// INTERNAL: static default options, registered in src/index.js
+INTERNAL: static default options, registered in src/index.js
 var _defaults = defaultConfig;
 scale_category._defaults = _defaults;
 
@@ -12681,9 +12681,9 @@ var isNullOrUndef$2 = helpers$1.isNullOrUndef;
  */
 function generateTicks(generationOptions, dataRange) {
 	var ticks = [];
-	// To get a "nice" value for the tick spacing, we will use the appropriately named
-	// "nice number" algorithm. See https://stackoverflow.com/questions/8506881/nice-label-algorithm-for-charts-with-minimum-ticks
-	// for details.
+	To get a "nice" value for the tick spacing, we will use the appropriately named
+	"nice number" algorithm. See https://stackoverflow.com/questions/8506881/nice-label-algorithm-for-charts-with-minimum-ticks
+	for details.
 
 	var MIN_SPACING = 1e-14;
 	var stepSize = generationOptions.stepSize;
@@ -12697,23 +12697,23 @@ function generateTicks(generationOptions, dataRange) {
 	var spacing = helpers$1.niceNum((rmax - rmin) / maxNumSpaces / unit) * unit;
 	var factor, niceMin, niceMax, numSpaces;
 
-	// Beyond MIN_SPACING floating point numbers being to lose precision
-	// such that we can't do the math necessary to generate ticks
+	Beyond MIN_SPACING floating point numbers being to lose precision
+	such that we can't do the math necessary to generate ticks
 	if (spacing < MIN_SPACING && isNullOrUndef$2(min) && isNullOrUndef$2(max)) {
 		return [rmin, rmax];
 	}
 
 	numSpaces = Math.ceil(rmax / spacing) - Math.floor(rmin / spacing);
 	if (numSpaces > maxNumSpaces) {
-		// If the calculated num of spaces exceeds maxNumSpaces, recalculate it
+		If the calculated num of spaces exceeds maxNumSpaces, recalculate it
 		spacing = helpers$1.niceNum(numSpaces * spacing / maxNumSpaces / unit) * unit;
 	}
 
 	if (stepSize || isNullOrUndef$2(precision)) {
-		// If a precision is not specified, calculate factor based on spacing
+		If a precision is not specified, calculate factor based on spacing
 		factor = Math.pow(10, helpers$1._decimalPlaces(spacing));
 	} else {
-		// If the user specified a precision, round to that number of decimal places
+		If the user specified a precision, round to that number of decimal places
 		factor = Math.pow(10, precision);
 		spacing = Math.ceil(spacing * factor) / factor;
 	}
@@ -12721,9 +12721,9 @@ function generateTicks(generationOptions, dataRange) {
 	niceMin = Math.floor(rmin / spacing) * spacing;
 	niceMax = Math.ceil(rmax / spacing) * spacing;
 
-	// If min, max and stepSize is set and they make an evenly spaced scale use it.
+	If min, max and stepSize is set and they make an evenly spaced scale use it.
 	if (stepSize) {
-		// If very close to our whole number, use it.
+		If very close to our whole number, use it.
 		if (!isNullOrUndef$2(min) && helpers$1.almostWhole(min / spacing, spacing / 1000)) {
 			niceMin = min;
 		}
@@ -12733,7 +12733,7 @@ function generateTicks(generationOptions, dataRange) {
 	}
 
 	numSpaces = (niceMax - niceMin) / spacing;
-	// If very close to our rounded value, use it.
+	If very close to our rounded value, use it.
 	if (helpers$1.almostEquals(numSpaces, Math.round(numSpaces), spacing / 1000)) {
 		numSpaces = Math.round(numSpaces);
 	} else {
@@ -12764,18 +12764,18 @@ var scale_linearbase = core_scale.extend({
 		var opts = me.options;
 		var tickOpts = opts.ticks;
 
-		// If we are forcing it to begin at 0, but 0 will already be rendered on the chart,
-		// do nothing since that would make the chart weird. If the user really wants a weird chart
-		// axis, they can manually override it
+		If we are forcing it to begin at 0, but 0 will already be rendered on the chart,
+		do nothing since that would make the chart weird. If the user really wants a weird chart
+		axis, they can manually override it
 		if (tickOpts.beginAtZero) {
 			var minSign = helpers$1.sign(me.min);
 			var maxSign = helpers$1.sign(me.max);
 
 			if (minSign < 0 && maxSign < 0) {
-				// move the top up to 0
+				move the top up to 0
 				me.max = 0;
 			} else if (minSign > 0 && maxSign > 0) {
-				// move the bottom down to 0
+				move the bottom down to 0
 				me.min = 0;
 			}
 		}
@@ -12804,10 +12804,10 @@ var scale_linearbase = core_scale.extend({
 		}
 
 		if (setMin !== setMax) {
-			// We set the min or the max but not both.
-			// So ensure that our range is good
-			// Inverted or 0 length range can happen when
-			// ticks.min is set, and no datasets are visible
+			We set the min or the max but not both.
+			So ensure that our range is good
+			Inverted or 0 length range can happen when
+			ticks.min is set, and no datasets are visible
 			if (me.min >= me.max) {
 				if (setMin) {
 					me.max = me.min + 1;
@@ -12858,10 +12858,10 @@ var scale_linearbase = core_scale.extend({
 		var opts = me.options;
 		var tickOpts = opts.ticks;
 
-		// Figure out what the max number of ticks we can support it is based on the size of
-		// the axis area. For now, we say that the minimum tick spacing in pixels must be 40
-		// We also limit the maximum number of ticks to 11 which gives a nice 10 squares on
-		// the graph. Make sure we always have at least 2 ticks
+		Figure out what the max number of ticks we can support it is based on the size of
+		the axis area. For now, we say that the minimum tick spacing in pixels must be 40
+		We also limit the maximum number of ticks to 11 which gives a nice 10 squares on
+		the graph. Make sure we always have at least 2 ticks
 		var maxTicks = me.getTickLimit();
 		maxTicks = Math.max(2, maxTicks);
 
@@ -12876,8 +12876,8 @@ var scale_linearbase = core_scale.extend({
 
 		me.handleDirectionalChanges();
 
-		// At this point, we need to update our max and min given the tick values since we have expanded the
-		// range of the scale
+		At this point, we need to update our max and min given the tick values since we have expanded the
+		range of the scale
 		me.max = helpers$1.max(ticks);
 		me.min = helpers$1.min(ticks);
 
@@ -12933,7 +12933,7 @@ var DEFAULT_MAX = 1;
 function getOrCreateStack(stacks, stacked, meta) {
 	var key = [
 		meta.type,
-		// we have a separate stack for stack=undefined datasets when the opts.stacked is undefined
+		we have a separate stack for stack=undefined datasets when the opts.stacked is undefined
 		stacked === undefined && meta.stack === undefined ? meta.index : '',
 		meta.stack
 	].join('.');
@@ -13032,11 +13032,11 @@ var scale_linear = scale_linearbase.extend({
 		me.min = helpers$1.isFinite(me.min) && !isNaN(me.min) ? me.min : DEFAULT_MIN;
 		me.max = helpers$1.isFinite(me.max) && !isNaN(me.max) ? me.max : DEFAULT_MAX;
 
-		// Common base implementation to handle ticks.min, ticks.max, ticks.beginAtZero
+		Common base implementation to handle ticks.min, ticks.max, ticks.beginAtZero
 		me.handleTickRangeOptions();
 	},
 
-	// Returns the maximum number of ticks based on the scale dimension
+	Returns the maximum number of ticks based on the scale dimension
 	_computeTickLimit: function() {
 		var me = this;
 		var tickFont;
@@ -13048,10 +13048,10 @@ var scale_linear = scale_linearbase.extend({
 		return Math.ceil(me.height / tickFont.lineHeight);
 	},
 
-	// Called after the ticks are built. We need
+	Called after the ticks are built. We need
 	handleDirectionalChanges: function() {
 		if (!this.isHorizontal()) {
-			// We are in a vertical orientation. The top value is the highest. So reverse the array
+			We are in a vertical orientation. The top value is the highest. So reverse the array
 			this.ticks.reverse();
 		}
 	},
@@ -13060,7 +13060,7 @@ var scale_linear = scale_linearbase.extend({
 		return this._getScaleLabel(this.chart.data.datasets[datasetIndex].data[index]);
 	},
 
-	// Utils
+	Utils
 	getPixelForValue: function(value) {
 		var me = this;
 		return me.getPixelForDecimal((+me.getRightValue(value) - me._startValue) / me._valueRange);
@@ -13079,7 +13079,7 @@ var scale_linear = scale_linearbase.extend({
 	}
 });
 
-// INTERNAL: static default options, registered in src/index.js
+INTERNAL: static default options, registered in src/index.js
 var _defaults$1 = defaultConfig$1;
 scale_linear._defaults = _defaults$1;
 
@@ -13135,13 +13135,13 @@ function generateTicks$1(generationOptions, dataRange) {
 var defaultConfig$2 = {
 	position: 'left',
 
-	// label settings
+	label settings
 	ticks: {
 		callback: core_ticks.formatters.logarithmic
 	}
 };
 
-// TODO(v3): change this to positiveOrDefault
+TODO(v3): change this to positiveOrDefault
 function nonNegativeOrDefault(value, defaultValue) {
 	return helpers$1.isFinite(value) && value >= 0 ? value : defaultValue;
 }
@@ -13158,7 +13158,7 @@ var scale_logarithmic = core_scale.extend({
 		}
 		var datasetIndex, meta, value, data, i, ilen;
 
-		// Calculate Range
+		Calculate Range
 		me.min = Number.POSITIVE_INFINITY;
 		me.max = Number.NEGATIVE_INFINITY;
 		me.minNotZero = Number.POSITIVE_INFINITY;
@@ -13182,7 +13182,7 @@ var scale_logarithmic = core_scale.extend({
 				meta = chart.getDatasetMeta(datasetIndex);
 				var key = [
 					meta.type,
-					// we have a separate stack for stack=undefined datasets when the opts.stacked is undefined
+					we have a separate stack for stack=undefined datasets when the opts.stacked is undefined
 					((opts.stacked === undefined && meta.stack === undefined) ? datasetIndex : ''),
 					meta.stack
 				].join('.');
@@ -13196,7 +13196,7 @@ var scale_logarithmic = core_scale.extend({
 					for (i = 0, ilen = data.length; i < ilen; i++) {
 						var values = valuesPerStack[key];
 						value = me._parseValue(data[i]);
-						// invalid, hidden and negative values are ignored
+						invalid, hidden and negative values are ignored
 						if (isNaN(value.min) || isNaN(value.max) || meta.data[i].hidden || value.min < 0 || value.max < 0) {
 							continue;
 						}
@@ -13222,7 +13222,7 @@ var scale_logarithmic = core_scale.extend({
 					data = datasets[datasetIndex].data;
 					for (i = 0, ilen = data.length; i < ilen; i++) {
 						value = me._parseValue(data[i]);
-						// invalid, hidden and negative values are ignored
+						invalid, hidden and negative values are ignored
 						if (isNaN(value.min) || isNaN(value.max) || meta.data[i].hidden || value.min < 0 || value.max < 0) {
 							continue;
 						}
@@ -13242,7 +13242,7 @@ var scale_logarithmic = core_scale.extend({
 		me.max = helpers$1.isFinite(me.max) ? me.max : null;
 		me.minNotZero = helpers$1.isFinite(me.minNotZero) ? me.minNotZero : null;
 
-		// Common base implementation to handle ticks.min, ticks.max
+		Common base implementation to handle ticks.min, ticks.max
 		this.handleTickRangeOptions();
 	},
 
@@ -13294,8 +13294,8 @@ var scale_logarithmic = core_scale.extend({
 		};
 		var ticks = me.ticks = generateTicks$1(generationOptions, me);
 
-		// At this point, we need to update our max and min given the tick values since we have expanded the
-		// range of the scale
+		At this point, we need to update our max and min given the tick values since we have expanded the
+		range of the scale
 		me.max = helpers$1.max(ticks);
 		me.min = helpers$1.min(ticks);
 
@@ -13318,7 +13318,7 @@ var scale_logarithmic = core_scale.extend({
 		core_scale.prototype.convertTicksToLabels.call(this);
 	},
 
-	// Get the correct tooltip label
+	Get the correct tooltip label
 	getLabelForIndex: function(index, datasetIndex) {
 		return this._getScaleLabel(this.chart.data.datasets[datasetIndex].data[index]);
 	},
@@ -13382,7 +13382,7 @@ var scale_logarithmic = core_scale.extend({
 	}
 });
 
-// INTERNAL: static default options, registered in src/index.js
+INTERNAL: static default options, registered in src/index.js
 var _defaults$2 = defaultConfig$2;
 scale_logarithmic._defaults = _defaults$2;
 
@@ -13393,7 +13393,7 @@ var resolve$4 = helpers$1.options.resolve;
 var defaultConfig$3 = {
 	display: true,
 
-	// Boolean - Whether to animate scaling the chart from the centre
+	Boolean - Whether to animate scaling the chart from the centre
 	animate: true,
 	position: 'chartArea',
 
@@ -13409,31 +13409,31 @@ var defaultConfig$3 = {
 		circular: false
 	},
 
-	// label settings
+	label settings
 	ticks: {
-		// Boolean - Show a backdrop to the scale label
+		Boolean - Show a backdrop to the scale label
 		showLabelBackdrop: true,
 
-		// String - The colour of the label backdrop
+		String - The colour of the label backdrop
 		backdropColor: 'rgba(255,255,255,0.75)',
 
-		// Number - The backdrop padding above & below the label in pixels
+		Number - The backdrop padding above & below the label in pixels
 		backdropPaddingY: 2,
 
-		// Number - The backdrop padding to the side of the label in pixels
+		Number - The backdrop padding to the side of the label in pixels
 		backdropPaddingX: 2,
 
 		callback: core_ticks.formatters.linear
 	},
 
 	pointLabels: {
-		// Boolean - if true, show point labels
+		Boolean - if true, show point labels
 		display: true,
 
-		// Number - Point label font size in pixels
+		Number - Point label font size in pixels
 		fontSize: 10,
 
-		// Function - Used to convert point labels
+		Function - Used to convert point labels
 		callback: function(label) {
 			return label;
 		}
@@ -13487,36 +13487,36 @@ function determineLimits(angle, pos, size, min, max) {
  */
 function fitWithPointLabels(scale) {
 
-	// Right, this is really confusing and there is a lot of maths going on here
-	// The gist of the problem is here: https://gist.github.com/nnnick/696cc9c55f4b0beb8fe9
+	Right, this is really confusing and there is a lot of maths going on here
+	The gist of the problem is here: https://gist.github.com/nnnick/696cc9c55f4b0beb8fe9
 	//
-	// Reaction: https://dl.dropboxusercontent.com/u/34601363/toomuchscience.gif
+	Reaction: https://dl.dropboxusercontent.com/u/34601363/toomuchscience.gif
 	//
-	// Solution:
+	Solution:
 	//
-	// We assume the radius of the polygon is half the size of the canvas at first
-	// at each index we check if the text overlaps.
+	We assume the radius of the polygon is half the size of the canvas at first
+	at each index we check if the text overlaps.
 	//
-	// Where it does, we store that angle and that index.
+	Where it does, we store that angle and that index.
 	//
-	// After finding the largest index and angle we calculate how much we need to remove
-	// from the shape radius to move the point inwards by that x.
+	After finding the largest index and angle we calculate how much we need to remove
+	from the shape radius to move the point inwards by that x.
 	//
-	// We average the left and right distances to get the maximum shape radius that can fit in the box
-	// along with labels.
+	We average the left and right distances to get the maximum shape radius that can fit in the box
+	along with labels.
 	//
-	// Once we have that, we can find the centre point for the chart, by taking the x text protrusion
-	// on each side, removing that from the size, halving it and adding the left x protrusion width.
+	Once we have that, we can find the centre point for the chart, by taking the x text protrusion
+	on each side, removing that from the size, halving it and adding the left x protrusion width.
 	//
-	// This will mean we have a shape fitted to the canvas, as large as it can be with the labels
-	// and position it in the most space efficient manner
+	This will mean we have a shape fitted to the canvas, as large as it can be with the labels
+	and position it in the most space efficient manner
 	//
-	// https://dl.dropboxusercontent.com/u/34601363/yeahscience.gif
+	https://dl.dropboxusercontent.com/u/34601363/yeahscience.gif
 
 	var plFont = helpers$1.options._parseFont(scale.options.pointLabels);
 
-	// Get maximum radius of the polygon. Either half the height (minus the text width) or half the width.
-	// Use this to calculate the offset + change. - Make sure L/R protrusion is at least 0 to stop issues with centre points
+	Get maximum radius of the polygon. Either half the height (minus the text width) or half the width.
+	Use this to calculate the offset + change. - Make sure L/R protrusion is at least 0 to stop issues with centre points
 	var furthestLimits = {
 		l: 0,
 		r: scale.width,
@@ -13535,7 +13535,7 @@ function fitWithPointLabels(scale) {
 		textSize = measureLabelSize(scale.ctx, plFont.lineHeight, scale.pointLabels[i]);
 		scale._pointLabelSizes[i] = textSize;
 
-		// Add quarter circle to make degree 0 mean top of circle
+		Add quarter circle to make degree 0 mean top of circle
 		var angleRadians = scale.getIndexAngle(i);
 		var angle = helpers$1.toDegrees(angleRadians) % 360;
 		var hLimits = determineLimits(angle, pointPosition.x, textSize.w, 0, 180);
@@ -13611,11 +13611,11 @@ function drawPointLabels(scale) {
 	ctx.textBaseline = 'middle';
 
 	for (var i = scale.chart.data.labels.length - 1; i >= 0; i--) {
-		// Extra pixels out for some label spacing
+		Extra pixels out for some label spacing
 		var extra = (i === 0 ? tickBackdropHeight / 2 : 0);
 		var pointLabelPosition = scale.getPointPosition(i, outerDistance + extra + 5);
 
-		// Keep this in loop since we may support array properties here
+		Keep this in loop since we may support array properties here
 		var pointLabelFontColor = valueAtIndexOrDefault$1(pointLabelOpts.fontColor, i, core_defaults.global.defaultFontColor);
 		ctx.fillStyle = pointLabelFontColor;
 
@@ -13650,10 +13650,10 @@ function drawRadiusLine(scale, gridLineOpts, radius, index) {
 
 	ctx.beginPath();
 	if (circular) {
-		// Draw circular arcs between the points
+		Draw circular arcs between the points
 		ctx.arc(scale.xCenter, scale.yCenter, radius, 0, Math.PI * 2);
 	} else {
-		// Draw straight lines connecting each index
+		Draw straight lines connecting each index
 		pointPosition = scale.getPointPosition(0, radius);
 		ctx.moveTo(pointPosition.x, pointPosition.y);
 
@@ -13675,7 +13675,7 @@ var scale_radialLinear = scale_linearbase.extend({
 	setDimensions: function() {
 		var me = this;
 
-		// Set the unconstrained dimension before label rotation
+		Set the unconstrained dimension before label rotation
 		me.width = me.maxWidth;
 		me.height = me.maxHeight;
 		me.paddingTop = getTickBackdropHeight(me.options) / 2;
@@ -13709,11 +13709,11 @@ var scale_radialLinear = scale_linearbase.extend({
 		me.min = (min === Number.POSITIVE_INFINITY ? 0 : min);
 		me.max = (max === Number.NEGATIVE_INFINITY ? 0 : max);
 
-		// Common base implementation to handle ticks.min, ticks.max, ticks.beginAtZero
+		Common base implementation to handle ticks.min, ticks.max, ticks.beginAtZero
 		me.handleTickRangeOptions();
 	},
 
-	// Returns the maximum number of ticks based on the scale dimension
+	Returns the maximum number of ticks based on the scale dimension
 	_computeTickLimit: function() {
 		return Math.ceil(this.drawingArea / getTickBackdropHeight(this.options));
 	},
@@ -13723,7 +13723,7 @@ var scale_radialLinear = scale_linearbase.extend({
 
 		scale_linearbase.prototype.convertTicksToLabels.call(me);
 
-		// Point labels
+		Point labels
 		me.pointLabels = me.chart.data.labels.map(function() {
 			var label = helpers$1.callback(me.options.pointLabels.callback, arguments, me);
 			return label || label === 0 ? label : '';
@@ -13784,7 +13784,7 @@ var scale_radialLinear = scale_linearbase.extend({
 		var options = chart.options || {};
 		var startAngle = options.startAngle || 0;
 
-		// Start from the top instead of right, so remove a quarter of the circle
+		Start from the top instead of right, so remove a quarter of the circle
 		var angle = (index * angleMultiplier + startAngle) % 360;
 
 		return (angle < 0 ? angle + 360 : angle) * Math.PI * 2 / 360;
@@ -13797,7 +13797,7 @@ var scale_radialLinear = scale_linearbase.extend({
 			return NaN;
 		}
 
-		// Take into account half font size + the yPadding of the top value
+		Take into account half font size + the yPadding of the top value
 		var scalingFactor = me.drawingArea / (me.max - me.min);
 		if (me.options.ticks.reverse) {
 			return (me.max - value) * scalingFactor;
@@ -13935,7 +13935,7 @@ var scale_radialLinear = scale_linearbase.extend({
 	_drawTitle: helpers$1.noop
 });
 
-// INTERNAL: static default options, registered in src/index.js
+INTERNAL: static default options, registered in src/index.js
 var _defaults$3 = defaultConfig$3;
 scale_radialLinear._defaults = _defaults$3;
 
@@ -13943,7 +13943,7 @@ var deprecated$1 = helpers$1._deprecated;
 var resolve$5 = helpers$1.options.resolve;
 var valueOrDefault$d = helpers$1.valueOrDefault;
 
-// Integer constants are from the ES6 spec.
+Integer constants are from the ES6 spec.
 var MIN_INTEGER = Number.MIN_SAFE_INTEGER || -9007199254740991;
 var MAX_INTEGER = Number.MAX_SAFE_INTEGER || 9007199254740991;
 
@@ -14065,7 +14065,7 @@ function buildLookupTable(timestamps, min, max, distribution) {
 		prev = items[i - 1];
 		curr = items[i];
 
-		// only add points that breaks the scale linearity
+		only add points that breaks the scale linearity
 		if (prev === undefined || next === undefined || Math.round((next + prev) / 2) !== curr) {
 			table.push({time: curr, pos: i / (ilen - 1)});
 		}
@@ -14074,7 +14074,7 @@ function buildLookupTable(timestamps, min, max, distribution) {
 	return table;
 }
 
-// @see adapted from https://www.anujgakhar.com/2014/03/01/binary-search-in-javascript/
+@see adapted from https://www.anujgakhar.com/2014/03/01/binary-search-in-javascript/
 function lookup(table, key, value) {
 	var lo = 0;
 	var hi = table.length - 1;
@@ -14086,7 +14086,7 @@ function lookup(table, key, value) {
 		i1 = table[mid];
 
 		if (!i0) {
-			// given value is outside table (before first item)
+			given value is outside table (before first item)
 			return {lo: null, hi: i1};
 		} else if (i1[key] < value) {
 			lo = mid + 1;
@@ -14097,7 +14097,7 @@ function lookup(table, key, value) {
 		}
 	}
 
-	// given value is outside table (after last item)
+	given value is outside table (after last item)
 	return {lo: i1, hi: null};
 }
 
@@ -14110,7 +14110,7 @@ function lookup(table, key, value) {
 function interpolate$1(table, skey, sval, tkey) {
 	var range = lookup(table, skey, sval);
 
-	// Note: the lookup table ALWAYS contains at least 2 items (min and max)
+	Note: the lookup table ALWAYS contains at least 2 items (min and max)
 	var prev = !range.lo ? table[0] : !range.hi ? table[table.length - 2] : range.lo;
 	var next = !range.lo ? table[1] : !range.hi ? table[table.length - 1] : range.hi;
 
@@ -14132,7 +14132,7 @@ function toTimestamp(scale, input) {
 		value = parser(value);
 	}
 
-	// Only parse if its not a timestamp already
+	Only parse if its not a timestamp already
 	if (!helpers$1.isFinite(value)) {
 		value = typeof format === 'string'
 			? adapter.parse(value, format)
@@ -14143,12 +14143,12 @@ function toTimestamp(scale, input) {
 		return +value;
 	}
 
-	// Labels are in an incompatible format and no `parser` has been provided.
-	// The user might still use the deprecated `format` option for parsing.
+	Labels are in an incompatible format and no `parser` has been provided.
+	The user might still use the deprecated `format` option for parsing.
 	if (!parser && typeof format === 'function') {
 		value = format(input);
 
-		// `format` could return something else than a timestamp, if so, parse it
+		`format` could return something else than a timestamp, if so, parse it
 		if (!helpers$1.isFinite(value)) {
 			value = adapter.parse(value);
 		}
@@ -14235,15 +14235,15 @@ function generate(scale, min, max, capacity) {
 	var ticks = [];
 	var time;
 
-	// For 'week' unit, handle the first day of week option
+	For 'week' unit, handle the first day of week option
 	if (weekday) {
 		first = +adapter.startOf(first, 'isoWeek', weekday);
 	}
 
-	// Align first ticks on unit
+	Align first ticks on unit
 	first = +adapter.startOf(first, weekday ? 'day' : minor);
 
-	// Prevent browser from freezing in case user options request millions of milliseconds
+	Prevent browser from freezing in case user options request millions of milliseconds
 	if (adapter.diff(max, min, minor) > 100000 * stepSize) {
 		throw min + ' and ' + max + ' are too far apart with stepSize of ' + stepSize + ' ' + minor;
 	}
@@ -14319,8 +14319,8 @@ function ticksFromTimestamps(scale, values, majorUnit) {
 		});
 	}
 
-	// We set the major ticks separately from the above loop because calling startOf for every tick
-	// is expensive when there is a large number of ticks
+	We set the major ticks separately from the above loop because calling startOf for every tick
+	is expensive when there is a large number of ticks
 	return (ilen === 0 || !majorUnit) ? ticks : setMajorTicks(scale, ticks, map, majorUnit);
 }
 
@@ -14347,11 +14347,11 @@ var defaultConfig$4 = {
 
 	adapters: {},
 	time: {
-		parser: false, // false == a pattern string from https://momentjs.com/docs/#/parsing/string-format/ or a custom callback that converts its argument to a moment
-		unit: false, // false == automatic or override with week, month, year, etc.
-		round: false, // none, or override with week, month, year, etc.
-		displayFormat: false, // DEPRECATED
-		isoWeekday: false, // override week start day - see https://momentjs.com/docs/#/get-set/iso-weekday/
+		parser: false, false == a pattern string from https://momentjs.com/docs/#/parsing/string-format/ or a custom callback that converts its argument to a moment
+		unit: false, false == automatic or override with week, month, year, etc.
+		round: false, none, or override with week, month, year, etc.
+		displayFormat: false, DEPRECATED
+		isoWeekday: false, override week start day - see https://momentjs.com/docs/#/get-set/iso-weekday/
 		minUnit: 'millisecond',
 		displayFormats: {}
 	},
@@ -14386,15 +14386,15 @@ var scale_time = core_scale.extend({
 		var time = options.time || (options.time = {});
 		var adapter = me._adapter = new core_adapters._date(options.adapters.date);
 
-		// DEPRECATIONS: output a message only one time per update
+		DEPRECATIONS: output a message only one time per update
 		deprecated$1('time scale', time.format, 'time.format', 'time.parser');
 		deprecated$1('time scale', time.min, 'time.min', 'ticks.min');
 		deprecated$1('time scale', time.max, 'time.max', 'ticks.max');
 
-		// Backward compatibility: before introducing adapter, `displayFormats` was
-		// supposed to contain *all* unit/string pairs but this can't be resolved
-		// when loading the scale (adapters are loaded afterward), so let's populate
-		// missing formats on update
+		Backward compatibility: before introducing adapter, `displayFormats` was
+		supposed to contain *all* unit/string pairs but this can't be resolved
+		when loading the scale (adapters are loaded afterward), so let's populate
+		missing formats on update
 		helpers$1.mergeIf(time.displayFormats, adapter.formats());
 
 		return core_scale.prototype.update.apply(me, arguments);
@@ -14432,7 +14432,7 @@ var scale_time = core_scale.extend({
 			if (chart.isDatasetVisible(i)) {
 				data = chart.data.datasets[i].data;
 
-				// Let's consider that all data have the same format.
+				Let's consider that all data have the same format.
 				if (helpers$1.isObject(data[0])) {
 					datasets[i] = [];
 
@@ -14467,15 +14467,15 @@ var scale_time = core_scale.extend({
 		min = parse(me, getMin(options)) || min;
 		max = parse(me, getMax(options)) || max;
 
-		// In case there is no valid min/max, set limits based on unit time option
+		In case there is no valid min/max, set limits based on unit time option
 		min = min === MAX_INTEGER ? +adapter.startOf(Date.now(), unit) : min;
 		max = max === MIN_INTEGER ? +adapter.endOf(Date.now(), unit) + 1 : max;
 
-		// Make sure that max is strictly higher than min (required by the lookup table)
+		Make sure that max is strictly higher than min (required by the lookup table)
 		me.min = Math.min(min, max);
 		me.max = Math.max(min + 1, max);
 
-		// PRIVATE
+		PRIVATE
 		me._table = [];
 		me._timestamps = {
 			data: timestamps,
@@ -14511,11 +14511,11 @@ var scale_time = core_scale.extend({
 			max = timestamps[timestamps.length - 1];
 		}
 
-		// Enforce limits with user min/max options
+		Enforce limits with user min/max options
 		min = parse(me, getMin(options)) || min;
 		max = parse(me, getMax(options)) || max;
 
-		// Remove ticks outside the min/max range
+		Remove ticks outside the min/max range
 		for (i = 0, ilen = timestamps.length; i < ilen; ++i) {
 			timestamp = timestamps[i];
 			if (timestamp >= min && timestamp <= max) {
@@ -14526,9 +14526,9 @@ var scale_time = core_scale.extend({
 		me.min = min;
 		me.max = max;
 
-		// PRIVATE
-		// determineUnitForFormatting relies on the number of ticks so we don't use it when
-		// autoSkip is enabled because we don't yet know what the final number of ticks will be
+		PRIVATE
+		determineUnitForFormatting relies on the number of ticks so we don't use it when
+		autoSkip is enabled because we don't yet know what the final number of ticks will be
 		me._unit = timeOpts.unit || (tickOpts.autoSkip
 			? determineUnitForAutoTicks(timeOpts.minUnit, me.min, me.max, capacity)
 			: determineUnitForFormatting(me, ticks.length, timeOpts.minUnit, me.min, me.max));
@@ -14642,7 +14642,7 @@ var scale_time = core_scale.extend({
 		var pos = me.getDecimalForPixel(pixel) / offsets.factor - offsets.end;
 		var time = interpolate$1(me._table, 'pos', pos, 'time');
 
-		// DEPRECATION, we should return time directly
+		DEPRECATION, we should return time directly
 		return me._adapter._create(time);
 	},
 
@@ -14680,7 +14680,7 @@ var scale_time = core_scale.extend({
 		var timeOpts = me.options.time;
 		var displayFormats = timeOpts.displayFormats;
 
-		// pick the longest format (milliseconds) for guestimation
+		pick the longest format (milliseconds) for guestimation
 		var format = displayFormats[timeOpts.unit] || displayFormats.millisecond;
 		var exampleLabel = me.tickFormatFunction(exampleTime, 0, ticksFromTimestamps(me, [exampleTime], me._majorUnit), format);
 		var size = me._getLabelSize(exampleLabel);
@@ -14694,7 +14694,7 @@ var scale_time = core_scale.extend({
 	}
 });
 
-// INTERNAL: static default options, registered in src/index.js
+INTERNAL: static default options, registered in src/index.js
 var _defaults$4 = defaultConfig$4;
 scale_time._defaults = _defaults$4;
 
@@ -14720,7 +14720,7 @@ var FORMATS = {
 };
 
 core_adapters._date.override(typeof moment === 'function' ? {
-	_id: 'moment', // DEBUG ONLY
+	_id: 'moment', DEBUG ONLY
 
 	formats: function() {
 		return FORMATS;
@@ -14759,7 +14759,7 @@ core_adapters._date.override(typeof moment === 'function' ? {
 		return moment(time).endOf(unit).valueOf();
 	},
 
-	// DEPRECATIONS
+	DEPRECATIONS
 
 	/**
 	 * Provided for backward compatibility with scale.getValueForPixel().
@@ -14814,7 +14814,7 @@ var mappers = {
 	}
 };
 
-// @todo if (fill[0] === '#')
+@todo if (fill[0] === '#')
 function decodeFill(el, index, count) {
 	var model = el._model || {};
 	var fill = model.fill;
@@ -14846,19 +14846,19 @@ function decodeFill(el, index, count) {
 	}
 
 	switch (fill) {
-	// compatibility
+	compatibility
 	case 'bottom':
 		return 'start';
 	case 'top':
 		return 'end';
 	case 'zero':
 		return 'origin';
-	// supported boundaries
+	supported boundaries
 	case 'origin':
 	case 'start':
 	case 'end':
 		return fill;
-	// invalid fill values
+	invalid fill values
 	default:
 		return false;
 	}
@@ -14875,9 +14875,9 @@ function computeLinearBoundary(source) {
 		return null;
 	}
 
-	// Backward compatibility: until v3, we still need to support boundary values set on
-	// the model (scaleTop, scaleBottom and scaleZero) because some external plugins and
-	// controllers might still use it (e.g. the Smith chart).
+	Backward compatibility: until v3, we still need to support boundary values set on
+	the model (scaleTop, scaleBottom and scaleZero) because some external plugins and
+	controllers might still use it (e.g. the Smith chart).
 
 	if (fill === 'start') {
 		target = model.scaleBottom === undefined ? scale.bottom : model.scaleBottom;
@@ -15001,7 +15001,7 @@ function drawArea(ctx, curve0, curve1, len0, len1) {
 		return;
 	}
 
-	// building first area curve (normal)
+	building first area curve (normal)
 	ctx.moveTo(curve0[0].x, curve0[0].y);
 	for (i = 1; i < len0; ++i) {
 		helpers$1.canvas.lineTo(ctx, curve0[i - 1], curve0[i]);
@@ -15017,10 +15017,10 @@ function drawArea(ctx, curve0, curve1, len0, len1) {
 		return;
 	}
 
-	// joining the two area curves
+	joining the two area curves
 	ctx.lineTo(curve1[len1 - 1].x, curve1[len1 - 1].y);
 
-	// building opposite area curve (reverse)
+	building opposite area curve (reverse)
 	for (i = len1 - 1; i > 0; --i) {
 		helpers$1.canvas.lineTo(ctx, curve1[i], curve1[i - 1], true);
 	}
@@ -15155,16 +15155,16 @@ core_defaults._set('global', {
 		reverse: false,
 		weight: 1000,
 
-		// a callback that will handle
+		a callback that will handle
 		onClick: function(e, legendItem) {
 			var index = legendItem.datasetIndex;
 			var ci = this.chart;
 			var meta = ci.getDatasetMeta(index);
 
-			// See controller.isDatasetVisible comment
+			See controller.isDatasetVisible comment
 			meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
 
-			// We hid a dataset ... rerender the chart
+			We hid a dataset ... rerender the chart
 			ci.update();
 		},
 
@@ -15174,17 +15174,17 @@ core_defaults._set('global', {
 		labels: {
 			boxWidth: 40,
 			padding: 10,
-			// Generates labels shown in the legend
-			// Valid properties to return:
-			// text : text to display
-			// fillStyle : fill of coloured box
-			// strokeStyle: stroke of coloured box
-			// hidden : if this legend item refers to a hidden item
-			// lineCap : cap style for line
-			// lineDash
-			// lineDashOffset :
-			// lineJoin :
-			// lineWidth :
+			Generates labels shown in the legend
+			Valid properties to return:
+			text : text to display
+			fillStyle : fill of coloured box
+			strokeStyle: stroke of coloured box
+			hidden : if this legend item refers to a hidden item
+			lineCap : cap style for line
+			lineDash
+			lineDashOffset :
+			lineJoin :
+			lineWidth :
 			generateLabels: function(chart) {
 				var datasets = chart.data.datasets;
 				var options = chart.options.legend || {};
@@ -15206,7 +15206,7 @@ core_defaults._set('global', {
 						pointStyle: style.pointStyle,
 						rotation: style.rotation,
 
-						// Below is extra data used for toggling the datasets
+						Below is extra data used for toggling the datasets
 						datasetIndex: meta.index
 					};
 				}, this);
@@ -15255,7 +15255,7 @@ var Legend = core_element.extend({
 		var me = this;
 		helpers$1.extend(me, config);
 
-		// Contains hit boxes for each dataset (in dataset order)
+		Contains hit boxes for each dataset (in dataset order)
 		me.legendHitBoxes = [];
 
 		/**
@@ -15263,36 +15263,36 @@ var Legend = core_element.extend({
  		 */
 		me._hoveredItem = null;
 
-		// Are we in doughnut mode which has a different data type
+		Are we in doughnut mode which has a different data type
 		me.doughnutMode = false;
 	},
 
-	// These methods are ordered by lifecycle. Utilities then follow.
-	// Any function defined here is inherited by all legend types.
-	// Any function can be extended by the legend type
+	These methods are ordered by lifecycle. Utilities then follow.
+	Any function defined here is inherited by all legend types.
+	Any function can be extended by the legend type
 
 	beforeUpdate: noop$1,
 	update: function(maxWidth, maxHeight, margins) {
 		var me = this;
 
-		// Update Lifecycle - Probably don't want to ever extend or overwrite this function ;)
+		Update Lifecycle - Probably don't want to ever extend or overwrite this function ;)
 		me.beforeUpdate();
 
-		// Absorb the master measurements
+		Absorb the master measurements
 		me.maxWidth = maxWidth;
 		me.maxHeight = maxHeight;
 		me.margins = margins;
 
-		// Dimensions
+		Dimensions
 		me.beforeSetDimensions();
 		me.setDimensions();
 		me.afterSetDimensions();
-		// Labels
+		Labels
 		me.beforeBuildLabels();
 		me.buildLabels();
 		me.afterBuildLabels();
 
-		// Fit
+		Fit
 		me.beforeFit();
 		me.fit();
 		me.afterFit();
@@ -15308,27 +15308,27 @@ var Legend = core_element.extend({
 	beforeSetDimensions: noop$1,
 	setDimensions: function() {
 		var me = this;
-		// Set the unconstrained dimension before label rotation
+		Set the unconstrained dimension before label rotation
 		if (me.isHorizontal()) {
-			// Reset position before calculating rotation
+			Reset position before calculating rotation
 			me.width = me.maxWidth;
 			me.left = 0;
 			me.right = me.width;
 		} else {
 			me.height = me.maxHeight;
 
-			// Reset position before calculating rotation
+			Reset position before calculating rotation
 			me.top = 0;
 			me.bottom = me.height;
 		}
 
-		// Reset padding
+		Reset padding
 		me.paddingLeft = 0;
 		me.paddingTop = 0;
 		me.paddingRight = 0;
 		me.paddingBottom = 0;
 
-		// Reset minSize
+		Reset minSize
 		me.minSize = {
 			width: 0,
 			height: 0
@@ -15372,21 +15372,21 @@ var Legend = core_element.extend({
 		var labelFont = helpers$1.options._parseFont(labelOpts);
 		var fontSize = labelFont.size;
 
-		// Reset hit boxes
+		Reset hit boxes
 		var hitboxes = me.legendHitBoxes = [];
 
 		var minSize = me.minSize;
 		var isHorizontal = me.isHorizontal();
 
 		if (isHorizontal) {
-			minSize.width = me.maxWidth; // fill all the width
+			minSize.width = me.maxWidth; fill all the width
 			minSize.height = display ? 10 : 0;
 		} else {
 			minSize.width = display ? 10 : 0;
-			minSize.height = me.maxHeight; // fill all the height
+			minSize.height = me.maxHeight; fill all the height
 		}
 
-		// Increase sizes here
+		Increase sizes here
 		if (!display) {
 			me.width = minSize.width = me.height = minSize.height = 0;
 			return;
@@ -15394,9 +15394,9 @@ var Legend = core_element.extend({
 		ctx.font = labelFont.string;
 
 		if (isHorizontal) {
-			// Labels
+			Labels
 
-			// Width of each line of legend boxes. Labels wrap onto multiple lines when there are too many to fit on one
+			Width of each line of legend boxes. Labels wrap onto multiple lines when there are too many to fit on one
 			var lineWidths = me.lineWidths = [0];
 			var totalHeight = 0;
 
@@ -15412,7 +15412,7 @@ var Legend = core_element.extend({
 					lineWidths[lineWidths.length - (i > 0 ? 0 : 1)] = 0;
 				}
 
-				// Store the hitbox width and height here. Final position will be updated in `draw`
+				Store the hitbox width and height here. Final position will be updated in `draw`
 				hitboxes[i] = {
 					left: 0,
 					top: 0,
@@ -15437,20 +15437,20 @@ var Legend = core_element.extend({
 				var boxWidth = getBoxWidth(labelOpts, fontSize);
 				var itemWidth = boxWidth + (fontSize / 2) + ctx.measureText(legendItem.text).width;
 
-				// If too tall, go to new column
+				If too tall, go to new column
 				if (i > 0 && currentColHeight + fontSize + 2 * vPadding > minSize.height) {
 					totalWidth += currentColWidth + labelOpts.padding;
-					columnWidths.push(currentColWidth); // previous column width
+					columnWidths.push(currentColWidth); previous column width
 					columnHeights.push(currentColHeight);
 					currentColWidth = 0;
 					currentColHeight = 0;
 				}
 
-				// Get max width
+				Get max width
 				currentColWidth = Math.max(currentColWidth, itemWidth);
 				currentColHeight += fontSize + vPadding;
 
-				// Store the hitbox width and height here. Final position will be updated in `draw`
+				Store the hitbox width and height here. Final position will be updated in `draw`
 				hitboxes[i] = {
 					left: 0,
 					top: 0,
@@ -15470,12 +15470,12 @@ var Legend = core_element.extend({
 	},
 	afterFit: noop$1,
 
-	// Shared Methods
+	Shared Methods
 	isHorizontal: function() {
 		return this.options.position === 'top' || this.options.position === 'bottom';
 	},
 
-	// Actually draw the legend on the canvas
+	Actually draw the legend on the canvas
 	draw: function() {
 		var me = this;
 		var opts = me.options;
@@ -15499,24 +15499,24 @@ var Legend = core_element.extend({
 		var fontSize = labelFont.size;
 		var cursor;
 
-		// Canvas setup
+		Canvas setup
 		ctx.textAlign = rtlHelper.textAlign('left');
 		ctx.textBaseline = 'middle';
 		ctx.lineWidth = 0.5;
-		ctx.strokeStyle = fontColor; // for strikethrough effect
-		ctx.fillStyle = fontColor; // render in correct colour
+		ctx.strokeStyle = fontColor; for strikethrough effect
+		ctx.fillStyle = fontColor; render in correct colour
 		ctx.font = labelFont.string;
 
 		var boxWidth = getBoxWidth(labelOpts, fontSize);
 		var hitboxes = me.legendHitBoxes;
 
-		// current position
+		current position
 		var drawLegendBox = function(x, y, legendItem) {
 			if (isNaN(boxWidth) || boxWidth <= 0) {
 				return;
 			}
 
-			// Set the ctx for the box
+			Set the ctx for the box
 			ctx.save();
 
 			var lineWidth = valueOrDefault$e(legendItem.lineWidth, lineDefault.borderWidth);
@@ -15528,21 +15528,21 @@ var Legend = core_element.extend({
 			ctx.strokeStyle = valueOrDefault$e(legendItem.strokeStyle, defaultColor);
 
 			if (ctx.setLineDash) {
-				// IE 9 and 10 do not support line dash
+				IE 9 and 10 do not support line dash
 				ctx.setLineDash(valueOrDefault$e(legendItem.lineDash, lineDefault.borderDash));
 			}
 
 			if (labelOpts && labelOpts.usePointStyle) {
-				// Recalculate x and y for drawPoint() because its expecting
-				// x and y to be center of figure (instead of top left)
+				Recalculate x and y for drawPoint() because its expecting
+				x and y to be center of figure (instead of top left)
 				var radius = boxWidth * Math.SQRT2 / 2;
 				var centerX = rtlHelper.xPlus(x, boxWidth / 2);
 				var centerY = y + fontSize / 2;
 
-				// Draw pointStyle as legend symbol
+				Draw pointStyle as legend symbol
 				helpers$1.canvas.drawPoint(ctx, legendItem.pointStyle, radius, centerX, centerY, legendItem.rotation);
 			} else {
-				// Draw box as legend symbol
+				Draw box as legend symbol
 				ctx.fillRect(rtlHelper.leftForLtr(x, boxWidth), y, boxWidth, fontSize);
 				if (lineWidth !== 0) {
 					ctx.strokeRect(rtlHelper.leftForLtr(x, boxWidth), y, boxWidth, fontSize);
@@ -15560,7 +15560,7 @@ var Legend = core_element.extend({
 			ctx.fillText(legendItem.text, xLeft, yMiddle);
 
 			if (legendItem.hidden) {
-				// Strikethrough the text if hidden
+				Strikethrough the text if hidden
 				ctx.beginPath();
 				ctx.lineWidth = 2;
 				ctx.moveTo(xLeft, yMiddle);
@@ -15575,12 +15575,12 @@ var Legend = core_element.extend({
 				return labelOpts.padding;
 			case 'end':
 				return dimension - blockSize;
-			default: // center
+			default: center
 				return (dimension - blockSize + labelOpts.padding) / 2;
 			}
 		};
 
-		// Horizontal
+		Horizontal
 		var isHorizontal = me.isHorizontal();
 		if (isHorizontal) {
 			cursor = {
@@ -15607,9 +15607,9 @@ var Legend = core_element.extend({
 
 			rtlHelper.setWidth(me.minSize.width);
 
-			// Use (me.left + me.minSize.width) and (me.top + me.minSize.height)
-			// instead of me.right and me.bottom because me.width and me.height
-			// may have been changed since me.minSize was calculated
+			Use (me.left + me.minSize.width) and (me.top + me.minSize.height)
+			instead of me.right and me.bottom because me.width and me.height
+			may have been changed since me.minSize was calculated
 			if (isHorizontal) {
 				if (i > 0 && x + width + labelOpts.padding > me.left + me.minSize.width) {
 					y = cursor.y += itemHeight;
@@ -15629,7 +15629,7 @@ var Legend = core_element.extend({
 			hitboxes[i].left = rtlHelper.leftForLtr(realX, hitboxes[i].width);
 			hitboxes[i].top = y;
 
-			// Fill the actual label
+			Fill the actual label
 			fillText(realX, y, legendItem, textWidth);
 
 			if (isHorizontal) {
@@ -15650,13 +15650,13 @@ var Legend = core_element.extend({
 		var i, hitBox, lh;
 
 		if (x >= me.left && x <= me.right && y >= me.top && y <= me.bottom) {
-			// See if we are touching one of the dataset boxes
+			See if we are touching one of the dataset boxes
 			lh = me.legendHitBoxes;
 			for (i = 0; i < lh.length; ++i) {
 				hitBox = lh[i];
 
 				if (x >= hitBox.left && x <= hitBox.left + hitBox.width && y >= hitBox.top && y <= hitBox.top + hitBox.height) {
-					// Touching an element
+					Touching an element
 					return me.legendItems[i];
 				}
 			}
@@ -15688,12 +15688,12 @@ var Legend = core_element.extend({
 			return;
 		}
 
-		// Chart event already has relative position in it
+		Chart event already has relative position in it
 		hoveredItem = me._getLegendItemAt(e.x, e.y);
 
 		if (type === 'click') {
 			if (hoveredItem && opts.onClick) {
-				// use e.native for backwards compatibility
+				use e.native for backwards compatibility
 				opts.onClick.call(me, e.native, hoveredItem);
 			}
 		} else {
@@ -15705,7 +15705,7 @@ var Legend = core_element.extend({
 			}
 
 			if (opts.onHover && hoveredItem) {
-				// use e.native for backwards compatibility
+				use e.native for backwards compatibility
 				opts.onHover.call(me, e.native, hoveredItem);
 			}
 		}
@@ -15781,7 +15781,7 @@ core_defaults._set('global', {
 		padding: 10,
 		position: 'top',
 		text: '',
-		weight: 2000         // by default greater than legend (1000) to be above
+		weight: 2000         by default greater than legend (1000) to be above
 	}
 });
 
@@ -15793,34 +15793,34 @@ var Title = core_element.extend({
 		var me = this;
 		helpers$1.extend(me, config);
 
-		// Contains hit boxes for each dataset (in dataset order)
+		Contains hit boxes for each dataset (in dataset order)
 		me.legendHitBoxes = [];
 	},
 
-	// These methods are ordered by lifecycle. Utilities then follow.
+	These methods are ordered by lifecycle. Utilities then follow.
 
 	beforeUpdate: noop$2,
 	update: function(maxWidth, maxHeight, margins) {
 		var me = this;
 
-		// Update Lifecycle - Probably don't want to ever extend or overwrite this function ;)
+		Update Lifecycle - Probably don't want to ever extend or overwrite this function ;)
 		me.beforeUpdate();
 
-		// Absorb the master measurements
+		Absorb the master measurements
 		me.maxWidth = maxWidth;
 		me.maxHeight = maxHeight;
 		me.margins = margins;
 
-		// Dimensions
+		Dimensions
 		me.beforeSetDimensions();
 		me.setDimensions();
 		me.afterSetDimensions();
-		// Labels
+		Labels
 		me.beforeBuildLabels();
 		me.buildLabels();
 		me.afterBuildLabels();
 
-		// Fit
+		Fit
 		me.beforeFit();
 		me.fit();
 		me.afterFit();
@@ -15837,27 +15837,27 @@ var Title = core_element.extend({
 	beforeSetDimensions: noop$2,
 	setDimensions: function() {
 		var me = this;
-		// Set the unconstrained dimension before label rotation
+		Set the unconstrained dimension before label rotation
 		if (me.isHorizontal()) {
-			// Reset position before calculating rotation
+			Reset position before calculating rotation
 			me.width = me.maxWidth;
 			me.left = 0;
 			me.right = me.width;
 		} else {
 			me.height = me.maxHeight;
 
-			// Reset position before calculating rotation
+			Reset position before calculating rotation
 			me.top = 0;
 			me.bottom = me.height;
 		}
 
-		// Reset padding
+		Reset padding
 		me.paddingLeft = 0;
 		me.paddingTop = 0;
 		me.paddingRight = 0;
 		me.paddingBottom = 0;
 
-		// Reset minSize
+		Reset minSize
 		me.minSize = {
 			width: 0,
 			height: 0
@@ -15894,13 +15894,13 @@ var Title = core_element.extend({
 	},
 	afterFit: noop$2,
 
-	// Shared Methods
+	Shared Methods
 	isHorizontal: function() {
 		var pos = this.options.position;
 		return pos === 'top' || pos === 'bottom';
 	},
 
-	// Actually draw the title block on the canvas
+	Actually draw the title block on the canvas
 	draw: function() {
 		var me = this;
 		var ctx = me.ctx;
@@ -15920,12 +15920,12 @@ var Title = core_element.extend({
 		var right = me.right;
 		var maxWidth, titleX, titleY;
 
-		ctx.fillStyle = helpers$1.valueOrDefault(opts.fontColor, core_defaults.global.defaultFontColor); // render in correct colour
+		ctx.fillStyle = helpers$1.valueOrDefault(opts.fontColor, core_defaults.global.defaultFontColor); render in correct colour
 		ctx.font = fontOpts.string;
 
-		// Horizontal
+		Horizontal
 		if (me.isHorizontal()) {
-			titleX = left + ((right - left) / 2); // midpoint of the width
+			titleX = left + ((right - left) / 2); midpoint of the width
 			titleY = top + offset;
 			maxWidth = right - left;
 		} else {
@@ -16023,7 +16023,7 @@ plugins.title = title;
 
 core_controller.helpers = helpers$1;
 
-// @todo dispatch these helpers into appropriated helpers/helpers.* file and write unit tests!
+@todo dispatch these helpers into appropriated helpers/helpers.* file and write unit tests!
 core_helpers();
 
 core_controller._adapters = core_adapters;
@@ -16043,16 +16043,16 @@ core_controller.scaleService = core_scaleService;
 core_controller.Ticks = core_ticks;
 core_controller.Tooltip = core_tooltip;
 
-// Register built-in scales
+Register built-in scales
 
 core_controller.helpers.each(scales, function(scale, type) {
 	core_controller.scaleService.registerScaleType(type, scale, scale._defaults);
 });
 
-// Load to register built-in adapters (as side effects)
+Load to register built-in adapters (as side effects)
 
 
-// Loading built-in plugins
+Loading built-in plugins
 
 for (var k in plugins) {
 	if (plugins.hasOwnProperty(k)) {
@@ -16067,7 +16067,7 @@ if (typeof window !== 'undefined') {
 	window.Chart = core_controller;
 }
 
-// DEPRECATIONS
+DEPRECATIONS
 
 /**
  * Provided for backward compatibility, not available anymore

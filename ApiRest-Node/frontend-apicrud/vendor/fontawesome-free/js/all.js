@@ -2183,7 +2183,7 @@
     'kit': 'fak'
   };
   var LAYERS_TEXT_CLASSNAME = 'fa-layers-text';
-  var FONT_FAMILY_PATTERN = /Font Awesome ([5 ]*)(Solid|Regular|Light|Duotone|Brands|Free|Pro|Kit).*/; // TODO: do we need to handle font-weight for kit SVG pseudo-elements?
+  var FONT_FAMILY_PATTERN = /Font Awesome ([5 ]*)(Solid|Regular|Light|Duotone|Brands|Free|Pro|Kit).*/; TODO: do we need to handle font-weight for kit SVG pseudo-elements?
 
   var FONT_WEIGHT_TO_PREFIX = {
     '900': 'fas',
@@ -2217,9 +2217,9 @@
   }
 
   function coerce(val) {
-    // Getting an empty string will occur if the attribute is set on the HTML tag but without a value
-    // We'll assume that this is an indication that it should be toggled to true
-    // For example <script data-search-pseudo-elements src="..."></script>
+    Getting an empty string will occur if the attribute is set on the HTML tag but without a value
+    We'll assume that this is an indication that it should be toggled to true
+    For example <script data-search-pseudo-elements src="..."></script>
     if (val === '') return true;
     if (val === 'false') return false;
     if (val === 'true') return true;
@@ -2305,10 +2305,10 @@
   var asyncTimer;
 
   function asyncFlush() {
-    // run promise callbacks
+    run promise callbacks
     for (var i = 0; i < asyncQueue.length; i++) {
       asyncQueue[i][0](asyncQueue[i][1]);
-    } // reset async asyncQueue
+    } reset async asyncQueue
 
 
     asyncQueue = [];
@@ -2377,7 +2377,7 @@
       }
 
       if (value && (typeof value === 'function' || _typeof(value) === 'object')) {
-        // then should be retrieved only once
+        then should be retrieved only once
         var then = value.then;
 
         if (typeof then === 'function') {
@@ -2495,10 +2495,10 @@
       }
 
       if (this._state === FULFILLED || this._state === REJECTED) {
-        // already resolved, call callback async
+        already resolved, call callback async
         asyncCall(invokeCallback, subscriber);
       } else {
-        // subscribe
+        subscribe
         this._then.push(subscriber);
       }
 
@@ -3350,8 +3350,8 @@
     },
     nest: function nest(mutation) {
       var node = mutation[0];
-      var abstract = mutation[1]; // If we already have a replaced node we do not want to continue nesting within it.
-      // Short-circuit to the standard replacement
+      var abstract = mutation[1]; If we already have a replaced node we do not want to continue nesting within it.
+      Short-circuit to the standard replacement
 
       if (~classArray(node).indexOf(config.replacementClass)) {
         return mutators.replace(mutation);
@@ -3922,7 +3922,7 @@
 
     try {
       candidates = toArray(root.querySelectorAll(prefixesDomQuery));
-    } catch (e) {// noop
+    } catch (e) {noop
     }
 
     if (candidates.length > 0) {
@@ -3979,7 +3979,7 @@
     var pendingAttribute = "".concat(DATA_FA_PSEUDO_ELEMENT_PENDING).concat(position.replace(':', '-'));
     return new picked(function (resolve, reject) {
       if (node.getAttribute(pendingAttribute) !== null) {
-        // This node is already being processed
+        This node is already being processed
         return resolve();
       }
 
@@ -3993,9 +3993,9 @@
       var content = styles.getPropertyValue('content');
 
       if (alreadyProcessedPseudoElement && !fontFamily) {
-        // If we've already processed it but the current computed style does not result in a font-family,
-        // that probably means that a class name that was previously present to make the icon has been
-        // removed. So we now should delete the icon.
+        If we've already processed it but the current computed style does not result in a font-family,
+        that probably means that a class name that was previously present to make the icon has been
+        removed. So we now should delete the icon.
         node.removeChild(alreadyProcessedPseudoElement);
         return resolve();
       } else if (fontFamily && content !== 'none' && content !== '') {
@@ -4004,14 +4004,14 @@
         var prefix = ~['Solid', 'Regular', 'Light', 'Duotone', 'Brands', 'Kit'].indexOf(fontFamily[2]) ? STYLE_TO_PREFIX[fontFamily[2].toLowerCase()] : FONT_WEIGHT_TO_PREFIX[fontWeight];
         var hexValue = toHex(_content.length === 3 ? _content.substr(1, 1) : _content);
         var iconName = byUnicode(prefix, hexValue);
-        var iconIdentifier = iconName; // Only convert the pseudo element in this :before/:after position into an icon if we haven't
-        // already done so with the same prefix and iconName
+        var iconIdentifier = iconName; Only convert the pseudo element in this :before/:after position into an icon if we haven't
+        already done so with the same prefix and iconName
 
         if (iconName && (!alreadyProcessedPseudoElement || alreadyProcessedPseudoElement.getAttribute(DATA_PREFIX) !== prefix || alreadyProcessedPseudoElement.getAttribute(DATA_ICON) !== iconIdentifier)) {
           node.setAttribute(pendingAttribute, iconIdentifier);
 
           if (alreadyProcessedPseudoElement) {
-            // Delete the old one, since we're replacing it with a new one
+            Delete the old one, since we're replacing it with a new one
             node.removeChild(alreadyProcessedPseudoElement);
           }
 

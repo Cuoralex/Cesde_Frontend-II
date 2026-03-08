@@ -5,7 +5,7 @@ console.log("🔧 Inicializando base de datos MySQL...")
 
 const initDatabase = async () => {
   try {
-    // Crear conexión sin base de datos para crear la BD
+    Crear conexión sin base de datos para crear la BD
     const connection = await mysql.createConnection({
       host: process.env.DB_HOST || "localhost",
       port: process.env.DB_PORT || 3306,
@@ -13,15 +13,15 @@ const initDatabase = async () => {
       password: process.env.DB_PASSWORD || "",
     })
 
-    // Crear base de datos
+    Crear base de datos
     const dbName = process.env.DB_NAME || "inventario_db"
     await connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
     console.log(`✅ Base de datos '${dbName}' creada o ya existe`)
 
-    // Usar la base de datos
+    Usar la base de datos
     await connection.query(`USE ${dbName}`)
 
-    // Crear todas las tablas
+    Crear todas las tablas
     await connection.query(`
       CREATE TABLE IF NOT EXISTS productos (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -37,7 +37,7 @@ const initDatabase = async () => {
     `)
     console.log("✅ Tabla 'productos' creada o ya existe")
 
-    // Crear tabla clientes
+    Crear tabla clientes
     await connection.query(`
       CREATE TABLE IF NOT EXISTS clientes (
         id_cliente INT PRIMARY KEY AUTO_INCREMENT,
@@ -55,7 +55,7 @@ const initDatabase = async () => {
     `)
     console.log("✅ Tabla 'clientes' creada o ya existe")
 
-    // Crear tabla roles (usuarios)
+    Crear tabla roles (usuarios)
     await connection.query(`
       CREATE TABLE IF NOT EXISTS roles (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -68,7 +68,7 @@ const initDatabase = async () => {
     `)
     console.log("✅ Tabla 'roles' creada o ya existe")
 
-    // Crear tabla pedidos
+    Crear tabla pedidos
     await connection.query(`
       CREATE TABLE IF NOT EXISTS pedido (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -83,7 +83,7 @@ const initDatabase = async () => {
     `)
     console.log("✅ Tabla 'pedido' creada o ya existe")
 
-    // Crear tabla detalle_pedido
+    Crear tabla detalle_pedido
     await connection.query(`
       CREATE TABLE IF NOT EXISTS detalle_pedido (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -99,10 +99,10 @@ const initDatabase = async () => {
     `)
     console.log("✅ Tabla 'detalle_pedido' creada o ya existe")
 
-    // Insertar datos de ejemplo
+    Insertar datos de ejemplo
     console.log("📝 Insertando datos de ejemplo...")
 
-    // Usuario administrador
+    Usuario administrador
     try {
       await connection.query("INSERT INTO roles (rol, usuario, contrasena) VALUES (?, ?, ?)", [
         "administrador",
@@ -113,7 +113,7 @@ const initDatabase = async () => {
       if (err.code !== "ER_DUP_ENTRY") throw err
     }
 
-    // Usuario vendedor
+    Usuario vendedor
     try {
       await connection.query("INSERT INTO roles (rol, usuario, contrasena) VALUES (?, ?, ?)", [
         "vendedor",
@@ -124,7 +124,7 @@ const initDatabase = async () => {
       if (err.code !== "ER_DUP_ENTRY") throw err
     }
 
-    // Clientes de ejemplo
+    Clientes de ejemplo
     try {
       await connection.query(
         "INSERT INTO clientes (nombre, apellido, email, celular, direccion, direccion2, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -159,7 +159,7 @@ const initDatabase = async () => {
       if (err.code !== "ER_DUP_ENTRY") throw err
     }
 
-    // Productos de ejemplo
+    Productos de ejemplo
     try {
       await connection.query(
         "INSERT INTO productos (nombre, descripcion, precio, stock, imagen) VALUES (?, ?, ?, ?, ?)",

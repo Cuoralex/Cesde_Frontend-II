@@ -1,16 +1,16 @@
-// Container widths
+Container widths
 //
-// Set the container width, and override it for fixed navbars in media queries.
+Set the container width, and override it for fixed navbars in media queries.
 
 @if $enable-grid-classes {
-  // Single container class with breakpoint max-widths
+  Single container class with breakpoint max-widths
   .container,
-  // 100% wide container at all breakpoints
+  100% wide container at all breakpoints
   .container-fluid {
     @include make-container();
   }
 
-  // Responsive containers that are 100% wide until a breakpoint
+  Responsive containers that are 100% wide until a breakpoint
   @each $breakpoint, $container-max-width in $container-max-widths {
     .container-#{$breakpoint} {
       @extend .container-fluid;
@@ -21,7 +21,7 @@
         max-width: $container-max-width;
       }
 
-      // Extend each breakpoint which is smaller or equal to the current breakpoint
+      Extend each breakpoint which is smaller or equal to the current breakpoint
       $extend-breakpoint: true;
 
       @each $name, $width in $grid-breakpoints {
@@ -30,7 +30,7 @@
             @extend %responsive-container-#{$breakpoint};
           }
 
-          // Once the current breakpoint is reached, stop extending
+          Once the current breakpoint is reached, stop extending
           @if ($breakpoint == $name) {
             $extend-breakpoint: false;
           }
@@ -41,17 +41,17 @@
 }
 
 
-// Row
+Row
 //
-// Rows contain your columns.
+Rows contain your columns.
 
 @if $enable-grid-classes {
   .row {
     @include make-row();
   }
 
-  // Remove the negative margin from default .row, then the horizontal padding
-  // from all immediate children columns (to prevent runaway style inheritance).
+  Remove the negative margin from default .row, then the horizontal padding
+  from all immediate children columns (to prevent runaway style inheritance).
   .no-gutters {
     margin-right: 0;
     margin-left: 0;
@@ -64,9 +64,9 @@
   }
 }
 
-// Columns
+Columns
 //
-// Common styles for small and large grid columns
+Common styles for small and large grid columns
 
 @if $enable-grid-classes {
   @include make-grid-columns();

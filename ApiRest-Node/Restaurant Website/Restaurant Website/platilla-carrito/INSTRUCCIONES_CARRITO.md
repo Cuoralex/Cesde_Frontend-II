@@ -29,10 +29,10 @@ Cada producto tiene estos atributos:
 **Cómo acceder desde JS:**
 ```javascript
 const card = document.querySelector('.card.producto');
-const id = card.dataset.id;           // "1"
-const precio = card.dataset.price;    // "10.50"
-const nombre = card.dataset.name;     // "Tasty Burger"
-const imagen = card.dataset.image;    // "./images/b1.png"
+const id = card.dataset.id;           "1"
+const precio = card.dataset.price;    "10.50"
+const nombre = card.dataset.name;     "Tasty Burger"
+const imagen = card.dataset.image;    "./images/b1.png"
 ```
 
 **Selector para TODOS los productos:**
@@ -113,7 +113,7 @@ productos.forEach(producto => {
 ### **1. LocalStorage para Carrito**
 
 ```javascript
-// Estructura sugerida
+Estructura sugerida
 const carrito = [
   {
     id: 1,
@@ -122,13 +122,13 @@ const carrito = [
     cantidad: 2,
     imagen: "./images/b1.png"
   },
-  // ...
+  ...
 ];
 
-// Guardar en localStorage
+Guardar en localStorage
 localStorage.setItem('carrito', JSON.stringify(carrito));
 
-// Obtener del localStorage
+Obtener del localStorage
 const carritoGuardado = JSON.parse(localStorage.getItem('carrito')) || [];
 ```
 
@@ -145,13 +145,13 @@ function agregarAlCarrito(idProducto) {
   const precio = parseFloat(producto.dataset.price);
   const imagen = producto.dataset.image;
 
-  // TODO: Obtener carrito de localStorage
-  // TODO: Buscar si el producto ya existe
-  // TODO: Si existe, incrementar cantidad
-  // TODO: Si no existe, agregar nuevo
-  // TODO: Guardar en localStorage
-  // TODO: Mostrar notificación al usuario
-  // TODO: Actualizar contador del carrito (.contar-pro)
+  TODO: Obtener carrito de localStorage
+  TODO: Buscar si el producto ya existe
+  TODO: Si existe, incrementar cantidad
+  TODO: Si no existe, agregar nuevo
+  TODO: Guardar en localStorage
+  TODO: Mostrar notificación al usuario
+  TODO: Actualizar contador del carrito (.contar-pro)
 }
 ```
 
@@ -160,19 +160,19 @@ function agregarAlCarrito(idProducto) {
 function cargarCarrito() {
   const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
   const tabla = document.getElementById('carrito-items');
-  tabla.innerHTML = ''; // Limpiar tabla
+  tabla.innerHTML = ''; Limpiar tabla
 
-  // TODO: Iterar sobre cada producto del carrito
-  // TODO: Crear fila <tr> dinámicamente
-  // TODO: Agregar botón de eliminar
-  // TODO: Agregar evento de cambio de cantidad
-  // TODO: Calcular subtotal por producto
+  TODO: Iterar sobre cada producto del carrito
+  TODO: Crear fila <tr> dinámicamente
+  TODO: Agregar botón de eliminar
+  TODO: Agregar evento de cambio de cantidad
+  TODO: Calcular subtotal por producto
   
-  // TODO: Calcular y mostrar totales:
-  //       - Subtotal
-  //       - Domicilio
-  //       - Descuento (si aplica)
-  //       - TOTAL
+  TODO: Calcular y mostrar totales:
+        - Subtotal
+        - Domicilio
+        - Descuento (si aplica)
+        - TOTAL
 }
 ```
 
@@ -183,10 +183,10 @@ function cargarCarritoEnCheckout() {
   const detalle = document.getElementById('detalle-productos-checkout');
   detalle.innerHTML = '';
 
-  // TODO: Mostrar nombre y precio de cada producto
-  // TODO: Incluir cantidad
-  // TODO: Mostrar subtotal
-  // TODO: Mostrar total final
+  TODO: Mostrar nombre y precio de cada producto
+  TODO: Incluir cantidad
+  TODO: Mostrar subtotal
+  TODO: Mostrar total final
 }
 ```
 
@@ -195,7 +195,7 @@ function cargarCarritoEnCheckout() {
 document.getElementById('form-checkout').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  // TODO: Obtener valores del formulario:
+  TODO: Obtener valores del formulario:
   const nombres = document.getElementById('nombres-checkout').value;
   const apellidos = document.getElementById('apellidos-checkout').value;
   const email = document.getElementById('email-checkout').value;
@@ -205,22 +205,22 @@ document.getElementById('form-checkout').addEventListener('submit', async (e) =>
   const notas = document.getElementById('notas-checkout').value;
   const metodoPago = document.querySelector('[name="metodo-pago"]:checked').value;
 
-  // TODO: Obtener carrito de localStorage
+  TODO: Obtener carrito de localStorage
   const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-  // TODO: Crear objeto de pedido:
+  TODO: Crear objeto de pedido:
   const pedido = {
-    id_cliente: null, // TODO: Obtener del usuario logueado
+    id_cliente: null, TODO: Obtener del usuario logueado
     metodo_pago: metodoPago,
     estado: 'pendiente',
-    total: 0, // TODO: Calcular
-    productos: carrito // Items del carrito
+    total: 0, TODO: Calcular
+    productos: carrito Items del carrito
   };
 
-  // TODO: Validar que todos los campos estén completos
-  // TODO: Calcular total (suma de productos + domicilio - descuentos)
+  TODO: Validar que todos los campos estén completos
+  TODO: Calcular total (suma de productos + domicilio - descuentos)
   
-  // TODO: Hacer POST a: http://localhost:3000/api/pedidos
+  TODO: Hacer POST a: http://localhost:3000/api/pedidos
   try {
     const response = await fetch('http://localhost:3000/api/pedidos', {
       method: 'POST',
@@ -232,12 +232,12 @@ document.getElementById('form-checkout').addEventListener('submit', async (e) =>
 
     if (response.ok) {
       const data = await response.json();
-      // TODO: Guardar número de pedido en localStorage
-      // TODO: Limpiar carrito
-      // TODO: Redirigir a thankyou.html
+      TODO: Guardar número de pedido en localStorage
+      TODO: Limpiar carrito
+      TODO: Redirigir a thankyou.html
       window.location.href = 'thankyou.html';
     } else {
-      // TODO: Mostrar error al usuario
+      TODO: Mostrar error al usuario
       alert('Error al procesar el pedido');
     }
   } catch (error) {
@@ -285,40 +285,40 @@ document.getElementById('form-checkout').addEventListener('submit', async (e) =>
 **Archivo: `js/carrito.js`**
 
 ```javascript
-// Configuración
+Configuración
 const API_URL = 'http://localhost:3000/api';
 
-// Obtener carrito del localStorage
+Obtener carrito del localStorage
 function obtenerCarrito() {
   return JSON.parse(localStorage.getItem('carrito')) || [];
 }
 
-// Guardar carrito en localStorage
+Guardar carrito en localStorage
 function guardarCarrito(carrito) {
   localStorage.setItem('carrito', JSON.stringify(carrito));
 }
 
-// Agregar producto al carrito
+Agregar producto al carrito
 function agregarAlCarrito(idProducto) {
-  // TODO: Implementar
+  TODO: Implementar
 }
 
-// Actualizar cantidad
+Actualizar cantidad
 function actualizarCantidad(idProducto, nuevaCantidad) {
-  // TODO: Implementar
+  TODO: Implementar
 }
 
-// Eliminar del carrito
+Eliminar del carrito
 function eliminarDelCarrito(idProducto) {
-  // TODO: Implementar
+  TODO: Implementar
 }
 
-// Calcular total del carrito
+Calcular total del carrito
 function calcularTotal() {
-  // TODO: Implementar
+  TODO: Implementar
 }
 
-// Limpiar carrito
+Limpiar carrito
 function limpiarCarrito() {
   localStorage.removeItem('carrito');
 }
@@ -374,8 +374,8 @@ Response (si es exitoso):
 2. **Usa `event.preventDefault()`** en formularios
    ```javascript
    form.addEventListener('submit', (e) => {
-     e.preventDefault(); // Evita recarga de página
-     // Tu código aquí
+     e.preventDefault(); Evita recarga de página
+     Tu código aquí
    });
    ```
 

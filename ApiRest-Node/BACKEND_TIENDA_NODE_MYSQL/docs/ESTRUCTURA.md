@@ -104,7 +104,7 @@ Respuesta JSON
 ### 1. Crear un nuevo controller en `src/controllers/`
 
 ```javascript
-// src/controllers/ejemploController.js
+src/controllers/ejemploController.js
 const { getPool } = require("../database/connection")
 const { handleError } = require("../utils/errorHandler")
 
@@ -126,7 +126,7 @@ module.exports = { getEjemplos }
 ### 2. Crear rutas en `src/routes/`
 
 ```javascript
-// src/routes/ejemploRoutes.js
+src/routes/ejemploRoutes.js
 const express = require("express")
 const { getEjemplos } = require("../controllers/ejemploController")
 
@@ -139,7 +139,7 @@ module.exports = router
 ### 3. Registrar en `server.js`
 
 ```javascript
-// En server.js
+En server.js
 const ejemploRoutes = require("./src/routes/ejemploRoutes")
 app.use("/api/ejemplo", ejemploRoutes)
 ```
@@ -153,7 +153,7 @@ El pool de conexiones se centraliza en `src/database/connection.js`:
 ```javascript
 const { getPool } = require("./src/database/connection")
 
-// En cualquier controller
+En cualquier controller
 const pool = getPool()
 const connection = await pool.getConnection()
 ```

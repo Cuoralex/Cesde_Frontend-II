@@ -1,12 +1,12 @@
 //
-// Base styles
+Base styles
 //
 
 .card {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-width: 0; // See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
+  min-width: 0; See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
   height: $card-height;
   word-wrap: break-word;
   background-color: $card-bg;
@@ -34,8 +34,8 @@
     }
   }
 
-  // Due to specificity of the above selector (`.card > .list-group`), we must
-  // use a child selector here to prevent double borders.
+  Due to specificity of the above selector (`.card > .list-group`), we must
+  use a child selector here to prevent double borders.
   > .card-header + .list-group,
   > .list-group + .card-footer {
     border-top: 0;
@@ -43,11 +43,11 @@
 }
 
 .card-body {
-  // Enable `flex-grow: 1` for decks and groups so that card blocks take up
-  // as much space as possible, ensuring footers are aligned to the bottom.
+  Enable `flex-grow: 1` for decks and groups so that card blocks take up
+  as much space as possible, ensuring footers are aligned to the bottom.
   flex: 1 1 auto;
-  // Workaround for the image size bug in IE
-  // See: https://github.com/twbs/bootstrap/pull/28855
+  Workaround for the image size bug in IE
+  See: https://github.com/twbs/bootstrap/pull/28855
   min-height: 1px;
   padding: $card-spacer-x;
   color: $card-color;
@@ -77,12 +77,12 @@
 }
 
 //
-// Optional textual caps
+Optional textual caps
 //
 
 .card-header {
   padding: $card-spacer-y $card-spacer-x;
-  margin-bottom: 0; // Removes the default margin-bottom of <hN>
+  margin-bottom: 0; Removes the default margin-bottom of <hN>
   color: $card-cap-color;
   background-color: $card-cap-bg;
   border-bottom: $card-border-width solid $card-border-color;
@@ -105,7 +105,7 @@
 
 
 //
-// Header navs
+Header navs
 //
 
 .card-header-tabs {
@@ -120,7 +120,7 @@
   margin-left: -$card-spacer-x / 2;
 }
 
-// Card image
+Card image
 .card-img-overlay {
   position: absolute;
   top: 0;
@@ -134,8 +134,8 @@
 .card-img,
 .card-img-top,
 .card-img-bottom {
-  flex-shrink: 0; // For IE: https://github.com/twbs/bootstrap/issues/29396
-  width: 100%; // Required because we use flexbox and this inherently applies align-self: stretch
+  flex-shrink: 0; For IE: https://github.com/twbs/bootstrap/issues/29396
+  width: 100%; Required because we use flexbox and this inherently applies align-self: stretch
 }
 
 .card-img,
@@ -149,7 +149,7 @@
 }
 
 
-// Card deck
+Card deck
 
 .card-deck {
   .card {
@@ -163,10 +163,10 @@
     margin-left: -$card-deck-margin;
 
     .card {
-      // Flexbugs #4: https://github.com/philipwalton/flexbugs#flexbug-4
+      Flexbugs #4: https://github.com/philipwalton/flexbugs#flexbug-4
       flex: 1 0 0%;
       margin-right: $card-deck-margin;
-      margin-bottom: 0; // Override the default
+      margin-bottom: 0; Override the default
       margin-left: $card-deck-margin;
     }
   }
@@ -174,12 +174,12 @@
 
 
 //
-// Card groups
+Card groups
 //
 
 .card-group {
-  // The child selector allows nested `.card` within `.card-group`
-  // to display properly.
+  The child selector allows nested `.card` within `.card-group`
+  to display properly.
   > .card {
     margin-bottom: $card-group-margin;
   }
@@ -187,10 +187,10 @@
   @include media-breakpoint-up(sm) {
     display: flex;
     flex-flow: row wrap;
-    // The child selector allows nested `.card` within `.card-group`
-    // to display properly.
+    The child selector allows nested `.card` within `.card-group`
+    to display properly.
     > .card {
-      // Flexbugs #4: https://github.com/philipwalton/flexbugs#flexbug-4
+      Flexbugs #4: https://github.com/philipwalton/flexbugs#flexbug-4
       flex: 1 0 0%;
       margin-bottom: 0;
 
@@ -199,19 +199,19 @@
         border-left: 0;
       }
 
-      // Handle rounded corners
+      Handle rounded corners
       @if $enable-rounded {
         &:not(:last-child) {
           @include border-right-radius(0);
 
           .card-img-top,
           .card-header {
-            // stylelint-disable-next-line property-disallowed-list
+            stylelint-disable-next-line property-disallowed-list
             border-top-right-radius: 0;
           }
           .card-img-bottom,
           .card-footer {
-            // stylelint-disable-next-line property-disallowed-list
+            stylelint-disable-next-line property-disallowed-list
             border-bottom-right-radius: 0;
           }
         }
@@ -221,12 +221,12 @@
 
           .card-img-top,
           .card-header {
-            // stylelint-disable-next-line property-disallowed-list
+            stylelint-disable-next-line property-disallowed-list
             border-top-left-radius: 0;
           }
           .card-img-bottom,
           .card-footer {
-            // stylelint-disable-next-line property-disallowed-list
+            stylelint-disable-next-line property-disallowed-list
             border-bottom-left-radius: 0;
           }
         }
@@ -237,7 +237,7 @@
 
 
 //
-// Columns
+Columns
 //
 
 .card-columns {
@@ -252,15 +252,15 @@
     widows: 1;
 
     .card {
-      display: inline-block; // Don't let them vertically span multiple columns
-      width: 100%; // Don't let their width change
+      display: inline-block; Don't let them vertically span multiple columns
+      width: 100%; Don't let their width change
     }
   }
 }
 
 
 //
-// Accordion
+Accordion
 //
 
 .accordion {
