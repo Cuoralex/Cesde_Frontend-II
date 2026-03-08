@@ -12,7 +12,8 @@
     <title>Admin - Inventario</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"
+        type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -53,21 +54,73 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Modulos
+                Módulos
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
+            <!-- Nav Item - Productos -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProductos"
+                    aria-expanded="true" aria-controls="collapseProductos">
+                    <i class="fas fa-fw fa-box"></i>
                     <span>Productos</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseProductos" class="collapse show" aria-labelledby="headingProductos"
+                    data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Acciones:</h6>
-                        <a class="collapse-item" href="listado-pro.html">Ver Productos</a>
+                        <a class="collapse-item active" href="listado-pro.html">Ver Productos</a>
                         <a class="collapse-item" href="crear-pro.html">Crear Productos</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Clientes -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClientes"
+                    aria-expanded="false" aria-controls="collapseClientes">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+                <div id="collapseClientes" class="collapse" aria-labelledby="headingClientes"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Acciones:</h6>
+                        <a class="collapse-item" href="listado-clientes.html">Ver Clientes</a>
+                        <a class="collapse-item" href="crear-cliente.html">Crear Clientes</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Pedidos -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePedidos"
+                    aria-expanded="false" aria-controls="collapsePedidos">
+                    <i class="fas fa-fw fa-shopping-cart"></i>
+                    <span>Pedidos</span>
+                </a>
+                <div id="collapsePedidos" class="collapse" aria-labelledby="headingPedidos"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Acciones:</h6>
+                        <a class="collapse-item" href="listado-pedidos.html">Ver Pedidos</a>
+                        <a class="collapse-item" href="crear-pedido.html">Crear Pedidos</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Usuarios -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios"
+                    aria-expanded="false" aria-controls="collapseUsuarios">
+                    <i class="fas fa-fw fa-user-tie"></i>
+                    <span>Usuarios</span>
+                </a>
+                <div id="collapseUsuarios" class="collapse" aria-labelledby="headingUsuarios"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Acciones:</h6>
+                        <a class="collapse-item" href="listado-usuarios.html">Ver Usuarios</a>
+                        <a class="collapse-item" href="crear-usuario.html">Crear Usuarios</a>
                     </div>
                 </div>
             </li>
@@ -310,8 +363,8 @@
                                         d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                                 </svg>
                             </span>
-                            <input type="text" id="buscar-producto" class="form-control"
-                                placeholder="Buscar producto..." onkeyup="buscarProducto()">
+                            <input type="text" id="buscar-producto" onkeyup="buscarProducto()" class="form-control"
+                                placeholder="Buscar...">
                         </div>
                         <table class="table align-middle mb-0 bg-white">
                             <thead class="bg-light">
@@ -326,7 +379,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                <table class="table">
+                                    <thead>...</thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                <script src="js/listado-pro.js"></script>
                             </tbody>
                         </table>
                     </div>
@@ -380,23 +438,22 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <!-- <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script> -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
     <script src="js/listado-pro.js"></script>
-
 
 </body>
 
