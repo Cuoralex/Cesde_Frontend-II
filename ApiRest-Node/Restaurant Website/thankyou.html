@@ -182,19 +182,12 @@
     crossorigin="anonymous"></script>
 
   <script>
-    TODO: Obtener datos del pedido y mostrarlos en la página
-    Los datos pueden venir de:
-    1. localStorage (carrito previo guardado)
-    2. Respuesta de la API después de crear el pedido
-    3. Parámetros de URL
 
     document.addEventListener('DOMContentLoaded', () => {
-      Generar número de pedido (en producción viene de la base de datos)
       const numeroPedido = '#PED-' + Date.now().toString().slice(-6);
       document.getElementById('numero-pedido-final').textContent = numeroPedido;
       localStorage.setItem('numeroPedido', numeroPedido);
 
-      Limpiar el carrito después de confirmar
       localStorage.removeItem('carrito');
     });
   </script>

@@ -5,7 +5,7 @@ const initializeDatabase = async () => {
     const pool = getPool()
     const connection = await pool.getConnection()
 
-    Crear tabla productos
+
     await connection.query(`
       CREATE TABLE IF NOT EXISTS productos (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -20,7 +20,7 @@ const initializeDatabase = async () => {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `)
 
-    Crear tabla clientes
+
     await connection.query(`
       CREATE TABLE IF NOT EXISTS clientes (
         id_cliente INT PRIMARY KEY AUTO_INCREMENT,
@@ -37,7 +37,7 @@ const initializeDatabase = async () => {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `)
 
-    Crear tabla roles (usuarios)
+
     await connection.query(`
       CREATE TABLE IF NOT EXISTS roles (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -49,7 +49,6 @@ const initializeDatabase = async () => {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `)
 
-    Crear tabla pedidos
     await connection.query(`
       CREATE TABLE IF NOT EXISTS pedido (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -63,7 +62,7 @@ const initializeDatabase = async () => {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `)
 
-    Crear tabla detalle_pedido
+
     await connection.query(`
       CREATE TABLE IF NOT EXISTS detalle_pedido (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -78,24 +77,24 @@ const initializeDatabase = async () => {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `)
 
-    Insertar datos de ejemplo
+
     const [users] = await connection.query("SELECT COUNT(*) as count FROM roles")
     if (users[0].count === 0) {
-      Usuario administrador por defecto
+
       await connection.query("INSERT INTO roles (rol, usuario, contrasena) VALUES (?, ?, ?)", [
         "administrador",
         "admin",
         "admin12345",
       ])
 
-      Usuario vendedor
+
       await connection.query("INSERT INTO roles (rol, usuario, contrasena) VALUES (?, ?, ?)", [
         "vendedor",
         "vendedor",
         "vendedor123",
       ])
 
-      Clientes de ejemplo
+
       await connection.query(
         "INSERT INTO clientes (nombre, apellido, email, celular, direccion, direccion2, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?)",
         [
@@ -122,7 +121,7 @@ const initializeDatabase = async () => {
         ],
       )
 
-      Productos de ejemplo
+
       await connection.query(
         "INSERT INTO productos (nombre, descripcion, precio, stock, imagen) VALUES (?, ?, ?, ?, ?)",
         [

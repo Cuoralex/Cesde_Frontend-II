@@ -9,7 +9,15 @@
     "init-db": "node scripts/init-db.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["nodejs", "express", "mysql", "api", "rest", "inventario", "crud"],
+  "keywords": [
+    "nodejs",
+    "express",
+    "mysql",
+    "api",
+    "rest",
+    "inventario",
+    "crud"
+  ],
   "author": "Sistema de Inventario",
   "license": "MIT",
   "dependencies": {
@@ -24,5 +32,8 @@
   },
   "engines": {
     "node": ">=14.0.0"
+  },
+  "directories": {
+    "doc": "docs"
   }
 }

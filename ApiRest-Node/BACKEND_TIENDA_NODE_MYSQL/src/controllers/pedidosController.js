@@ -1,7 +1,7 @@
 const { getPool } = require("../database/connection")
 const { handleError } = require("../utils/errorHandler")
 
-Obtener todos los pedidos o uno por ID
+
 const getPedidos = async (req, res) => {
   try {
     const { id } = req.params
@@ -9,7 +9,7 @@ const getPedidos = async (req, res) => {
     const connection = await pool.getConnection()
 
     if (id) {
-      Obtener pedido con información del cliente
+
       const [pedidos] = await connection.query(
         `SELECT p.*, c.nombre, c.apellido, c.email 
         FROM pedido p 
@@ -21,7 +21,7 @@ const getPedidos = async (req, res) => {
       if (pedidos.length > 0) {
         const pedido = pedidos[0]
 
-        Obtener detalles del pedido
+
         const [detalles] = await connection.query(
           `SELECT dp.*, pr.nombre as producto_nombre 
           FROM detalle_pedido dp 
@@ -51,7 +51,7 @@ const getPedidos = async (req, res) => {
   }
 }
 
-Crear pedido
+
 const createPedido = async (req, res) => {
   try {
     const { id_cliente, descuento, metodo_pago, aumento, productos } = req.body
@@ -66,21 +66,20 @@ const createPedido = async (req, res) => {
     try {
       await connection.beginTransaction()
 
-      Crear el pedido
       const [pedidoResult] = await connection.query(
         "INSERT INTO pedido (id_cliente, descuento, metodo_pago, aumento) VALUES (?, ?, ?, ?)",
         [id_cliente, descuento || 0, metodo_pago, aumento || 0],
       )
       const pedidoId = pedidoResult.insertId
 
-      Agregar productos al detalle del pedido
+
       for (const producto of productos) {
         await connection.query(
           "INSERT INTO detalle_pedido (id_pedido, id_producto, precio, cantidad) VALUES (?, ?, ?, ?)",
           [pedidoId, producto.id_producto, producto.precio, producto.cantidad],
         )
 
-        Actualizar stock
+
         await connection.query("UPDATE productos SET stock = stock - ? WHERE id = ?", [
           producto.cantidad,
           producto.id_producto,
@@ -104,7 +103,7 @@ const createPedido = async (req, res) => {
   }
 }
 
-Actualizar pedido
+
 const updatePedido = async (req, res) => {
   try {
     const { id } = req.params
@@ -128,7 +127,7 @@ const updatePedido = async (req, res) => {
   }
 }
 
-Eliminar pedido
+
 const deletePedido = async (req, res) => {
   try {
     const { id } = req.params

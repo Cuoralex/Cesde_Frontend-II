@@ -1,7 +1,7 @@
 const { getPool } = require("../database/connection")
 const { handleError } = require("../utils/errorHandler")
 
-Obtener detalles de un pedido específico
+
 const getDetallePedido = async (req, res) => {
   try {
     const { id_pedido } = req.query
@@ -27,7 +27,7 @@ const getDetallePedido = async (req, res) => {
   }
 }
 
-Agregar producto a un pedido existente
+
 const createDetallePedido = async (req, res) => {
   try {
     const { id_pedido, id_producto, precio, cantidad } = req.body
@@ -53,7 +53,7 @@ const createDetallePedido = async (req, res) => {
   }
 }
 
-Actualizar detalle de pedido
+
 const updateDetallePedido = async (req, res) => {
   try {
     const { id } = req.params
@@ -78,7 +78,7 @@ const updateDetallePedido = async (req, res) => {
   }
 }
 
-Eliminar detalle de pedido
+
 const deleteDetallePedido = async (req, res) => {
   try {
     const { id } = req.params

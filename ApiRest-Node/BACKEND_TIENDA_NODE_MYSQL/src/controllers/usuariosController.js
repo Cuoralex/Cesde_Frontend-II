@@ -1,7 +1,7 @@
 const { getPool } = require("../database/connection")
 const { handleError } = require("../utils/errorHandler")
 
-Obtener todos los usuarios o uno por ID
+
 const getUsuarios = async (req, res) => {
   try {
     const { id } = req.params
@@ -27,7 +27,7 @@ const getUsuarios = async (req, res) => {
   }
 }
 
-Crear usuario
+
 const createUsuario = async (req, res) => {
   try {
     const { rol, usuario, contrasena } = req.body
@@ -63,7 +63,7 @@ const createUsuario = async (req, res) => {
   }
 }
 
-Actualizar usuario
+
 const updateUsuario = async (req, res) => {
   try {
     const { id } = req.params
@@ -99,7 +99,7 @@ const updateUsuario = async (req, res) => {
   }
 }
 
-Eliminar usuario
+
 const deleteUsuario = async (req, res) => {
   try {
     const { id } = req.params

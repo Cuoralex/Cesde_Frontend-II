@@ -1,13 +1,15 @@
 const express = require("express")
 const cors = require("cors")
-const bodyParser = require("body-parser")
 require("dotenv").config()
 
-Importar funciones de conexión y BD
-const { initializePool, closePool } = require("./src/database/connection")
+// Base de datos
+const connection = require("./src/database/connection")
 const { initializeDatabase } = require("./src/database/init")
 
-Importar rutas
+// DEBUG connection: ahora mostrará el contenido correcto una vez exportado
+console.log("DEBUG connection:", connection)
+
+// Rutas
 const authRoutes = require("./src/routes/authRoutes")
 const productosRoutes = require("./src/routes/productosRoutes")
 const clientesRoutes = require("./src/routes/clientesRoutes")
@@ -18,12 +20,18 @@ const detallePedidoRoutes = require("./src/routes/detallePedidoRoutes")
 const app = express()
 const PORT = process.env.PORT || 3000
 
-Middlewares
-app.use(cors())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+// =======================
+// Middlewares
+// =======================
 
-Ruta raíz de bienvenida
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+// =======================
+// Ruta principal
+// =======================
+
 app.get("/", (req, res) => {
   res.status(200).json({
     message: "¡Bienvenido a la API de Tienda!",
@@ -35,19 +43,21 @@ app.get("/", (req, res) => {
         login: "POST /api/login"
       },
       resources: {
-        productos: "GET /api/productos, POST /api/productos, PUT /api/productos/:id, DELETE /api/productos/:id",
-        clientes: "GET /api/clientes, POST /api/clientes, PUT /api/clientes/:id, DELETE /api/clientes/:id",
-        pedidos: "GET /api/pedidos, POST /api/pedidos, PUT /api/pedidos/:id, DELETE /api/pedidos/:id",
-        usuarios: "GET /api/usuarios, POST /api/usuarios, PUT /api/usuarios/:id, DELETE /api/usuarios/:id",
-        detallePedido: "GET /api/detalle-pedido, POST /api/detalle-pedido, PUT /api/detalle-pedido/:id, DELETE /api/detalle-pedido/:id"
+        productos: "GET /api/productos | POST /api/productos | PUT /api/productos/:id | DELETE /api/productos/:id",
+        clientes: "GET /api/clientes | POST /api/clientes | PUT /api/clientes/:id | DELETE /api/clientes/:id",
+        pedidos: "GET /api/pedidos | POST /api/pedidos | PUT /api/pedidos/:id | DELETE /api/pedidos/:id",
+        usuarios: "GET /api/usuarios | POST /api/usuarios | PUT /api/usuarios/:id | DELETE /api/usuarios/:id",
+        detallePedido: "GET /api/detalle-pedido | POST /api/detalle-pedido | PUT /api/detalle-pedido/:id | DELETE /api/detalle-pedido/:id"
       },
-      documentation: "Ver README.md y peticiones-mysql.http",
-      status: "En línea ✅"
+      status: "API funcionando ✅"
     }
   })
 })
 
-Rutas de la API
+// =======================
+// Rutas API
+// =======================
+
 app.use("/api", authRoutes)
 app.use("/api/productos", productosRoutes)
 app.use("/api/clientes", clientesRoutes)
@@ -55,51 +65,71 @@ app.use("/api/pedidos", pedidosRoutes)
 app.use("/api/usuarios", usuariosRoutes)
 app.use("/api/detalle-pedido", detallePedidoRoutes)
 
-Ruta no encontrada - Captura rutas que no coinciden
+// =======================
+// Ruta no encontrada
+// =======================
+
 app.use((req, res) => {
   res.status(404).json({
     error: "Ruta no encontrada",
-    message: `La ruta '${req.method} ${req.originalUrl}' no existe en esta API`,
-    suggestion: "Consulta GET / para ver los endpoints disponibles",
-    status: 404
+    message: `${req.method} ${req.originalUrl} no existe`,
+    suggestion: "Consulta GET / para ver endpoints disponibles"
   })
 })
 
-Iniciar servidor y pool de conexiones
-const startServer = async () => {
+// =======================
+// Inicio del servidor
+// =======================
+
+async function startServer() {
   try {
-    await initializePool()
+
+    console.log("🔄 Iniciando servidor...")
+
+    // conexión MySQL
+    await connection.initializePool()
+
+    // crear tablas si no existen
     await initializeDatabase()
 
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`)
-      console.log(`📚 API Base URL: http://localhost:${PORT}/api`)
-      console.log(`💾 Base de datos MySQL: ${process.env.DB_NAME || "inventario_db"}`)
+      console.log(`🚀 Servidor corriendo en: http://localhost:${PORT}`)
+      console.log(`📚 API Base: http://localhost:${PORT}/api`)
+      console.log(`💾 Base de datos: ${process.env.DB_NAME || "inventario_db"}`)
     })
+
   } catch (error) {
+
     console.error("❌ Error al iniciar el servidor:", error.message)
     process.exit(1)
+
   }
 }
 
-Cerrar pool de conexiones al terminar
+// =======================
+// Cierre seguro del servidor
+// =======================
+
 process.on("SIGINT", async () => {
-  console.log("\n🔒 Cerrando pool de conexiones MySQL...")
-  await closePool()
-  console.log("✅ Pool de conexiones cerrado correctamente")
+  console.log("\n🔒 Cerrando conexiones MySQL...")
+  // Cambiado para usar la función directamente del objeto connection
+  if (connection.closePool) {
+    await connection.closePool()
+  }
+  console.log("✅ Conexiones cerradas")
   process.exit(0)
 })
 
-Manejo de errores no capturados
+// Manejo de errores globales
+
 process.on("unhandledRejection", (err) => {
-  console.error("Unhandled Promise Rejection:", err)
-  process.exit(1)
+  console.error("❌ Unhandled Promise Rejection:", err)
 })
 
 process.on("uncaughtException", (err) => {
-  console.error("Uncaught Exception:", err)
-  process.exit(1)
+  console.error("❌ Uncaught Exception:", err)
 })
 
-Iniciar aplicación
+// =======================
+
 startServer()

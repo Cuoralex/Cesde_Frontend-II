@@ -1,22 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
-    ... tu código anterior de botones de productos ...
-
-    ACTIVACIÓN DEL BOTÓN DE NAVEGACIÓN 
+    // Navegación al carrito
     const botonCarritoNav = document.querySelector('.carrito'); 
-    
     if (botonCarritoNav) {
-        botonCarritoNav.style.cursor = "pointer"; Cambia el cursor para indicar que es clickeable
+        botonCarritoNav.style.cursor = "pointer"; 
         botonCarritoNav.addEventListener('click', () => {
-            Ajustamos la ruta según tu estructura de carpetas actual
             window.location.href = 'cart.html'; 
         });
     }
+
+    // Configuración de botones de compra
+    const productos = document.querySelectorAll('.card.producto');
+    productos.forEach(producto => {
+        const boton = producto.querySelector('.btn-product') || producto.querySelector('.fa-basket-shopping');
+        if (boton) {
+            boton.addEventListener('click', (e) => {
+                e.preventDefault();
+                agregarAlCarrito(producto.dataset.id);
+            });
+        }
+    });
 });
 
 function agregarAlCarrito(idProducto) {
     const card = document.querySelector(`[data-id="${idProducto}"]`);
     const productoNuevo = {
-        id: card.dataset.id,
+        // Se usa id_producto para consistencia con el Backend
+        id_producto: card.dataset.id, 
         nombre: card.dataset.name,
         precio: parseFloat(card.dataset.price),
         imagen: card.dataset.image,
@@ -24,7 +33,7 @@ function agregarAlCarrito(idProducto) {
     };
 
     let carrito = obtenerCarrito();
-    const existe = carrito.find(item => item.id === productoNuevo.id);
+    const existe = carrito.find(item => item.id_producto === productoNuevo.id_producto);
 
     if (existe) {
         existe.cantidad++;
@@ -35,12 +44,3 @@ function agregarAlCarrito(idProducto) {
     guardarCarrito(carrito);
     alert(`¡${productoNuevo.nombre} añadido! 🍔`);
 }
-
-  Lógica para activar la navegación al carrito [cite: 98, 102]
-  const divCarrito = document.querySelector('.carrito');
-  if (divCarrito) {
-    divCarrito.style.cursor = "pointer"; Indica que es clickeable
-    divCarrito.addEventListener('click', () => {
-      window.location.href = 'cart.html'; Redirige a la página del carrito
-    });
-  }
