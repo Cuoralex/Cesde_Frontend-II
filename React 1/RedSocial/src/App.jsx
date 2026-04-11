@@ -20,14 +20,18 @@ function App() {
                 <div className="w3-card w3-round w3-white">
                   <div className="w3-container w3-padding">
                     <h6 className="w3-opacity">Social Media template by w3.css</h6>
-                    <p contentEditable="true" className="w3-border w3-padding">Status: Feeling Blue</p>
+                    <textarea 
+                      className="w3-input w3-border w3-padding"
+                      placeholder="¿Qué estás pensando?"
+                      style={{ height: "60px", resize: "none" }}
+                    />
                     <button type="button" className="w3-button w3-theme"><i className="fa fa-pencil"></i> &nbsp;Post</button> 
                   </div>
                 </div>
               </div>
             </div>
             
-            {/* John Doe Post */}
+            {/* John Doe Post
             <div className="w3-container w3-card w3-white w3-round w3-margin"><br />
               <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Avatar" className="w3-left w3-circle w3-margin-right" style={{width:'60px'}} />
               <span className="w3-right w3-opacity">1 min</span>
@@ -44,7 +48,16 @@ function App() {
               </div>
               <button type="button" className="w3-button w3-theme-d1 w3-margin-bottom"><i className="fa fa-thumbs-up"></i> &nbsp;Like</button> 
               <button type="button" className="w3-button w3-theme-d2 w3-margin-bottom"><i className="fa fa-comment"></i> &nbsp;Comment</button> 
-            </div>
+            </div> */}
+
+            <Post
+              id={1}
+              name="Judy Orozco"
+              avatar="https://i.pravatar.cc/150?img=3"
+              time="Hace 5 min"
+              content="Este es mi primer post funcional"
+              images={["https://picsum.photos/500"]}
+            />
 
             {/* Jane Doe Post */}
             <div className="w3-container w3-card w3-white w3-round w3-margin"><br />
