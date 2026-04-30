@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+/* Vinculamos el archivo de configuración para que Tailwind v4 cargue tus tokens */
+@config "../tailwind.config.js";
+
+@layer base {
+  :root {
+    /* Colores base y Login */
+    --background: 210 20% 98%;
+    --foreground: 215 25% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+    --primary: 210 60% 25%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 175 40% 42%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 15% 93%;
+    --muted-foreground: 215 15% 50%;
+    --accent: 175 35% 92%;
+    --accent-foreground: 175 40% 25%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 38 92% 14%;
+    --success: 152 55% 40%;
+    --success-foreground: 0 0% 100%;
+    --clinical: 199 89% 48%;
+    --clinical-foreground: 0 0% 100%;
+    --border: 210 15% 89%;
+    --input: 210 15% 89%;
+    --ring: 175 40% 42%;
+    --radius: 0.625rem;
+
+    /* Sidebar */
+    --sidebar-background: 210 60% 25%;
+    --sidebar-foreground: 210 20% 95%;
+    --sidebar-primary: 175 40% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 50% 32%;
+    --sidebar-accent-foreground: 210 20% 95%;
+    --sidebar-border: 210 45% 35%;
+    --sidebar-ring: 175 40% 55%;
+    --sidebar-muted: 210 30% 40%;
+
+    --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  .dark {
+    --background: 215 25% 10%;
+    --foreground: 210 20% 95%;
+    --card: 215 25% 13%;
+    --card-foreground: 210 20% 95%;
+    --primary: 175 40% 55%;
+    --border: 215 20% 20%;
+  }
+}
+
+@layer base {
+  * {
+    /* Reemplazamos @apply border-border por CSS nativo para evitar el error */
+    border-color: hsl(var(--border));
+  }
+  body {
+    /* Reemplazamos @apply bg-background text-foreground por CSS nativo */
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .clinical-alert-critical {
+    border-left-width: 4px;
+    border-left-color: hsl(var(--destructive));
+    background-color: hsla(var(--destructive) / 0.1);
+    color: hsl(var(--destructive));
+  }
+  .clinical-alert-warning {
+    border-left-width: 4px;
+    border-left-color: hsl(var(--warning));
+    background-color: hsla(var(--warning) / 0.1);
+    color: hsl(var(--warning-foreground));
+  }
+  .clinical-alert-success {
+    border-left-width: 4px;
+    border-left-color: hsl(var(--success));
+    background-color: hsla(var(--success) / 0.1);
+    color: hsl(var(--success-foreground));
+  }
+  .stat-card {
+    border-radius: var(--radius);
+    border-width: 1px;
+    background-color: hsl(var(--card));
+    padding: 1.25rem;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    transition-property: box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .stat-card:hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+}
+
+@layer utilities {
+  .clinical-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+  }
+  .glass-card {
+    background-color: hsla(var(--card) / 0.8);
+    backdrop-filter: blur(4px);
+    border-width: 1px;
+    border-color: hsla(var(--border) / 0.5);
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+}
